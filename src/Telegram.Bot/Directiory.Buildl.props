@@ -1,0 +1,8 @@
+<Project>
+  <PropertyGroup>
+    <EnableCentralPackageVersions>false</EnableCentralPackageVersions>
+    <EnableGlobalPackageReferences>false</EnableGlobalPackageReferences>
+    <EnablePackageVersionOverride>false</EnablePackageVersionOverride>
+    <EnablePackageVersionOverrideWithoutCentralVersion>false</EnablePackageVersionOverrideWithoutCentralVersion>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,15 @@
+<!--
+ * Directory.Build.targets
+ *
+ *   Created: 2022-12-08-12:09:18
+ *   Modified: 2022-12-08-12:09:18
+ *
+ *   Author: David G. Moore, Jr. <david@dgmjr.io>
+ *
+ *   Copyright © 2022-2023 David G. Moore, Jr., All Rights Reserved
+ *      License: MIT (https://opensource.org/licenses/MIT)
+-->
+
+<Project Sdk="NuGetPush">
+  <Target Name="GetPackageVersion" />
+</Project>

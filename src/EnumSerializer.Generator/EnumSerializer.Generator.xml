@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>EnumSerializer.Generator</name>
+    </assembly>
+    <members>
+        <member name="P:EnumSerializer.Generator.EnumInfo.Members">
+            <summary>
+            Key is the enum name.
+            </summary>
+        </member>
+    </members>
+</doc>

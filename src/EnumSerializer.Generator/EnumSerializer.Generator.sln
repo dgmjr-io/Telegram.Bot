@@ -1,0 +1,35 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EnumSerializer.Generator", "EnumSerializer.Generator.csproj", "{6D13D5EB-DCFE-4894-80CB-00388F0D798B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1198FC8F-8EEA-4653-A46B-18A2B51CBD57}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Local|Any CPU = Local|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Staging|Any CPU = Staging|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Testing|Any CPU = Testing|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6D13D5EB-DCFE-4894-80CB-00388F0D798B}.Local|Any CPU.ActiveCfg = Local|Any CPU
+		{6D13D5EB-DCFE-4894-80CB-00388F0D798B}.Local|Any CPU.Build.0 = Local|Any CPU
+		{6D13D5EB-DCFE-4894-80CB-00388F0D798B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D13D5EB-DCFE-4894-80CB-00388F0D798B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D13D5EB-DCFE-4894-80CB-00388F0D798B}.Staging|Any CPU.ActiveCfg = Staging|Any CPU
+		{6D13D5EB-DCFE-4894-80CB-00388F0D798B}.Staging|Any CPU.Build.0 = Staging|Any CPU
+		{6D13D5EB-DCFE-4894-80CB-00388F0D798B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D13D5EB-DCFE-4894-80CB-00388F0D798B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D13D5EB-DCFE-4894-80CB-00388F0D798B}.Testing|Any CPU.ActiveCfg = Testing|Any CPU
+		{6D13D5EB-DCFE-4894-80CB-00388F0D798B}.Testing|Any CPU.Build.0 = Testing|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6D13D5EB-DCFE-4894-80CB-00388F0D798B} = {1198FC8F-8EEA-4653-A46B-18A2B51CBD57}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B779C071-F2C2-4FA8-8879-5177A0836F6C}
+	EndGlobalSection
+EndGlobal
