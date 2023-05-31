@@ -30,7 +30,7 @@ public class PublicPollTests : IClassFixture<PublicPollTestsFixture>
         Message message = await Fixture.BotClient.SendPollAsync(
             chatId: Fixture.SupergroupChat,
             question: "Pick your team",
-            options: new [] { "Aragorn", "Galadriel", "Frodo" },
+            options: new[] { "Aragorn", "Galadriel", "Frodo" },
             isAnonymous: false,
             type: PollType.Regular,
             allowsMultipleAnswers: true

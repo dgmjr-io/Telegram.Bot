@@ -65,10 +65,10 @@ public class SendingVideoMessageTests
         await using (Stream stream = System.IO.File.OpenRead(Constants.PathToFile.Videos.GoldenRatio))
         {
             message = await BotClient.SendVideoNoteAsync(
-                chatId:  _fixture.SupergroupChat.Id,
+                chatId: _fixture.SupergroupChat.Id,
                 videoNote: new InputFile(stream),
-                duration:  28,
-                length:  240
+                duration: 28,
+                length: 240
             );
         }
 
@@ -125,7 +125,7 @@ public class SendingVideoMessageTests
                     )
         {
             message = await BotClient.SendVideoNoteAsync(
-                chatId:  _fixture.SupergroupChat.Id,
+                chatId: _fixture.SupergroupChat.Id,
                 videoNote: new InputFile(stream1),
                 thumb: new InputFile(stream2, "thumbnail.jpg")
             );

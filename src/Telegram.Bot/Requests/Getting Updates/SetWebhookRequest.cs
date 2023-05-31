@@ -111,6 +111,6 @@ public class SetWebhookRequest : FileRequestBase<bool>
         Certificate switch
         {
             { } => ToMultipartFormDataContent("certificate", Certificate),
-            _   => base.ToHttpContent()
+            _ => base.ToHttpContent()
         };
 }

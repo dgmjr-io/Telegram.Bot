@@ -30,7 +30,7 @@ public class QuizPollTests : IClassFixture<QuizPollTestsFixture>
         Message message = await Fixture.BotClient.SendPollAsync(
             chatId: Fixture.SupergroupChat,
             question: "How many silmarils were made in J. R. R. Tolkiens's Silmarillion?",
-            options: new [] { "One", "Ten", "Three" },
+            options: new[] { "One", "Ten", "Three" },
             isAnonymous: false,
             type: PollType.Quiz,
             correctOptionId: 2, // "Three",

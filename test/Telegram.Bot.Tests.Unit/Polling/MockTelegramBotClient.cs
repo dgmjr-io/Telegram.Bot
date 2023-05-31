@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -61,7 +61,7 @@ public class MockTelegramBotClient : ITelegramBotClient
 
             _messages.Clear();
 
-            return (TResponse)(object) new[]
+            return (TResponse)(object)new[]
             {
                 new Update
                 {

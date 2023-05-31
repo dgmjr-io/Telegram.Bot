@@ -145,7 +145,7 @@ public class UpdateReceiver
         var updates = await GetUpdatesAsync(
             predicate: u => (messageId is null || u.CallbackQuery?.Message?.MessageId == messageId) &&
                             (data is null || u.CallbackQuery?.Data == data),
-            updateTypes: new [] { UpdateType.CallbackQuery },
+            updateTypes: new[] { UpdateType.CallbackQuery },
             cancellationToken: cancellationToken
         );
 
@@ -161,7 +161,7 @@ public class UpdateReceiver
         if (discardNewUpdates) { await DiscardNewUpdatesAsync(cancellationToken); }
 
         var updates = await GetUpdatesAsync(
-            updateTypes: new [] { UpdateType.InlineQuery },
+            updateTypes: new[] { UpdateType.InlineQuery },
             cancellationToken: cancellationToken
         );
 
@@ -197,11 +197,11 @@ public class UpdateReceiver
                 updateTypes: new[] { UpdateType.Message, UpdateType.ChosenInlineResult }
             );
 
-            messageUpdate = updates.SingleOrDefault(u => u.Message?.Type == messageType);
-            chosenResultUpdate = updates.SingleOrDefault(u => u.Type == UpdateType.ChosenInlineResult);
-        }
+        messageUpdate = updates.SingleOrDefault(u => u.Message?.Type == messageType);
+        chosenResultUpdate = updates.SingleOrDefault(u => u.Type == UpdateType.ChosenInlineResult);
+    }
 
-        cancellationToken.ThrowIfCancellationRequested();
+    cancellationToken.ThrowIfCancellationRequested();
 
         return (messageUpdate!, chosenResultUpdate!);
 
@@ -209,53 +209,53 @@ public class UpdateReceiver
             CancellationToken cancellationToken,
             (Update? update1, Update? update2) updates
         ) =>
-            !cancellationToken.IsCancellationRequested && updates is not ({}, {});
-    }
+            !cancellationToken.IsCancellationRequested && updates is not ({ }, { });
+}
 
-    async Task<Update[]> GetOnlyAllowedUpdatesAsync(
-        int offset,
-        CancellationToken cancellationToken,
-        params UpdateType[] types)
+async Task<Update[]> GetOnlyAllowedUpdatesAsync(
+    int offset,
+    CancellationToken cancellationToken,
+    params UpdateType[] types)
+{
+    var updates = await _botClient.GetUpdatesAsync(
+        offset: offset,
+        timeout: 120,
+        allowedUpdates: types,
+        cancellationToken: cancellationToken
+    );
+
+    return updates.Where(IsAllowed).ToArray();
+}
+
+bool IsAllowed(Update update)
+{
+    if (AllowedUsernames.All(string.IsNullOrWhiteSpace)) { return true; }
+
+    return update.Type switch
     {
-        var updates = await _botClient.GetUpdatesAsync(
-            offset: offset,
-            timeout: 120,
-            allowedUpdates: types,
-            cancellationToken: cancellationToken
-        );
-
-        return updates.Where(IsAllowed).ToArray();
-    }
-
-    bool IsAllowed(Update update)
-    {
-        if (AllowedUsernames.All(string.IsNullOrWhiteSpace)) { return true; }
-
-        return update.Type switch
-        {
-            UpdateType.Message
-                or UpdateType.InlineQuery
-                or UpdateType.CallbackQuery
-                or UpdateType.PreCheckoutQuery
-                or UpdateType.ShippingQuery
-                or UpdateType.ChosenInlineResult
-                or UpdateType.PollAnswer
-                or UpdateType.ChatMember
-                or UpdateType.MyChatMember
-                or UpdateType.ChatJoinRequest =>
-                AllowedUsernames.Contains(
-                    update.GetUser().Username,
-                    StringComparer.OrdinalIgnoreCase
-                ),
-            UpdateType.Poll => true,
-            UpdateType.EditedMessage
-                or UpdateType.ChannelPost
-                or UpdateType.EditedChannelPost => false,
-            _ => throw new ArgumentOutOfRangeException(
-                paramName: nameof(update.Type),
-                actualValue: update.Type,
-                message: $"Unsupported update type {update.Type}"
+        UpdateType.Message
+            or UpdateType.InlineQuery
+            or UpdateType.CallbackQuery
+            or UpdateType.PreCheckoutQuery
+            or UpdateType.ShippingQuery
+            or UpdateType.ChosenInlineResult
+            or UpdateType.PollAnswer
+            or UpdateType.ChatMember
+            or UpdateType.MyChatMember
+            or UpdateType.ChatJoinRequest =>
+            AllowedUsernames.Contains(
+                update.GetUser().Username,
+                StringComparer.OrdinalIgnoreCase
             ),
-        };
-    }
+        UpdateType.Poll => true,
+        UpdateType.EditedMessage
+            or UpdateType.ChannelPost
+            or UpdateType.EditedChannelPost => false,
+        _ => throw new ArgumentOutOfRangeException(
+            paramName: nameof(update.Type),
+            actualValue: update.Type,
+            message: $"Unsupported update type {update.Type}"
+        ),
+    };
+}
 }

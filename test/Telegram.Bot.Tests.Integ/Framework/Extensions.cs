@@ -11,17 +11,17 @@ internal static class Extensions
     public static User GetUser(this Update update) =>
         update switch
         {
-            { Message.From: {} user } => user,
-            { InlineQuery.From: {} user } => user,
-            { CallbackQuery.From: {} user } => user,
-            { PreCheckoutQuery.From: {} user } => user,
-            { ShippingQuery.From: {} user } => user,
-            { ChosenInlineResult.From: {} user } => user,
-            { PollAnswer.User: {} user } => user,
-            { MyChatMember.NewChatMember.User: {} user } => user,
-            { ChatMember.NewChatMember.User: {} user } => user,
-            { EditedMessage.From: {} user } => user,
-            { ChatJoinRequest.From: {} user } => user,
+            { Message.From: { } user } => user,
+            { InlineQuery.From: { } user } => user,
+            { CallbackQuery.From: { } user } => user,
+            { PreCheckoutQuery.From: { } user } => user,
+            { ShippingQuery.From: { } user } => user,
+            { ChosenInlineResult.From: { } user } => user,
+            { PollAnswer.User: { } user } => user,
+            { MyChatMember.NewChatMember.User: { } user } => user,
+            { ChatMember.NewChatMember.User: { } user } => user,
+            { EditedMessage.From: { } user } => user,
+            { ChatJoinRequest.From: { } user } => user,
             _ => throw new ArgumentException("Unsupported update type {0}.", update.Type.ToString())
         };
 
