@@ -1,6 +1,9 @@
 version = 1
 
 [[analyzers]]
+name = "ansible"
+
+[[analyzers]]
 name = "csharp"
 
 [[transformers]]
