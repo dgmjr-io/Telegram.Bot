@@ -7,7 +7,7 @@ namespace Telegram.Bot.Tests.Integ.Other;
 
 [Collection(Constants.TestCollections.BotCommands)]
 [TestCaseOrderer(Constants.TestCaseOrderer, Constants.AssemblyName)]
-public class BotCommandsTests: IAsyncLifetime
+public class BotCommandsTests : IAsyncLifetime
 {
     readonly TestsFixture _fixture;
     BotCommandScope _scope;

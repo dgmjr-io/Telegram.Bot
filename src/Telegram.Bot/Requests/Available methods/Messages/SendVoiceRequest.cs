@@ -98,6 +98,6 @@ public class SendVoiceRequest : FileRequestBase<Message>, IChatTargetable
         Voice switch
         {
             InputFile voice => ToMultipartFormDataContent(fileParameterName: "voice", inputFile: voice),
-            _               => base.ToHttpContent()
+            _ => base.ToHttpContent()
         };
 }

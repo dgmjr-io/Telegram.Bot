@@ -1,4 +1,4 @@
-﻿namespace Telegram.Bot.Types;
+namespace Telegram.Bot.Types;
 
 /// <summary>
 /// This object represents a <a href="https://telegram.org/blog/video-messages-and-telescope">video message</a>

@@ -23,7 +23,7 @@ public class ChatMemberAdministrationTestFixture : IAsyncLifetime
     {
         Chat chat;
 
-        if (testsFixture.Configuration.RegularGroupMemberId is {} userId)
+        if (testsFixture.Configuration.RegularGroupMemberId is { } userId)
         {
             chat = await testsFixture.BotClient.GetChatAsync(userId);
         }

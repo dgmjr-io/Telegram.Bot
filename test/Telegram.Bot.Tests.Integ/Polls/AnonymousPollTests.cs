@@ -17,7 +17,7 @@ public class AnonymousPollTests : IClassFixture<AnonymousPollTestsFixture>
     TestsFixture Fixture => _classFixture.TestsFixture;
     ITelegramBotClient BotClient => Fixture.BotClient;
 
-    public AnonymousPollTests( AnonymousPollTestsFixture classFixture)
+    public AnonymousPollTests(AnonymousPollTestsFixture classFixture)
     {
         _classFixture = classFixture;
     }
@@ -31,7 +31,7 @@ public class AnonymousPollTests : IClassFixture<AnonymousPollTestsFixture>
         Message message = await BotClient.SendPollAsync(
             chatId: Fixture.SupergroupChat,
             question: "Who shot first?",
-            options: new[] {"Han Solo", "Greedo", "I don't care"}
+            options: new[] { "Han Solo", "Greedo", "I don't care" }
         );
 
         Assert.Equal(MessageType.Poll, message.Type);
@@ -94,7 +94,7 @@ public class AnonymousPollTests : IClassFixture<AnonymousPollTestsFixture>
             BotClient.SendPollAsync(
                 chatId: Fixture.SupergroupChat,
                 question: "You should never see this poll",
-                options: new[] {"The only poll option"}
+                options: new[] { "The only poll option" }
             )
         );
 
