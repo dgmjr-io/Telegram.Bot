@@ -47,8 +47,9 @@ public class SetStickerSetThumbRequest : FileRequestBase<bool>, IUserTargetable
 
     /// <inheritdoc />
     public override HttpContent? ToHttpContent() =>
-        Thumb switch {
+        Thumb switch
+        {
             InputFile thumb => ToMultipartFormDataContent(fileParameterName: "thumb", inputFile: thumb),
-            _               => base.ToHttpContent()
+            _ => base.ToHttpContent()
         };
 }

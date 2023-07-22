@@ -15,7 +15,7 @@ public class ApiResponseEventArgs
     /// <summary>
     /// Event arguments of this request
     /// </summary>
-    public ApiRequestEventArgs ApiRequestEventArgs { get;  }
+    public ApiRequestEventArgs ApiRequestEventArgs { get; }
 
     /// <summary>
     /// Initialize an <see cref="ApiRequestEventArgs"/> object

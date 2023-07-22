@@ -88,6 +88,6 @@ public class TestCollectionOrderer : ITestCollectionOrderer
             );
         }
 
-        return (int) order;
+        return (int)order;
     }
 }

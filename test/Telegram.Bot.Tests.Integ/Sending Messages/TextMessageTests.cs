@@ -100,15 +100,15 @@ public class TextMessageTests : IClassFixture<TextMessageTests.Fixture>
         const string url = "https://telegram.org/";
         Dictionary<MessageEntityType, string> entityValueMappings = new()
         {
-            {MessageEntityType.Bold, "*bold*"},
-            {MessageEntityType.Italic, "_italic_"},
-            {MessageEntityType.TextLink, $"[inline url to Telegram.org]({url})"},
+            { MessageEntityType.Bold, "*bold*" },
+            { MessageEntityType.Italic, "_italic_" },
+            { MessageEntityType.TextLink, $"[inline url to Telegram.org]({url})" },
             {
                 MessageEntityType.TextMention,
                 $"[{_fixture.BotUser.GetSafeUsername()}](tg://user?id={_fixture.BotUser.Id})"
             },
-            {MessageEntityType.Code, @"inline ""`fixed-width code`"""},
-            {MessageEntityType.Pre, "```pre-formatted fixed-width code block```"},
+            { MessageEntityType.Code, @"inline ""`fixed-width code`""" },
+            { MessageEntityType.Pre, "```pre-formatted fixed-width code block```" },
         };
 
         Message message = await BotClient.SendTextMessageAsync(
@@ -206,18 +206,18 @@ public class TextMessageTests : IClassFixture<TextMessageTests.Fixture>
         const string url = "https://telegram.org/";
         Dictionary<MessageEntityType, string> entityValueMappings = new()
         {
-            {MessageEntityType.Bold, "*bold*"},
-            {MessageEntityType.Italic, "_italic_"},
-            {MessageEntityType.TextLink, $"[inline url to Telegram\\.org]({url})"},
+            { MessageEntityType.Bold, "*bold*" },
+            { MessageEntityType.Italic, "_italic_" },
+            { MessageEntityType.TextLink, $"[inline url to Telegram\\.org]({url})" },
             {
                 MessageEntityType.TextMention,
                 $"[{_fixture.BotUser.GetSafeUsername()}](tg://user?id={_fixture.BotUser.Id})"
             },
-            {MessageEntityType.Code, @"inline ""`fixed-width code`"""},
-            {MessageEntityType.Pre, "```pre-formatted fixed-width code block```"},
-            {MessageEntityType.Strikethrough, "~strikethrough~"},
-            {MessageEntityType.Underline, "__underline__"},
-            {MessageEntityType.Spoiler, "||spoiler||"},
+            { MessageEntityType.Code, @"inline ""`fixed-width code`""" },
+            { MessageEntityType.Pre, "```pre-formatted fixed-width code block```" },
+            { MessageEntityType.Strikethrough, "~strikethrough~" },
+            { MessageEntityType.Underline, "__underline__" },
+            { MessageEntityType.Spoiler, "||spoiler||" },
         };
 
         Message message = await BotClient.SendTextMessageAsync(

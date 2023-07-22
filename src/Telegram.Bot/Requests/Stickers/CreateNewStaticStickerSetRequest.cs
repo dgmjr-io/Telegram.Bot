@@ -44,6 +44,6 @@ public class CreateNewStaticStickerSetRequest : CreateNewStickerSetRequest
         => PngSticker switch
         {
             InputFile file => ToMultipartFormDataContent(fileParameterName: "png_sticker", inputFile: file),
-            _              => base.ToHttpContent()
+            _ => base.ToHttpContent()
         };
 }

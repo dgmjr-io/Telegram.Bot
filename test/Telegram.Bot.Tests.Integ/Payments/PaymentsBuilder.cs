@@ -346,7 +346,7 @@ public class PaymentsBuilder
             new()
             {
                 Title = _title ?? throw new InvalidOperationException("Title is null"),
-                Description = _description  ?? throw new InvalidOperationException("Description is null"),
+                Description = _description ?? throw new InvalidOperationException("Description is null"),
                 PhotoUrl = _photoUrl,
                 PhotoHeight = _photoHeight,
                 PhotoWidth = _photoWidth,

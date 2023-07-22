@@ -119,20 +119,20 @@ public class Update
     /// </value>
     public UpdateType Type => this switch
     {
-        { Message: { } }            => UpdateType.Message,
-        { EditedMessage: { } }      => UpdateType.EditedMessage,
-        { InlineQuery: { } }        => UpdateType.InlineQuery,
+        { Message: { } } => UpdateType.Message,
+        { EditedMessage: { } } => UpdateType.EditedMessage,
+        { InlineQuery: { } } => UpdateType.InlineQuery,
         { ChosenInlineResult: { } } => UpdateType.ChosenInlineResult,
-        { CallbackQuery: { } }      => UpdateType.CallbackQuery,
-        { ChannelPost: { } }        => UpdateType.ChannelPost,
-        { EditedChannelPost: { } }  => UpdateType.EditedChannelPost,
-        { ShippingQuery: { } }      => UpdateType.ShippingQuery,
-        { PreCheckoutQuery: { } }   => UpdateType.PreCheckoutQuery,
-        { Poll: { } }               => UpdateType.Poll,
-        { PollAnswer: { } }         => UpdateType.PollAnswer,
-        { MyChatMember: { } }       => UpdateType.MyChatMember,
-        { ChatMember: { } }         => UpdateType.ChatMember,
-        { ChatJoinRequest: { } }    => UpdateType.ChatJoinRequest,
-        _                           => UpdateType.Unknown
+        { CallbackQuery: { } } => UpdateType.CallbackQuery,
+        { ChannelPost: { } } => UpdateType.ChannelPost,
+        { EditedChannelPost: { } } => UpdateType.EditedChannelPost,
+        { ShippingQuery: { } } => UpdateType.ShippingQuery,
+        { PreCheckoutQuery: { } } => UpdateType.PreCheckoutQuery,
+        { Poll: { } } => UpdateType.Poll,
+        { PollAnswer: { } } => UpdateType.PollAnswer,
+        { MyChatMember: { } } => UpdateType.MyChatMember,
+        { ChatMember: { } } => UpdateType.ChatMember,
+        { ChatJoinRequest: { } } => UpdateType.ChatJoinRequest,
+        _ => UpdateType.Unknown
     };
 }

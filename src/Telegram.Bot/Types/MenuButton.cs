@@ -1,4 +1,4 @@
-﻿using Telegram.Bot.Converters;
+using Telegram.Bot.Converters;
 using Telegram.Bot.Requests;
 using Telegram.Bot.Types.Enums;
 

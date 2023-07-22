@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -100,7 +100,7 @@ public class XunitTestAssemblyRunnerWithAssemblyFixture : XunitTestAssemblyRunne
         CancellationTokenSource cancellationTokenSource)
     {
         var exceptionAggregator = new ExceptionAggregator(Aggregator);
-        var runner =  new XunitTestCollectionRunnerWithAssemblyFixture(
+        var runner = new XunitTestCollectionRunnerWithAssemblyFixture(
             _assemblyFixtureMappings,
             testCollection,
             testCases,
@@ -113,7 +113,7 @@ public class XunitTestAssemblyRunnerWithAssemblyFixture : XunitTestAssemblyRunne
 
         var runSummary = await runner.RunAsync();
 
-        var testsFixture = (TestsFixture) _assemblyFixtureMappings.Single().Value;
+        var testsFixture = (TestsFixture)_assemblyFixtureMappings.Single().Value;
         testsFixture.RunSummary.Aggregate(runSummary);
 
         return runSummary;

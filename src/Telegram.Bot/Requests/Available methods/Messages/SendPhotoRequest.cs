@@ -98,6 +98,6 @@ public class SendPhotoRequest : FileRequestBase<Message>, IChatTargetable
         Photo switch
         {
             InputFile photo => ToMultipartFormDataContent(fileParameterName: "photo", inputFile: photo),
-            _               => base.ToHttpContent()
+            _ => base.ToHttpContent()
         };
 }

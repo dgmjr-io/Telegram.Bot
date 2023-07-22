@@ -251,7 +251,7 @@ public class SupergroupAdminBotTests : IClassFixture<SupergroupAdminBotTestsFixt
 
         // Milliseconds are ignored during conversion to unix timestamp since it counts only up to
         // seconds, so for equality to work later on assertion we need to zero out milliseconds
-        DateTime expireDate = createdAt.With(new () {Millisecond = 0}).AddHours(1);
+        DateTime expireDate = createdAt.With(new() { Millisecond = 0 }).AddHours(1);
 
         string inviteLinkName = $"Created at {createdAt:yyyy-MM-ddTHH:mm:ss}Z";
 
@@ -288,7 +288,7 @@ public class SupergroupAdminBotTests : IClassFixture<SupergroupAdminBotTestsFixt
 
         // Milliseconds are ignored during conversion to unix timestamp since it counts only up to
         // seconds, so for equality to work later on assertion we need to zero out milliseconds
-        DateTime expireDate = editedAt.With(new () {Millisecond = 0}).AddHours(1);
+        DateTime expireDate = editedAt.With(new() { Millisecond = 0 }).AddHours(1);
 
         string inviteLinkName = $"Edited at {editedAt:yyyy-MM-ddTHH:mm:ss}Z";
 
