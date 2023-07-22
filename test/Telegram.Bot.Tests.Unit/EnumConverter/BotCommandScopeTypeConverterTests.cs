@@ -18,7 +18,7 @@ public class BotCommandScopeTypeConverterTests
     [InlineData(BotCommandScopeType.ChatMember, "chat_member")]
     public void Should_Convert_BotCommandScopeType_To_String(BotCommandScopeType botCommandScopeType, string value)
     {
-        BotCommandScope botCommandScope = new(){ Type = botCommandScopeType };
+        BotCommandScope botCommandScope = new() { Type = botCommandScopeType };
         string expectedResult = @$"{{""type"":""{value}""}}";
 
         string result = JsonConvert.SerializeObject(botCommandScope);

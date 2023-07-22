@@ -44,8 +44,9 @@ public class AddStaticStickerToSetRequest : AddStickerToSetRequest
 
     /// <inheritdoc />
     public override HttpContent? ToHttpContent() =>
-        PngSticker switch {
+        PngSticker switch
+        {
             InputFile pngSticker => ToMultipartFormDataContent(fileParameterName: "png_sticker", inputFile: pngSticker),
-            _                    => base.ToHttpContent()
+            _ => base.ToHttpContent()
         };
 }

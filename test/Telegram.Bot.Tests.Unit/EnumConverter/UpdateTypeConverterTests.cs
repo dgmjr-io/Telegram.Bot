@@ -29,8 +29,8 @@ public class UpdateTypeConverterTests
         Update update = new(updateType);
         string expectedResult =
             $$"""
-            {"type":"{{value}}"}
-            """;
+            { "type":"{{value}}"}
+        """;
 
         string result = JsonConvert.SerializeObject(update);
 
@@ -44,8 +44,8 @@ public class UpdateTypeConverterTests
         Update expectedResult = new(updateType);
         string jsonData =
             $$"""
-            {"type":"{{value}}"}
-            """;
+            { "type":"{{value}}"}
+        """;
 
         Update? result = JsonConvert.DeserializeObject<Update>(jsonData);
 
@@ -58,8 +58,8 @@ public class UpdateTypeConverterTests
     {
         string jsonData =
             $$"""
-            {"type":"{{int.MaxValue}}"}
-            """;
+            { "type":"{{int.MaxValue}}"}
+        """;
 
         Update? result = JsonConvert.DeserializeObject<Update>(jsonData);
 

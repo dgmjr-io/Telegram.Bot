@@ -43,18 +43,18 @@ public class TestConfiguration : IValidatableObject
         {
             if (!UsernamePattern.IsMatch(username))
             {
-                yield return new($"Username {username} is invalid", new [] { nameof(AllowedUserNames) });
+                yield return new($"Username {username} is invalid", new[] { nameof(AllowedUserNames) });
             }
         }
 
         if (RetryCount < 0)
         {
-            yield return new("RetryCount must be greater or equal to 0", new [] { nameof(RetryCount) });
+            yield return new("RetryCount must be greater or equal to 0", new[] { nameof(RetryCount) });
         }
 
         if (DefaultRetryTimeout < 0)
         {
-            yield return new("DefaultRetryTimeout must be greater or equal to 0", new [] { nameof(RetryCount) });
+            yield return new("DefaultRetryTimeout must be greater or equal to 0", new[] { nameof(RetryCount) });
         }
 
         yield return ValidationResult.Success!;

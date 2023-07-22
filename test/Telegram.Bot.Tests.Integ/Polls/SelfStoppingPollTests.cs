@@ -29,7 +29,7 @@ public class SelfStoppingPollTests : IClassFixture<SelfStoppingPollTestsFixture>
         Message message = await BotClient.SendPollAsync(
             chatId: Fixture.SupergroupChat,
             question: "Who shot first?",
-            options: new[] {"Han Solo", "Greedo", "I don't care"},
+            options: new[] { "Han Solo", "Greedo", "I don't care" },
             openPeriod: 6
         );
 
@@ -85,7 +85,7 @@ public class SelfStoppingPollTests : IClassFixture<SelfStoppingPollTestsFixture>
         Message message = await BotClient.SendPollAsync(
             chatId: Fixture.SupergroupChat,
             question: "Who shot first?",
-            options: new[] {"Han Solo", "Greedo", "I don't care"},
+            options: new[] { "Han Solo", "Greedo", "I don't care" },
             closeDate: closeDate
         );
 

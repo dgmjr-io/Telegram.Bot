@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Telegram.Bot.Requests;
 using Telegram.Bot.Tests.Integ.Framework;

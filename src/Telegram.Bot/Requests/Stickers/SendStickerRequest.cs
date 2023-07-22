@@ -74,6 +74,6 @@ public class SendStickerRequest : FileRequestBase<Message>, IChatTargetable
         Sticker switch
         {
             InputFile sticker => ToMultipartFormDataContent(fileParameterName: "sticker", inputFile: sticker),
-            _                 => base.ToHttpContent()
+            _ => base.ToHttpContent()
         };
 }

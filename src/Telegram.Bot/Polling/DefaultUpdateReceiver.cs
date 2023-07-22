@@ -58,7 +58,7 @@ public class DefaultUpdateReceiver : IUpdateReceiver
 
         while (!cancellationToken.IsCancellationRequested)
         {
-            var timeout = (int) _botClient.Timeout.TotalSeconds;
+            var timeout = (int)_botClient.Timeout.TotalSeconds;
             var updates = emptyUpdates;
             try
             {
