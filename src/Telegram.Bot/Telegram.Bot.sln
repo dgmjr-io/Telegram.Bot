@@ -1,0 +1,47 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Telegram.Bot", "Telegram.Bot.csproj", "{26C569B1-F9C0-4593-9C1B-DDCF7877DC38}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EnumSerializer.Generator", "..\EnumSerializer.Generator\EnumSerializer.Generator.csproj", "{8691C2E2-6FB8-482C-818C-438E0FCB393E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EnumSerializer.Generator", "..\EnumSerializer.Generator", "{D9267055-6AE9-41EB-BCF9-82C15A6A431F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "..\..\src", "{DC07B497-A9F0-4145-8187-62F26CE79B81}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Local|Any CPU = Local|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Testing|Any CPU = Testing|Any CPU
+		Staging|Any CPU = Staging|Any CPU
+		Production|Any CPU = Production|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{26C569B1-F9C0-4593-9C1B-DDCF7877DC38}.Local|Any CPU.ActiveCfg = Debug|Any CPU
+		{26C569B1-F9C0-4593-9C1B-DDCF7877DC38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26C569B1-F9C0-4593-9C1B-DDCF7877DC38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26C569B1-F9C0-4593-9C1B-DDCF7877DC38}.Testing|Any CPU.ActiveCfg = Debug|Any CPU
+		{26C569B1-F9C0-4593-9C1B-DDCF7877DC38}.Staging|Any CPU.ActiveCfg = Debug|Any CPU
+		{26C569B1-F9C0-4593-9C1B-DDCF7877DC38}.Production|Any CPU.ActiveCfg = Debug|Any CPU
+		{26C569B1-F9C0-4593-9C1B-DDCF7877DC38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26C569B1-F9C0-4593-9C1B-DDCF7877DC38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8691C2E2-6FB8-482C-818C-438E0FCB393E}.Local|Any CPU.ActiveCfg = Debug|Any CPU
+		{8691C2E2-6FB8-482C-818C-438E0FCB393E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8691C2E2-6FB8-482C-818C-438E0FCB393E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8691C2E2-6FB8-482C-818C-438E0FCB393E}.Testing|Any CPU.ActiveCfg = Debug|Any CPU
+		{8691C2E2-6FB8-482C-818C-438E0FCB393E}.Staging|Any CPU.ActiveCfg = Debug|Any CPU
+		{8691C2E2-6FB8-482C-818C-438E0FCB393E}.Production|Any CPU.ActiveCfg = Debug|Any CPU
+		{8691C2E2-6FB8-482C-818C-438E0FCB393E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8691C2E2-6FB8-482C-818C-438E0FCB393E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8691C2E2-6FB8-482C-818C-438E0FCB393E} = {D9267055-6AE9-41EB-BCF9-82C15A6A431F}
+		{D9267055-6AE9-41EB-BCF9-82C15A6A431F} = {DC07B497-A9F0-4145-8187-62F26CE79B81}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {14EBD83C-190A-4F8E-9B59-31EFB8A9BEF2}
+	EndGlobalSection
+EndGlobal
