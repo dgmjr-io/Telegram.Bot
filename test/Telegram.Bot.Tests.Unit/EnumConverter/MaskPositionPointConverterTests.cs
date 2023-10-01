@@ -13,7 +13,10 @@ public class MaskPositionPointConverterTests
     [InlineData(MaskPositionPoint.Eyes, "eyes")]
     [InlineData(MaskPositionPoint.Mouth, "mouth")]
     [InlineData(MaskPositionPoint.Chin, "chin")]
-    public void Should_Convert_MaskPositionPoint_To_String(MaskPositionPoint maskPositionPoint, string value)
+    public void Should_Convert_MaskPositionPoint_To_String(
+        MaskPositionPoint maskPositionPoint,
+        string value
+    )
     {
         MaskPosition maskPosition = new() { Point = maskPositionPoint };
         string expectedResult = @$"{{""point"":""{value}""}}";
@@ -28,7 +31,10 @@ public class MaskPositionPointConverterTests
     [InlineData(MaskPositionPoint.Eyes, "eyes")]
     [InlineData(MaskPositionPoint.Mouth, "mouth")]
     [InlineData(MaskPositionPoint.Chin, "chin")]
-    public void Should_Convert_String_To_MaskPositionPoint(MaskPositionPoint maskPositionPoint, string value)
+    public void Should_Convert_String_To_MaskPositionPoint(
+        MaskPositionPoint maskPositionPoint,
+        string value
+    )
     {
         MaskPosition expectedResult = new() { Point = maskPositionPoint };
         string jsonData = @$"{{""point"":""{value}""}}";

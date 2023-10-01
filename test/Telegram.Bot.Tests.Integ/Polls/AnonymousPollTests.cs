@@ -17,21 +17,22 @@ public class AnonymousPollTests : IClassFixture<AnonymousPollTestsFixture>
     TestsFixture Fixture => _classFixture.TestsFixture;
     ITelegramBotClient BotClient => Fixture.BotClient;
 
-    public AnonymousPollTests( AnonymousPollTestsFixture classFixture)
+    public AnonymousPollTests(AnonymousPollTestsFixture classFixture)
     {
         _classFixture = classFixture;
     }
 
     [OrderedFact(
         "Should send a poll",
-        Skip = "Fails on CI server for some reason, the resulting poll is public")]
+        Skip = "Fails on CI server for some reason, the resulting poll is public"
+    )]
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.SendPoll)]
     public async Task Should_Send_Poll()
     {
         Message message = await BotClient.SendPollAsync(
             chatId: Fixture.SupergroupChat,
             question: "Who shot first?",
-            options: new[] {"Han Solo", "Greedo", "I don't care"}
+            options: new[] { "Han Solo", "Greedo", "I don't care" }
         );
 
         Assert.Equal(MessageType.Poll, message.Type);
@@ -57,14 +58,18 @@ public class AnonymousPollTests : IClassFixture<AnonymousPollTestsFixture>
 
     [OrderedFact(
         "Should receive a poll update",
-        Skip = "Fails on CI server for some reason, the resulting poll is public")]
+        Skip = "Fails on CI server for some reason, the resulting poll is public"
+    )]
     public async Task Should_Receive_Poll_State_Update()
     {
         string pollId = _classFixture.PollMessage.Poll!.Id;
 
-        await Fixture.SendTestInstructionsAsync("🗳 Vote for any of the options on the poll above 👆");
-        Update update = (await Fixture.UpdateReceiver.GetUpdatesAsync(updateTypes: UpdateType.Poll))
-            .Last();
+        await Fixture.SendTestInstructionsAsync(
+            "🗳 Vote for any of the options on the poll above 👆"
+        );
+        Update update = (
+            await Fixture.UpdateReceiver.GetUpdatesAsync(updateTypes: UpdateType.Poll)
+        ).Last();
 
         Assert.Equal(UpdateType.Poll, update.Type);
         Assert.NotNull(update.Poll);
@@ -73,7 +78,8 @@ public class AnonymousPollTests : IClassFixture<AnonymousPollTestsFixture>
 
     [OrderedFact(
         "Should stop the poll",
-        Skip = "Fails on CI server for some reason, the resulting poll is public")]
+        Skip = "Fails on CI server for some reason, the resulting poll is public"
+    )]
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.StopPoll)]
     public async Task Should_Stop_Poll()
     {
@@ -90,12 +96,13 @@ public class AnonymousPollTests : IClassFixture<AnonymousPollTestsFixture>
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.SendPoll)]
     public async Task Should_Throw_Exception_Not_Enough_Options()
     {
-        ApiRequestException exception = await Assert.ThrowsAsync<ApiRequestException>(() =>
-            BotClient.SendPollAsync(
-                chatId: Fixture.SupergroupChat,
-                question: "You should never see this poll",
-                options: new[] {"The only poll option"}
-            )
+        ApiRequestException exception = await Assert.ThrowsAsync<ApiRequestException>(
+            () =>
+                BotClient.SendPollAsync(
+                    chatId: Fixture.SupergroupChat,
+                    question: "You should never see this poll",
+                    options: new[] { "The only poll option" }
+                )
         );
 
         Assert.IsType<ApiRequestException>(exception);

@@ -66,7 +66,11 @@ public class TelegramBotClientOptions
     /// <exception cref="ArgumentException">
     /// Thrown if <paramref name="baseUrl"/> format is invalid
     /// </exception>
-    public TelegramBotClientOptions(string token, string? baseUrl = default, bool useTestEnvironment = false)
+    public TelegramBotClientOptions(
+        string token,
+        string? baseUrl = default,
+        bool useTestEnvironment = false
+    )
     {
         Token = token ?? throw new ArgumentNullException(nameof(token));
         BaseUrl = baseUrl;
@@ -75,9 +79,7 @@ public class TelegramBotClientOptions
         BotId = GetIdFromToken(token);
 
         LocalBotServer = baseUrl is not null;
-        var effectiveBaseUrl = LocalBotServer
-            ? ExtractBaseUrl(baseUrl)
-            : BaseTelegramUrl;
+        var effectiveBaseUrl = LocalBotServer ? ExtractBaseUrl(baseUrl) : BaseTelegramUrl;
 
         BaseRequestUrl = useTestEnvironment
             ? $"{effectiveBaseUrl}/bot{token}/test"
@@ -94,17 +96,43 @@ public class TelegramBotClientOptions
             var span = token.AsSpan();
             var index = span.IndexOf(':');
 
-            if (index is < 1 or > 16) { return null; }
+            if (index is < 1 or > 16)
+            {
+                return null;
+            }
 
             var botIdSpan = span[..index];
-            if (!long.TryParse(botIdSpan, NumberStyles.Integer, CultureInfo.InvariantCulture, out var botId)) { return null; }
+            if (
+                !long.TryParse(
+                    botIdSpan,
+                    NumberStyles.Integer,
+                    CultureInfo.InvariantCulture,
+                    out var botId
+                )
+            )
+            {
+                return null;
+            }
 #else
             var index = token.IndexOf(value: ':');
 
-            if (index is < 1 or > 16) { return null; }
+            if (index is < 1 or > 16)
+            {
+                return null;
+            }
 
             var botIdSpan = token.Substring(startIndex: 0, length: index);
-            if (!long.TryParse(botIdSpan, NumberStyles.Integer, CultureInfo.InvariantCulture, out var botId)) { return null; }
+            if (
+                !long.TryParse(
+                    botIdSpan,
+                    NumberStyles.Integer,
+                    CultureInfo.InvariantCulture,
+                    out var botId
+                )
+            )
+            {
+                return null;
+            }
 #endif
 
             return botId;
@@ -114,11 +142,16 @@ public class TelegramBotClientOptions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     static string ExtractBaseUrl(string? baseUrl)
     {
-        if (baseUrl is null) { throw new ArgumentNullException(paramName: nameof(baseUrl)); }
+        if (baseUrl is null)
+        {
+            throw new ArgumentNullException(paramName: nameof(baseUrl));
+        }
 
-        if (!Uri.TryCreate(uriString: baseUrl, uriKind: UriKind.Absolute, out var baseUri)
+        if (
+            !Uri.TryCreate(uriString: baseUrl, uriKind: UriKind.Absolute, out var baseUri)
             || string.IsNullOrEmpty(value: baseUri.Scheme)
-            || string.IsNullOrEmpty(value: baseUri.Authority))
+            || string.IsNullOrEmpty(value: baseUri.Authority)
+        )
         {
             throw new ArgumentException(
                 message: """Invalid format. A valid base URL should look like "http://localhost:8081" """,

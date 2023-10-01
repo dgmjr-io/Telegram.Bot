@@ -54,7 +54,8 @@ public class ApiResponse<TResult>
         TResult result,
         int errorCode,
         string description,
-        ResponseParameters? parameters = default)
+        ResponseParameters? parameters = default
+    )
     {
         Ok = ok;
         ErrorCode = errorCode;
@@ -64,6 +65,5 @@ public class ApiResponse<TResult>
     }
 
     [JsonConstructor]
-    private ApiResponse()
-    { }
+    private ApiResponse() { }
 }

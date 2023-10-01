@@ -23,14 +23,15 @@ public class PublicPollTests : IClassFixture<PublicPollTestsFixture>
 
     [OrderedFact(
         "Should send public poll with multiple answers",
-        Skip = "Poll tests fail too often for unknown reasons")]
+        Skip = "Poll tests fail too often for unknown reasons"
+    )]
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.SendPoll)]
     public async Task Should_Send_Non_Anonymous_Poll_With_Multiple_Answers()
     {
         Message message = await Fixture.BotClient.SendPollAsync(
             chatId: Fixture.SupergroupChat,
             question: "Pick your team",
-            options: new [] { "Aragorn", "Galadriel", "Frodo" },
+            options: new[] { "Aragorn", "Galadriel", "Frodo" },
             isAnonymous: false,
             type: PollType.Regular,
             allowsMultipleAnswers: true
@@ -59,7 +60,8 @@ public class PublicPollTests : IClassFixture<PublicPollTestsFixture>
 
     [OrderedFact(
         "Should receive a poll answer update",
-        Skip = "Poll tests fail too often for unknown reasons")]
+        Skip = "Poll tests fail too often for unknown reasons"
+    )]
     public async Task Should_Receive_Poll_Answer_Update()
     {
         await Fixture.SendTestInstructionsAsync(
@@ -77,17 +79,15 @@ public class PublicPollTests : IClassFixture<PublicPollTestsFixture>
         Assert.NotNull(pollAnswer);
         Assert.Equal(poll!.Id, pollAnswer.PollId);
         Assert.NotNull(pollAnswer.User);
-        Assert.All(
-            pollAnswer.OptionIds,
-            optionId => Assert.True(optionId < poll.Options.Length)
-        );
+        Assert.All(pollAnswer.OptionIds, optionId => Assert.True(optionId < poll.Options.Length));
 
         _classFixture.PollAnswer = pollAnswer;
     }
 
     [OrderedFact(
         "Should stop non-anonymous the poll",
-        Skip = "Poll tests fail too often for unknown reasons")]
+        Skip = "Poll tests fail too often for unknown reasons"
+    )]
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.StopPoll)]
     public async Task Should_Stop_Non_Anonymous_Poll()
     {

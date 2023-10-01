@@ -22,9 +22,13 @@ public class EncryptedPassportElementTypeConverterTests
     [InlineData(EncryptedPassportElementType.TemporaryRegistration, "temporary_registration")]
     [InlineData(EncryptedPassportElementType.PhoneNumber, "phone_number")]
     [InlineData(EncryptedPassportElementType.Email, "email")]
-    public void Should_Convert_EncryptedPassportElementType_To_String(EncryptedPassportElementType encryptedPassportElementType, string value)
+    public void Should_Convert_EncryptedPassportElementType_To_String(
+        EncryptedPassportElementType encryptedPassportElementType,
+        string value
+    )
     {
-        EncryptedPassportElement encryptedPassportElement = new() { Type = encryptedPassportElementType };
+        EncryptedPassportElement encryptedPassportElement =
+            new() { Type = encryptedPassportElementType };
         string expectedResult = @$"{{""type"":""{value}""}}";
 
         string result = JsonConvert.SerializeObject(encryptedPassportElement);
@@ -46,12 +50,17 @@ public class EncryptedPassportElementTypeConverterTests
     [InlineData(EncryptedPassportElementType.TemporaryRegistration, "temporary_registration")]
     [InlineData(EncryptedPassportElementType.PhoneNumber, "phone_number")]
     [InlineData(EncryptedPassportElementType.Email, "email")]
-    public void Should_Convert_String_To_EncryptedPassportElementType(EncryptedPassportElementType encryptedPassportElementType, string value)
+    public void Should_Convert_String_To_EncryptedPassportElementType(
+        EncryptedPassportElementType encryptedPassportElementType,
+        string value
+    )
     {
         EncryptedPassportElement expectedResult = new() { Type = encryptedPassportElementType };
         string jsonData = @$"{{""type"":""{value}""}}";
 
-        EncryptedPassportElement? result = JsonConvert.DeserializeObject<EncryptedPassportElement>(jsonData);
+        EncryptedPassportElement? result = JsonConvert.DeserializeObject<EncryptedPassportElement>(
+            jsonData
+        );
 
         Assert.NotNull(result);
         Assert.Equal(expectedResult.Type, result.Type);
@@ -62,7 +71,9 @@ public class EncryptedPassportElementTypeConverterTests
     {
         string jsonData = @$"{{""type"":""{int.MaxValue}""}}";
 
-        EncryptedPassportElement? result = JsonConvert.DeserializeObject<EncryptedPassportElement>(jsonData);
+        EncryptedPassportElement? result = JsonConvert.DeserializeObject<EncryptedPassportElement>(
+            jsonData
+        );
 
         Assert.NotNull(result);
         Assert.Equal((EncryptedPassportElementType)0, result.Type);
@@ -71,14 +82,17 @@ public class EncryptedPassportElementTypeConverterTests
     [Fact]
     public void Should_Throw_NotSupportedException_For_Incorrect_EncryptedPassportElementType()
     {
-        EncryptedPassportElement encryptedPassportElement = new() { Type = (EncryptedPassportElementType)int.MaxValue };
+        EncryptedPassportElement encryptedPassportElement =
+            new() { Type = (EncryptedPassportElementType)int.MaxValue };
 
         // ToDo: add EncryptedPassportElementType.Unknown ?
         //    protected override string GetStringValue(EncryptedPassportElementType value) =>
         //        EnumToString.TryGetValue(value, out var stringValue)
         //            ? stringValue
         //            : "unknown";
-        Assert.Throws<NotSupportedException>(() => JsonConvert.SerializeObject(encryptedPassportElement));
+        Assert.Throws<NotSupportedException>(
+            () => JsonConvert.SerializeObject(encryptedPassportElement)
+        );
     }
 
     [JsonObject(MemberSerialization.OptIn, NamingStrategyType = typeof(SnakeCaseNamingStrategy))]

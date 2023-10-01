@@ -25,6 +25,5 @@ public class SetChatMenuButtonRequest : RequestBase<bool>
     /// Initializes a new request
     /// </summary>
     public SetChatMenuButtonRequest()
-        : base("setChatMenuButton")
-    { }
+        : base("setChatMenuButton") { }
 }

@@ -41,6 +41,6 @@ public class UploadStickerFileRequest : FileRequestBase<File>, IUserTargetable
     }
 
     /// <inheritdoc />
-    public override HttpContent? ToHttpContent()
-        => ToMultipartFormDataContent(fileParameterName: "png_sticker", inputFile: PngSticker);
+    public override HttpContent? ToHttpContent() =>
+        ToMultipartFormDataContent(fileParameterName: "png_sticker", inputFile: PngSticker);
 }

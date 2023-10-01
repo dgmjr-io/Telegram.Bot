@@ -30,9 +30,6 @@ public class DeleteMessageTests2
 
         await Task.Delay(1_000);
 
-        await BotClient.DeleteMessageAsync(
-            chatId: message.Chat.Id,
-            messageId: message.MessageId
-        );
+        await BotClient.DeleteMessageAsync(chatId: message.Chat.Id, messageId: message.MessageId);
     }
 }

@@ -97,8 +97,9 @@ public class GamesTests2 : IClassFixture<GamesFixture>
     {
         long playerId = _classFixture.Player.Id;
 
-        bool playerAlreadyHasScore = _classFixture.HighScores
-            .Any(highScore => highScore.User.Id == playerId);
+        bool playerAlreadyHasScore = _classFixture.HighScores.Any(
+            highScore => highScore.User.Id == playerId
+        );
 
         int oldScore = playerAlreadyHasScore
             ? _classFixture.HighScores.Single(highScore => highScore.User.Id == playerId).Score
@@ -122,7 +123,9 @@ public class GamesTests2 : IClassFixture<GamesFixture>
         // update the high scores cache
         await Task.Delay(1_000);
         _classFixture.HighScores = await BotClient.GetGameHighScoresAsync(
-            playerId, _fixture.SupergroupChat.Id, gameMessage.MessageId
+            playerId,
+            _fixture.SupergroupChat.Id,
+            gameMessage.MessageId
         );
     }
 
@@ -131,7 +134,9 @@ public class GamesTests2 : IClassFixture<GamesFixture>
     public async Task Should_Deduct_Game_Score()
     {
         long playerId = _classFixture.Player.Id;
-        int oldScore = _classFixture.HighScores.Single(highScore => highScore.User.Id == playerId).Score;
+        int oldScore = _classFixture.HighScores
+            .Single(highScore => highScore.User.Id == playerId)
+            .Score;
         int newScore = oldScore - 1;
 
         await _fixture.SendTestInstructionsAsync(

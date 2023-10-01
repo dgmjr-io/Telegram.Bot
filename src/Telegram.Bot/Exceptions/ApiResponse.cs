@@ -30,10 +30,7 @@ public class ApiResponse
     /// <param name="errorCode">Error code</param>
     /// <param name="description">Error message</param>
     /// <param name="parameters">Information about why a request was unsuccessful</param>
-    public ApiResponse(
-        int errorCode,
-        string description,
-        ResponseParameters? parameters)
+    public ApiResponse(int errorCode, string description, ResponseParameters? parameters)
     {
         ErrorCode = errorCode;
         Description = description;

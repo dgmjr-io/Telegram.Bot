@@ -73,6 +73,7 @@ public class DiceTests
         Assert.Equal("⚽", message.Dice.Emoji);
         Assert.InRange(message.Dice.Value, 1, 5);
     }
+
     [OrderedFact("Should send a SlotMachine")]
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.SendDice)]
     public async Task Should_Send_A_SlotMachine()

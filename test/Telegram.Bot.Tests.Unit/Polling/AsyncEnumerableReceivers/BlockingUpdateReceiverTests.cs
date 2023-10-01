@@ -78,7 +78,9 @@ public class BlockingUpdateReceiverTests
         mockClient.Options.RequestDelay = 1000;
         cts.CancelAfter(200);
 
-        await Assert.ThrowsAnyAsync<OperationCanceledException>(async () => await enumerator.MoveNextAsync());
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(
+            async () => await enumerator.MoveNextAsync()
+        );
     }
 
     [Fact]
@@ -91,7 +93,9 @@ public class BlockingUpdateReceiverTests
         await enumerator.MoveNextAsync();
         await enumerator.DisposeAsync();
 
-        await Assert.ThrowsAnyAsync<OperationCanceledException>(async () => await enumerator.MoveNextAsync());
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(
+            async () => await enumerator.MoveNextAsync()
+        );
     }
 
     [Fact]
@@ -100,15 +104,21 @@ public class BlockingUpdateReceiverTests
         MockTelegramBotClient mockClient = new() { Options = { ExceptionToThrow = new("Oops") } };
         Exception? exceptionFromErrorHandler = null;
 
-        BlockingUpdateReceiver receiver = new(mockClient, pollingErrorHandler: (ex, _) =>
-        {
-            Assert.Same(mockClient.Options.ExceptionToThrow, ex);
-            throw exceptionFromErrorHandler = new("Oops2");
-        });
+        BlockingUpdateReceiver receiver =
+            new(
+                mockClient,
+                pollingErrorHandler: (ex, _) =>
+                {
+                    Assert.Same(mockClient.Options.ExceptionToThrow, ex);
+                    throw exceptionFromErrorHandler = new("Oops2");
+                }
+            );
 
         await using IAsyncEnumerator<Update> enumerator = receiver.GetAsyncEnumerator();
 
-        Exception ex = await Assert.ThrowsAsync<Exception>(async () => await enumerator.MoveNextAsync());
+        Exception ex = await Assert.ThrowsAsync<Exception>(
+            async () => await enumerator.MoveNextAsync()
+        );
         Assert.Same(exceptionFromErrorHandler, ex);
     }
 
@@ -120,7 +130,9 @@ public class BlockingUpdateReceiverTests
 
         await using IAsyncEnumerator<Update> enumerator = receiver.GetAsyncEnumerator();
 
-        Exception ex = await Assert.ThrowsAsync<Exception>(async () => await enumerator.MoveNextAsync());
+        Exception ex = await Assert.ThrowsAsync<Exception>(
+            async () => await enumerator.MoveNextAsync()
+        );
         Assert.Same(mockClient.Options.ExceptionToThrow, ex);
     }
 
@@ -128,15 +140,20 @@ public class BlockingUpdateReceiverTests
     public async Task ThrowOutPendingUpdates()
     {
         CancellationTokenSource cancellationTokenSource = new(TimeSpan.FromSeconds(4));
-        MockTelegramBotClient bot = new(new MockClientOptions
-        {
-            Messages = new[] { "foo-bar", "baz", "quux" },
-            HandleNegativeOffset = true,
-        });
+        MockTelegramBotClient bot =
+            new(
+                new MockClientOptions
+                {
+                    Messages = new[] { "foo-bar", "baz", "quux" },
+                    HandleNegativeOffset = true,
+                }
+            );
 
         BlockingUpdateReceiver receiver = new(bot, new() { ThrowPendingUpdates = true });
 
-        await using IAsyncEnumerator<Update> enumerator = receiver.GetAsyncEnumerator(cancellationTokenSource.Token);
+        await using IAsyncEnumerator<Update> enumerator = receiver.GetAsyncEnumerator(
+            cancellationTokenSource.Token
+        );
 
         try
         {

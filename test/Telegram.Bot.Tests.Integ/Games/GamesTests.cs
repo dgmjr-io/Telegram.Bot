@@ -42,10 +42,7 @@ public class GamesTests : IClassFixture<GamesFixture>
             inlineQueryId: queryUpdate.InlineQuery!.Id,
             results: new InlineQueryResult[]
             {
-                new InlineQueryResultGame(
-                    id: resultId,
-                    gameShortName: _classFixture.GameShortName
-                )
+                new InlineQueryResultGame(id: resultId, gameShortName: _classFixture.GameShortName)
             },
             cacheTime: 0
         );
@@ -85,7 +82,9 @@ public class GamesTests : IClassFixture<GamesFixture>
     public async Task Should_Set_Game_Score_Inline_Message()
     {
         long playerId = _classFixture.Player.Id;
-        int oldScore = _classFixture.HighScores.Single(highScore => highScore.User.Id == playerId).Score;
+        int oldScore = _classFixture.HighScores
+            .Single(highScore => highScore.User.Id == playerId)
+            .Score;
         int newScore = oldScore + 1 + new Random().Next(3);
 
         await _fixture.SendTestInstructionsAsync(

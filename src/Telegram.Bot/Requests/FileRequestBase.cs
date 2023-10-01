@@ -18,8 +18,7 @@ public abstract class FileRequestBase<TResponse> : RequestBase<TResponse>
     /// </summary>
     /// <param name="methodName">Bot API method</param>
     protected FileRequestBase(string methodName)
-        : base(methodName)
-    { }
+        : base(methodName) { }
 
     /// <summary>
     /// Initializes an instance of request
@@ -27,8 +26,7 @@ public abstract class FileRequestBase<TResponse> : RequestBase<TResponse>
     /// <param name="methodName">Bot API method</param>
     /// <param name="method">HTTP method to use</param>
     protected FileRequestBase(string methodName, HttpMethod method)
-        : base(methodName, method)
-    { }
+        : base(methodName, method) { }
 
     /// <summary>
     /// Generate multipart form data content
@@ -38,11 +36,15 @@ public abstract class FileRequestBase<TResponse> : RequestBase<TResponse>
     /// <returns></returns>
     protected MultipartFormDataContent ToMultipartFormDataContent(
         string fileParameterName,
-        InputFile inputFile)
+        InputFile inputFile
+    )
     {
         if (inputFile is null or { Content: null })
         {
-            throw new ArgumentNullException(nameof(inputFile), $"{nameof(inputFile)} or it's content is null");
+            throw new ArgumentNullException(
+                nameof(inputFile),
+                $"{nameof(inputFile)} or it's content is null"
+            );
         }
 
         return GenerateMultipartFormDataContent(fileParameterName)
@@ -54,18 +56,23 @@ public abstract class FileRequestBase<TResponse> : RequestBase<TResponse>
     /// </summary>
     /// <param name="exceptPropertyNames"></param>
     /// <returns></returns>
-    protected MultipartFormDataContent GenerateMultipartFormDataContent(params string[] exceptPropertyNames)
+    protected MultipartFormDataContent GenerateMultipartFormDataContent(
+        params string[] exceptPropertyNames
+    )
     {
-        var multipartContent = new MultipartFormDataContent($"{Guid.NewGuid()}{DateTime.UtcNow.Ticks.ToString(CultureInfo.InvariantCulture)}");
+        var multipartContent = new MultipartFormDataContent(
+            $"{Guid.NewGuid()}{DateTime.UtcNow.Ticks.ToString(CultureInfo.InvariantCulture)}"
+        );
 
-        var stringContents = JObject.FromObject(this)
+        var stringContents = JObject
+            .FromObject(this)
             .Properties()
-            .Where(prop => exceptPropertyNames.Contains(prop.Name, StringComparer.InvariantCulture) is false)
-            .Select(prop => new
-            {
-                prop.Name,
-                Content = new StringContent(prop.Value.ToString())
-            });
+            .Where(
+                prop =>
+                    exceptPropertyNames.Contains(prop.Name, StringComparer.InvariantCulture)
+                        is false
+            )
+            .Select(prop => new { prop.Name, Content = new StringContent(prop.Value.ToString()) });
 
         foreach (var strContent in stringContents)
         {

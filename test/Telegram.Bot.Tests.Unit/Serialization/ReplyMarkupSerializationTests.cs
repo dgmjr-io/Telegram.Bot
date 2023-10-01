@@ -18,9 +18,7 @@ public class ReplyMarkupSerializationTests
 
         string serializedReplyMarkup = JsonConvert.SerializeObject(replyMarkup);
 
-        string formattedType = string.IsNullOrEmpty(type)
-            ? "{}"
-            : $@"{{""type"":""{type}""}}";
+        string formattedType = string.IsNullOrEmpty(type) ? "{}" : $@"{{""type"":""{type}""}}";
 
         string expectedString = $@"""request_poll"":{formattedType}";
 

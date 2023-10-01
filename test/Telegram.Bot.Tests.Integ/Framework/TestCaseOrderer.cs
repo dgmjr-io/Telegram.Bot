@@ -21,9 +21,10 @@ public class TestCaseOrderer : ITestCaseOrderer
                 return new
                 {
                     TestCase = tc,
-                    Attribute = attribute ?? throw new(
-                        $@"Test case ""{tc.DisplayName}"" doesn't have {nameof(OrderedFactAttribute)}."
-                    )
+                    Attribute = attribute
+                        ?? throw new(
+                            $@"Test case ""{tc.DisplayName}"" doesn't have {nameof(OrderedFactAttribute)}."
+                        )
                 };
             })
             .OrderBy(x => x.Attribute!.LineNumber)

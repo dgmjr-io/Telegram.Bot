@@ -45,7 +45,8 @@ public class EditMessageContentTests
             (MessageEntityType.Bold, "<b>bold</b>"),
             (MessageEntityType.Italic, "<i>italic</i>"),
         };
-        string messageText = $"{originalMessagePrefix}{string.Join("\n", entityValueMappings.Select(tuple => tuple.Value))}";
+        string messageText =
+            $"{originalMessagePrefix}{string.Join("\n", entityValueMappings.Select(tuple => tuple.Value))}";
         string data = $"change-text{new Random().Next(2_000)}";
 
         InlineQueryResult[] inlineQueryResults =
@@ -53,14 +54,16 @@ public class EditMessageContentTests
             new InlineQueryResultArticle(
                 id: "bot-api",
                 title: "Telegram Bot API",
-                inputMessageContent:
-                new InputTextMessageContent(messageText)
+                inputMessageContent: new InputTextMessageContent(messageText)
                 {
                     ParseMode = ParseMode.Html
                 }
             )
             {
-                ReplyMarkup = InlineKeyboardButton.WithCallbackData("Click here to modify text", data)
+                ReplyMarkup = InlineKeyboardButton.WithCallbackData(
+                    "Click here to modify text",
+                    data
+                )
             }
         };
 
@@ -68,14 +71,16 @@ public class EditMessageContentTests
 
         #endregion
 
-        Update callbackQUpdate = await _fixture.UpdateReceiver
-            .GetCallbackQueryUpdateAsync(data: data);
+        Update callbackQUpdate = await _fixture.UpdateReceiver.GetCallbackQueryUpdateAsync(
+            data: data
+        );
 
         Assert.NotNull(callbackQUpdate.CallbackQuery);
         Assert.NotNull(callbackQUpdate.CallbackQuery.InlineMessageId);
 
         const string modifiedMessagePrefix = "✌ modified 👌\n";
-        messageText = $"{modifiedMessagePrefix}{string.Join("\n", entityValueMappings.Select(tuple => tuple.Value))}";
+        messageText =
+            $"{modifiedMessagePrefix}{string.Join("\n", entityValueMappings.Select(tuple => tuple.Value))}";
 
         await BotClient.EditMessageTextAsync(
             inlineMessageId: callbackQUpdate.CallbackQuery.InlineMessageId,
@@ -100,20 +105,25 @@ public class EditMessageContentTests
         Assert.NotNull(inlineQUpdate.InlineQuery);
 
         string data = "change-me" + new Random().Next(2_000);
-        InlineKeyboardMarkup initialMarkup = new(new[]
-        {
-            InlineKeyboardButton.WithCallbackData("Click here to change this button", data)
-        });
+        InlineKeyboardMarkup initialMarkup =
+            new(
+                new[]
+                {
+                    InlineKeyboardButton.WithCallbackData("Click here to change this button", data)
+                }
+            );
 
-        InputMessageContent inputMessageContent =
-            new InputTextMessageContent("https://core.telegram.org/bots/api");
+        InputMessageContent inputMessageContent = new InputTextMessageContent(
+            "https://core.telegram.org/bots/api"
+        );
 
         InlineQueryResult[] inlineQueryResults =
         {
             new InlineQueryResultArticle(
                 id: "bot-api",
                 title: "Telegram Bot API",
-                inputMessageContent: inputMessageContent)
+                inputMessageContent: inputMessageContent
+            )
             {
                 Description = "The Bot API is an HTTP-based interface created for developers",
                 ReplyMarkup = initialMarkup,
@@ -124,8 +134,9 @@ public class EditMessageContentTests
 
         #endregion
 
-        Update callbackQUpdate = await _fixture.UpdateReceiver
-            .GetCallbackQueryUpdateAsync(data: data);
+        Update callbackQUpdate = await _fixture.UpdateReceiver.GetCallbackQueryUpdateAsync(
+            data: data
+        );
 
         Assert.NotNull(callbackQUpdate.CallbackQuery);
         Assert.NotNull(callbackQUpdate.CallbackQuery.InlineMessageId);
@@ -152,18 +163,18 @@ public class EditMessageContentTests
         Assert.NotNull(inlineQUpdate.InlineQuery);
 
         string data = "change-me" + new Random().Next(2_000);
-        InlineKeyboardMarkup replyMarkup = new(new[]
-        {
-            InlineKeyboardButton.WithCallbackData("Click here to change caption", data)
-        });
+        InlineKeyboardMarkup replyMarkup =
+            new(
+                new[]
+                {
+                    InlineKeyboardButton.WithCallbackData("Click here to change caption", data)
+                }
+            );
         const string url = "https://cdn.pixabay.com/photo/2017/08/30/12/45/girl-2696947_640.jpg";
 
         InlineQueryResult[] inlineQueryResults =
         {
-            new InlineQueryResultPhoto(
-                id: "photo1",
-                photoUrl: url,
-                thumbUrl: url)
+            new InlineQueryResultPhoto(id: "photo1", photoUrl: url, thumbUrl: url)
             {
                 Caption = "Message caption will be updated shortly",
                 ReplyMarkup = replyMarkup
@@ -174,8 +185,9 @@ public class EditMessageContentTests
 
         #endregion
 
-        Update callbackQUpdate = await _fixture.UpdateReceiver
-            .GetCallbackQueryUpdateAsync(data: data);
+        Update callbackQUpdate = await _fixture.UpdateReceiver.GetCallbackQueryUpdateAsync(
+            data: data
+        );
 
         Assert.NotNull(callbackQUpdate.CallbackQuery);
         Assert.NotNull(callbackQUpdate.CallbackQuery.InlineMessageId);

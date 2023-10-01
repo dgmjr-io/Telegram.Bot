@@ -11,6 +11,5 @@ internal static class ObjectExtensions
     internal static T ThrowIfNull<T>(
         this T? value,
         [CallerArgumentExpression("value")] string? parameterName = default
-    ) =>
-        value ?? throw new ArgumentNullException(parameterName);
+    ) => value ?? throw new ArgumentNullException(parameterName);
 }

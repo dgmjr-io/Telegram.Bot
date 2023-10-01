@@ -11,7 +11,8 @@ internal class MenuButtonConverter : JsonConverter
     public override bool CanWrite => false;
     public override bool CanRead => true;
 
-    public override bool CanConvert(Type objectType) => BaseType.IsAssignableFrom(objectType.GetTypeInfo());
+    public override bool CanConvert(Type objectType) =>
+        BaseType.IsAssignableFrom(objectType.GetTypeInfo());
 
     public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
     {
@@ -30,7 +31,8 @@ internal class MenuButtonConverter : JsonConverter
         JsonReader reader,
         Type objectType,
         object? existingValue,
-        JsonSerializer serializer)
+        JsonSerializer serializer
+    )
     {
         var jo = JObject.Load(reader);
         var typeToken = jo["type"];
@@ -46,7 +48,10 @@ internal class MenuButtonConverter : JsonConverter
             MenuButtonType.Default => typeof(MenuButtonDefault),
             MenuButtonType.Commands => typeof(MenuButtonCommands),
             MenuButtonType.WebApp => typeof(MenuButtonWebApp),
-            _ => throw new JsonSerializationException($"Unknown menu button type value of '{typeToken}'")
+            _
+                => throw new JsonSerializationException(
+                    $"Unknown menu button type value of '{typeToken}'"
+                )
         };
 
         // Remove status because status property only has getter

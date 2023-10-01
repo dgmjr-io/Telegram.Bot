@@ -70,10 +70,10 @@ public class AnimationMessageTests
     public async Task Should_Send_Animation_With_Thumb()
     {
         Message message;
-        await using (Stream
-                     stream1 = System.IO.File.OpenRead(Constants.PathToFile.Animation.Earth),
-                     stream2 = System.IO.File.OpenRead(Constants.PathToFile.Thumbnail.TheAbilityToBreak)
-                    )
+        await using (
+            Stream stream1 = System.IO.File.OpenRead(Constants.PathToFile.Animation.Earth),
+                stream2 = System.IO.File.OpenRead(Constants.PathToFile.Thumbnail.TheAbilityToBreak)
+        )
         {
             message = await BotClient.SendAnimationAsync(
                 chatId: _fixture.SupergroupChat,

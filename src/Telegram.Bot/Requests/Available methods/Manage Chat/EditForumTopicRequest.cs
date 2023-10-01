@@ -43,6 +43,5 @@ public class EditForumTopicRequest : RequestBase<bool>, IChatTargetable
     /// <param name="name">Topic name</param>
     /// <param name="iconCustomEmojiId">Unique identifier of the custom emoji shown as the topic icon</param>
     public EditForumTopicRequest(ChatId chatId, int messageThreadId)
-        : base("editForumTopic") =>
-        (ChatId, MessageThreadId) = (chatId, messageThreadId);
+        : base("editForumTopic") => (ChatId, MessageThreadId) = (chatId, messageThreadId);
 }

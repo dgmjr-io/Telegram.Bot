@@ -107,7 +107,11 @@ public class SendingPhotoMessageTests : IClassFixture<EntityFixture<Message>>
         {
             (MessageEntityType.Bold, "bold", "*bold*"),
             (MessageEntityType.Italic, "italic", "_italic_"),
-            (MessageEntityType.TextLink, "Text Link", "[Text Link](https://github.com/TelegramBots)"),
+            (
+                MessageEntityType.TextLink,
+                "Text Link",
+                "[Text Link](https://github.com/TelegramBots)"
+            ),
         };
 
         await using Stream stream = System.IO.File.OpenRead(Constants.PathToFile.Photos.Logo);
@@ -130,7 +134,8 @@ public class SendingPhotoMessageTests : IClassFixture<EntityFixture<Message>>
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.SendPhoto)]
     public async Task Should_Send_Deserialized_Photo_Request()
     {
-        string json = $@"{{
+        string json =
+            $@"{{
                 chat_id: ""{_fixture.SupergroupChat.Id}"",
                 photo: ""https://cdn.pixabay.com/photo/2017/04/11/21/34/giraffe-2222908_640.jpg"",
                 caption: ""Photo request deserialized from JSON"",

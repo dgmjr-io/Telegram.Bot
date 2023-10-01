@@ -154,7 +154,8 @@ public static class Constants
         {
             const string AudioDir = $"{FilesDir}Audio/";
 
-            public const string AStateOfDespairMp3 = $"{AudioDir}Ask Again - A State of Despair.mp3";
+            public const string AStateOfDespairMp3 =
+                $"{AudioDir}Ask Again - A State of Despair.mp3";
 
             public const string CantinaRagMp3 = $"{AudioDir}Jackson F Smith - Cantina Rag.mp3";
 

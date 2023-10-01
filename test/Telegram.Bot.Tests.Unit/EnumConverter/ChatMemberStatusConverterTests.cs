@@ -15,7 +15,10 @@ public class ChatMemberStatusConverterTests
     [InlineData(ChatMemberStatus.Left, "left")]
     [InlineData(ChatMemberStatus.Kicked, "kicked")]
     [InlineData(ChatMemberStatus.Restricted, "restricted")]
-    public void Should_Convert_ChatMemberStatus_To_String(ChatMemberStatus chatMemberStatus, string value)
+    public void Should_Convert_ChatMemberStatus_To_String(
+        ChatMemberStatus chatMemberStatus,
+        string value
+    )
     {
         ChatMember chatMember = new() { Type = chatMemberStatus };
         string expectedResult = @$"{{""type"":""{value}""}}";
@@ -32,7 +35,10 @@ public class ChatMemberStatusConverterTests
     [InlineData(ChatMemberStatus.Left, "left")]
     [InlineData(ChatMemberStatus.Kicked, "kicked")]
     [InlineData(ChatMemberStatus.Restricted, "restricted")]
-    public void Should_Convert_String_To_ChatMemberStatus(ChatMemberStatus chatMemberStatus, string value)
+    public void Should_Convert_String_To_ChatMemberStatus(
+        ChatMemberStatus chatMemberStatus,
+        string value
+    )
     {
         ChatMember expectedResult = new() { Type = chatMemberStatus };
         string jsonData = @$"{{""type"":""{value}""}}";

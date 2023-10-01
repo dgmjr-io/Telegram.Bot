@@ -27,8 +27,7 @@ public class UpdateTypeConverterTests
     public void Should_Convert_UpdateType_To_String(UpdateType updateType, string value)
     {
         Update update = new(updateType);
-        string expectedResult =
-            $$"""
+        string expectedResult = $$"""
             {"type":"{{value}}"}
             """;
 
@@ -42,8 +41,7 @@ public class UpdateTypeConverterTests
     public void Should_Convert_String_To_UpdateType(UpdateType updateType, string value)
     {
         Update expectedResult = new(updateType);
-        string jsonData =
-            $$"""
+        string jsonData = $$"""
             {"type":"{{value}}"}
             """;
 
@@ -56,8 +54,7 @@ public class UpdateTypeConverterTests
     [Fact]
     public void Should_Return_Unknown_For_Incorrect_UpdateType()
     {
-        string jsonData =
-            $$"""
+        string jsonData = $$"""
             {"type":"{{int.MaxValue}}"}
             """;
 

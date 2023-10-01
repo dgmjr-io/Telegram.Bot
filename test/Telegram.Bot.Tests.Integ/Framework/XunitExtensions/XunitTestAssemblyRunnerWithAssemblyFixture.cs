@@ -18,14 +18,15 @@ public class XunitTestAssemblyRunnerWithAssemblyFixture : XunitTestAssemblyRunne
         IEnumerable<IXunitTestCase> testCases,
         IMessageSink diagnosticMessageSink,
         IMessageSink executionMessageSink,
-        ITestFrameworkExecutionOptions executionOptions)
+        ITestFrameworkExecutionOptions executionOptions
+    )
         : base(
             testAssembly,
             testCases,
             diagnosticMessageSink,
             executionMessageSink,
-            executionOptions)
-    { }
+            executionOptions
+        ) { }
 
     protected override async Task AfterTestAssemblyStartingAsync()
     {
@@ -35,8 +36,7 @@ public class XunitTestAssemblyRunnerWithAssemblyFixture : XunitTestAssemblyRunne
         // Go find all the AssemblyFixtureAttributes adorned on the test assembly
         Aggregator.Run(() =>
         {
-            var fixturesAttrs = ((IReflectionAssemblyInfo)TestAssembly.Assembly)
-                .Assembly
+            var fixturesAttrs = ((IReflectionAssemblyInfo)TestAssembly.Assembly).Assembly
                 .GetCustomAttributes(typeof(AssemblyFixtureAttribute))
                 .Cast<AssemblyFixtureAttribute>()
                 .ToList();
@@ -72,9 +72,10 @@ public class XunitTestAssemblyRunnerWithAssemblyFixture : XunitTestAssemblyRunne
                     );
                 }
 
-                var fixture = ctor.Invoke(parameters.Length == 1
-                    ? new object[] { DiagnosticMessageSink }
-                    : Array.Empty<object>()
+                var fixture = ctor.Invoke(
+                    parameters.Length == 1
+                        ? new object[] { DiagnosticMessageSink }
+                        : Array.Empty<object>()
                 );
 
                 _assemblyFixtureMappings[fixtureAttr.FixtureType] = fixture;
@@ -97,10 +98,11 @@ public class XunitTestAssemblyRunnerWithAssemblyFixture : XunitTestAssemblyRunne
         IMessageBus messageBus,
         ITestCollection testCollection,
         IEnumerable<IXunitTestCase> testCases,
-        CancellationTokenSource cancellationTokenSource)
+        CancellationTokenSource cancellationTokenSource
+    )
     {
         var exceptionAggregator = new ExceptionAggregator(Aggregator);
-        var runner =  new XunitTestCollectionRunnerWithAssemblyFixture(
+        var runner = new XunitTestCollectionRunnerWithAssemblyFixture(
             _assemblyFixtureMappings,
             testCollection,
             testCases,
@@ -113,7 +115,7 @@ public class XunitTestAssemblyRunnerWithAssemblyFixture : XunitTestAssemblyRunne
 
         var runSummary = await runner.RunAsync();
 
-        var testsFixture = (TestsFixture) _assemblyFixtureMappings.Single().Value;
+        var testsFixture = (TestsFixture)_assemblyFixtureMappings.Single().Value;
         testsFixture.RunSummary.Aggregate(runSummary);
 
         return runSummary;

@@ -107,7 +107,9 @@ public class InlineQueryResultVideo : InlineQueryResult
         string videoUrl,
         string thumbUrl,
         string title,
-        InputMessageContent? inputMessageContent = default) : base(id)
+        InputMessageContent? inputMessageContent = default
+    )
+        : base(id)
     {
         VideoUrl = videoUrl;
         MimeType = inputMessageContent is null ? "video/mp4" : "text/html";

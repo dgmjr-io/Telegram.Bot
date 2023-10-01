@@ -22,11 +22,12 @@ public class GamesExceptionTests
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.SendGame)]
     public async Task Should_Throw_InvalidGameShortNameException()
     {
-        ApiRequestException e = await Assert.ThrowsAsync<ApiRequestException>(() =>
-            BotClient.SendGameAsync(
-                chatId: _fixture.SupergroupChat.Id,
-                gameShortName: "my game"
-            )
+        ApiRequestException e = await Assert.ThrowsAsync<ApiRequestException>(
+            () =>
+                BotClient.SendGameAsync(
+                    chatId: _fixture.SupergroupChat.Id,
+                    gameShortName: "my game"
+                )
         );
 
         Assert.Contains("Bad Request: GAME_SHORTNAME_INVALID", e.Message);
@@ -36,11 +37,12 @@ public class GamesExceptionTests
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.SendGame)]
     public async Task Should_Throw_InvalidGameShortNameException_2()
     {
-        ApiRequestException e = await Assert.ThrowsAsync<ApiRequestException>(() =>
-            BotClient.SendGameAsync(
-                chatId: _fixture.SupergroupChat.Id,
-                gameShortName: string.Empty
-            )
+        ApiRequestException e = await Assert.ThrowsAsync<ApiRequestException>(
+            () =>
+                BotClient.SendGameAsync(
+                    chatId: _fixture.SupergroupChat.Id,
+                    gameShortName: string.Empty
+                )
         );
 
         Assert.Contains("game_short_name", e.Message);
@@ -50,11 +52,12 @@ public class GamesExceptionTests
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.SendGame)]
     public async Task Should_Throw_InvalidGameShortNameException_3()
     {
-        ApiRequestException e = await Assert.ThrowsAsync<ApiRequestException>(() =>
-            BotClient.SendGameAsync(
-                chatId: _fixture.SupergroupChat.Id,
-                gameShortName: "non_existing_game"
-            )
+        ApiRequestException e = await Assert.ThrowsAsync<ApiRequestException>(
+            () =>
+                BotClient.SendGameAsync(
+                    chatId: _fixture.SupergroupChat.Id,
+                    gameShortName: "non_existing_game"
+                )
         );
 
         Assert.Contains("Bad Request: wrong game short name specified", e.Message);

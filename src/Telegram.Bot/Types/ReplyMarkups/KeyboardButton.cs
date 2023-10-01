@@ -86,7 +86,7 @@ public class KeyboardButton : IKeyboardButton
     /// <param name="type">Poll's type</param>
     /// <returns>Keyboard button</returns>
     public static KeyboardButton WithRequestPoll(string text, string? type = default) =>
-        new(text) { RequestPoll = new() { Type = type }};
+        new(text) { RequestPoll = new() { Type = type } };
 
     /// <summary>
     /// Generate a keyboard button to request a web app
@@ -102,6 +102,5 @@ public class KeyboardButton : IKeyboardButton
     /// </summary>
     /// <param name="text">Button's text</param>
     /// <returns>Keyboard button</returns>
-    public static implicit operator KeyboardButton(string text)
-        => new(text);
+    public static implicit operator KeyboardButton(string text) => new(text);
 }

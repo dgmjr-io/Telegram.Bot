@@ -78,64 +78,68 @@ public class PhotoMessageSerializationTests
     [Fact(DisplayName = "Should serialize a photo message")]
     public void Should_Serialize_PhotoMessage()
     {
-        Message message = new()
-        {
-            MessageId = 1234,
-            From = new()
+        Message message =
+            new()
             {
-                Id = 1234567,
-                FirstName = "Telegram_Bots",
-                Username = "TelegramBots",
-            },
-            Chat = new()
-            {
-                Id = 1234567,
-                FirstName = "Telegram_Bots",
-                Username = "TelegramBots",
-                Type = ChatType.Private
-            },
-            Date = new(2018, 1, 1, 0, 0, 0, DateTimeKind.Utc),
-            Photo = new[]
-            {
-                new PhotoSize
+                MessageId = 1234,
+                From = new()
                 {
-                    FileId = "AgADAgADvKgxGxW80EtRgjrTaWNmy7UerQ4ABN7x5HqnrHW_wp4BAAEC",
-                    FileUniqueId = "AgADcOsAAhUdZAc",
-                    FileSize = 3134,
-                    Width = 90,
-                    Height = 90,
+                    Id = 1234567,
+                    FirstName = "Telegram_Bots",
+                    Username = "TelegramBots",
                 },
-                new PhotoSize
+                Chat = new()
                 {
-                    FileId = "AgADAgADvKgxGxW80EtRgjrTaWNmy7UerQ4ABIrxzSBLXOQYw54BAAEC",
-                    FileUniqueId = "AgADcOsAAhUdZAc",
-                    FileSize = 52433,
-                    Width = 320,
-                    Height = 320,
+                    Id = 1234567,
+                    FirstName = "Telegram_Bots",
+                    Username = "TelegramBots",
+                    Type = ChatType.Private
                 },
-                new PhotoSize
+                Date = new(2018, 1, 1, 0, 0, 0, DateTimeKind.Utc),
+                Photo = new[]
                 {
-                    FileId = "AgADAgADvKgxGxW80EtRgjrTaWNmy7UerQ4ABIJONRZpTJFnxJ4BAAEC",
-                    FileUniqueId = "AgADcOsAAhUdZAc",
-                    FileSize = 231019,
-                    Width = 800,
-                    Height = 800,
-                },
-                new PhotoSize
-                {
-                    FileId = "AgADAgADvKgxGxW80EtRgjrTaWNmy7UerQ4ABP6uRLtwe8Z8wZ4BAAEC",
-                    FileUniqueId = "AgADcOsAAhUdZAc",
-                    FileSize = 489108,
-                    Width = 1280,
-                    Height = 1280,
+                    new PhotoSize
+                    {
+                        FileId = "AgADAgADvKgxGxW80EtRgjrTaWNmy7UerQ4ABN7x5HqnrHW_wp4BAAEC",
+                        FileUniqueId = "AgADcOsAAhUdZAc",
+                        FileSize = 3134,
+                        Width = 90,
+                        Height = 90,
+                    },
+                    new PhotoSize
+                    {
+                        FileId = "AgADAgADvKgxGxW80EtRgjrTaWNmy7UerQ4ABIrxzSBLXOQYw54BAAEC",
+                        FileUniqueId = "AgADcOsAAhUdZAc",
+                        FileSize = 52433,
+                        Width = 320,
+                        Height = 320,
+                    },
+                    new PhotoSize
+                    {
+                        FileId = "AgADAgADvKgxGxW80EtRgjrTaWNmy7UerQ4ABIJONRZpTJFnxJ4BAAEC",
+                        FileUniqueId = "AgADcOsAAhUdZAc",
+                        FileSize = 231019,
+                        Width = 800,
+                        Height = 800,
+                    },
+                    new PhotoSize
+                    {
+                        FileId = "AgADAgADvKgxGxW80EtRgjrTaWNmy7UerQ4ABP6uRLtwe8Z8wZ4BAAEC",
+                        FileUniqueId = "AgADcOsAAhUdZAc",
+                        FileSize = 489108,
+                        Width = 1280,
+                        Height = 1280,
+                    }
                 }
-            }
-        };
+            };
 
         string? json = JsonConvert.SerializeObject(message);
 
         Assert.NotNull(json);
         Assert.True(json.Length > 100);
-        Assert.Contains(@"""file_id"":""AgADAgADvKgxGxW80EtRgjrTaWNmy7UerQ4ABP6uRLtwe8Z8wZ4BAAEC""", json);
+        Assert.Contains(
+            @"""file_id"":""AgADAgADvKgxGxW80EtRgjrTaWNmy7UerQ4ABP6uRLtwe8Z8wZ4BAAEC""",
+            json
+        );
     }
 }

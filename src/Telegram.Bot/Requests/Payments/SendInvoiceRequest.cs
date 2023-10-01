@@ -219,7 +219,9 @@ public class SendInvoiceRequest : RequestBase<Message>, IChatTargetable
         string payload,
         string providerToken,
         string currency,
-        IEnumerable<LabeledPrice> prices) : base("sendInvoice")
+        IEnumerable<LabeledPrice> prices
+    )
+        : base("sendInvoice")
     {
         ChatId = chatId;
         Title = title;

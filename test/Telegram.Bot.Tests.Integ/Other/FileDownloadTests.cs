@@ -94,23 +94,27 @@ public class FileDownloadTests : IClassFixture<FileDownloadTests.Fixture>
 
         Assert.NotNull(fileSize);
         Assert.InRange(fileStream.Length, (int)fileSize - 100, (int)fileSize + 100);
-        Assert.True(JToken.DeepEquals(
-            JToken.FromObject(_classFixture.File), JToken.FromObject(file)
-        ));
+        Assert.True(
+            JToken.DeepEquals(JToken.FromObject(_classFixture.File), JToken.FromObject(file))
+        );
     }
 
-    [OrderedFact("Should throw InvalidParameterException while trying to get file using wrong file_id")]
+    [OrderedFact(
+        "Should throw InvalidParameterException while trying to get file using wrong file_id"
+    )]
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.GetFile)]
     public async Task Should_Throw_FileId_InvalidParameterException()
     {
-        ApiRequestException exception = await Assert.ThrowsAsync<ApiRequestException>(async () =>
-            await BotClient.GetFileAsync("Invalid_File_id")
+        ApiRequestException exception = await Assert.ThrowsAsync<ApiRequestException>(
+            async () => await BotClient.GetFileAsync("Invalid_File_id")
         );
 
         Assert.Contains("file_id", exception.Message);
     }
 
-    [OrderedFact("Should throw HttpRequestException while trying to download file using wrong file_path")]
+    [OrderedFact(
+        "Should throw HttpRequestException while trying to download file using wrong file_path"
+    )]
     public async Task Should_Throw_FilePath_HttpRequestException()
     {
         Stream content = default;

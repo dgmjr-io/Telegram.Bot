@@ -24,8 +24,7 @@ public abstract class RequestBase<TResponse> : IRequest<TResponse>
     /// </summary>
     /// <param name="methodName">Bot API method</param>
     protected RequestBase(string methodName)
-        : this(methodName, HttpMethod.Post)
-    { }
+        : this(methodName, HttpMethod.Post) { }
 
     /// <summary>
     /// Initializes an instance of request

@@ -118,7 +118,8 @@ public readonly record struct Color
     /// <param name="red"></param>
     /// <param name="green"></param>
     /// <param name="blue"></param>
-    public void Deconstruct(out int red, out int green, out int blue) => (red, green, blue) = (Red, Green, Blue);
+    public void Deconstruct(out int red, out int green, out int blue) =>
+        (red, green, blue) = (Red, Green, Blue);
 
     /// <summary>
     /// Converts current <see cref="Color"/> instance to it's numeric representation
@@ -175,7 +176,10 @@ public readonly record struct Color
     /// Thrown if <paramref name="value"/> is out of byte range
     /// </exception>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    static void CheckByte(long value, [CallerArgumentExpression("value")] string? componentName = default)
+    static void CheckByte(
+        long value,
+        [CallerArgumentExpression("value")] string? componentName = default
+    )
     {
         if (value is > byte.MaxValue or < byte.MinValue)
             throw new ArgumentOutOfRangeException(

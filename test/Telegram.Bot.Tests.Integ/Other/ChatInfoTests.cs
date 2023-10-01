@@ -23,9 +23,7 @@ public class ChatInfoTests
     {
         Chat supergroupChat = _fixture.SupergroupChat;
 
-        Chat chat = await BotClient.GetChatAsync(
-            chatId: supergroupChat.Id
-        );
+        Chat chat = await BotClient.GetChatAsync(chatId: supergroupChat.Id);
 
         Assert.Equal(ChatType.Supergroup, chat.Type);
         Assert.Equal(supergroupChat.Id, chat.Id);
@@ -77,7 +75,10 @@ public class ChatInfoTests
             chatId: _fixture.SupergroupChat.Id
         );
 
-        ChatMember memberCreator = Assert.Single(chatAdmins, _ => _.Status == ChatMemberStatus.Creator);
+        ChatMember memberCreator = Assert.Single(
+            chatAdmins,
+            _ => _.Status == ChatMemberStatus.Creator
+        );
         Assert.IsType<ChatMemberOwner>(memberCreator);
 
         ChatMember memberBot = Assert.Single(chatAdmins, _ => _.User.IsBot);
@@ -97,15 +98,15 @@ public class ChatInfoTests
             /* In order to have a private chat id, take the Creator of supergroup and use his User ID because
              * for a regular user, "User ID" is the same number as "Private Chat ID".
              */
-            ChatMember[] chatAdmins = await BotClient.GetChatAdministratorsAsync(_fixture.SupergroupChat);
+            ChatMember[] chatAdmins = await BotClient.GetChatAdministratorsAsync(
+                _fixture.SupergroupChat
+            );
             privateChatId = chatAdmins
                 .Single(member => member.Status == ChatMemberStatus.Creator)
                 .User.Id;
         }
 
-        Chat chat = await BotClient.GetChatAsync(
-            chatId: privateChatId
-        );
+        Chat chat = await BotClient.GetChatAsync(chatId: privateChatId);
 
         Assert.Equal(ChatType.Private, chat.Type);
         Assert.Equal(privateChatId, chat.Id);

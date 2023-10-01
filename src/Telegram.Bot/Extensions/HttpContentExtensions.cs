@@ -9,13 +9,15 @@ internal static class HttpContentExtensions
     internal static MultipartFormDataContent AddContentIfInputFile(
         this MultipartFormDataContent multipartContent,
         IInputFile? media,
-        string name)
+        string name
+    )
     {
         if (media is not InputFile inputFile) // || inputFile is not { })
             return multipartContent;
 
         string fileName = inputFile.FileName ?? name;
-        string contentDisposition = $@"form-data; name=""{name}""; filename=""{fileName}""".EncodeUtf8();
+        string contentDisposition =
+            $@"form-data; name=""{name}""; filename=""{fileName}""".EncodeUtf8();
 
         // It will be dispose of after the request is made
 #pragma warning disable CA2000
@@ -23,8 +25,8 @@ internal static class HttpContentExtensions
         {
             Headers =
             {
-                {"Content-Type", "application/octet-stream"},
-                {"Content-Disposition", contentDisposition}
+                { "Content-Type", "application/octet-stream" },
+                { "Content-Disposition", contentDisposition }
             }
         };
 #pragma warning restore CA2000

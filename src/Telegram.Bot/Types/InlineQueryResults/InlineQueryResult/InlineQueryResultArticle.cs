@@ -1,5 +1,3 @@
-
-
 // ReSharper disable once CheckNamespace
 namespace Telegram.Bot.Types.InlineQueryResults;
 
@@ -63,7 +61,11 @@ public class InlineQueryResultArticle : InlineQueryResult
     /// <param name="id">Unique identifier of this result</param>
     /// <param name="title">Title of the result</param>
     /// <param name="inputMessageContent">Content of the message to be sent</param>
-    public InlineQueryResultArticle(string id, string title, InputMessageContent inputMessageContent)
+    public InlineQueryResultArticle(
+        string id,
+        string title,
+        InputMessageContent inputMessageContent
+    )
         : base(id)
     {
         Title = title;

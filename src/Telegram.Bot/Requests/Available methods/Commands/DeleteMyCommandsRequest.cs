@@ -29,6 +29,5 @@ public class DeleteMyCommandsRequest : RequestBase<bool>
     /// Initializes a new request
     /// </summary>
     public DeleteMyCommandsRequest()
-        : base("deleteMyCommands")
-    { }
+        : base("deleteMyCommands") { }
 }

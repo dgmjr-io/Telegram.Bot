@@ -33,7 +33,10 @@ public class OrderedFactAttribute : FactAttribute
         get => _maxRetries;
         init
         {
-            if (value < 0) { throw new ArgumentOutOfRangeException(nameof(MaxRetries)); }
+            if (value < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(MaxRetries));
+            }
             _maxRetries = value;
         }
     }
@@ -46,7 +49,10 @@ public class OrderedFactAttribute : FactAttribute
         get => _delaySeconds;
         init
         {
-            if (value < 1) { throw new ArgumentOutOfRangeException(nameof(DelaySeconds)); }
+            if (value < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(DelaySeconds));
+            }
             _delaySeconds = value;
         }
     }
@@ -78,9 +84,15 @@ public class OrderedFactAttribute : FactAttribute
     /// <param name="line">Line number in source file.</param>
     public OrderedFactAttribute(string description, [CallerLineNumber] int line = default)
     {
-        if (line < 1) { throw new ArgumentOutOfRangeException(nameof(line)); }
+        if (line < 1)
+        {
+            throw new ArgumentOutOfRangeException(nameof(line));
+        }
         // ReSharper disable once VirtualMemberCallInConstructor
-        if (!string.IsNullOrWhiteSpace(description)) { DisplayName = description; }
+        if (!string.IsNullOrWhiteSpace(description))
+        {
+            DisplayName = description;
+        }
 
         LineNumber = line;
     }

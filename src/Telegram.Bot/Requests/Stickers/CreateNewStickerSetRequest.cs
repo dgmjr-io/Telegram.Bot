@@ -60,11 +60,7 @@ public abstract class CreateNewStickerSetRequest : FileRequestBase<bool>, IUserT
     /// </param>
     /// <param name="title">Sticker set title, 1-64 characters</param>
     /// <param name="emojis">One or more emoji corresponding to the sticker</param>
-    protected CreateNewStickerSetRequest(
-        long userId,
-        string name,
-        string title,
-        string emojis)
+    protected CreateNewStickerSetRequest(long userId, string name, string title, string emojis)
         : base("createNewStickerSet")
     {
         UserId = userId;

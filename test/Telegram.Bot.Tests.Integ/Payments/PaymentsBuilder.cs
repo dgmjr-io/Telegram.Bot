@@ -32,28 +32,32 @@ public class PaymentsBuilder
 
     public PaymentsBuilder WithCurrency(string currency)
     {
-        if (string.IsNullOrWhiteSpace(currency)) throw new ArgumentException($"{nameof(currency)} is null or empty");
+        if (string.IsNullOrWhiteSpace(currency))
+            throw new ArgumentException($"{nameof(currency)} is null or empty");
         _currency = currency;
         return this;
     }
 
     public PaymentsBuilder WithStartParameter(string startParameter)
     {
-        if (string.IsNullOrWhiteSpace(startParameter)) throw new ArgumentException($"{nameof(startParameter)} is null or empty");
+        if (string.IsNullOrWhiteSpace(startParameter))
+            throw new ArgumentException($"{nameof(startParameter)} is null or empty");
         _startParameter = startParameter;
         return this;
     }
 
     public PaymentsBuilder WithPayload(string payload)
     {
-        if (string.IsNullOrWhiteSpace(payload)) throw new ArgumentException($"{nameof(payload)} is null or empty");
+        if (string.IsNullOrWhiteSpace(payload))
+            throw new ArgumentException($"{nameof(payload)} is null or empty");
         _payload = payload;
         return this;
     }
 
     public PaymentsBuilder WithProviderData(string providerData)
     {
-        if (string.IsNullOrWhiteSpace(providerData)) throw new ArgumentException($"{nameof(providerData)} is null or empty");
+        if (string.IsNullOrWhiteSpace(providerData))
+            throw new ArgumentException($"{nameof(providerData)} is null or empty");
         _providerData = providerData;
         return this;
     }
@@ -114,7 +118,8 @@ public class PaymentsBuilder
 
     public PaymentsBuilder WithPaymentProviderToken(string paymentsProviderToken)
     {
-        if (string.IsNullOrWhiteSpace(paymentsProviderToken)) throw new ArgumentException($"{nameof(paymentsProviderToken)} is null or empty");
+        if (string.IsNullOrWhiteSpace(paymentsProviderToken))
+            throw new ArgumentException($"{nameof(paymentsProviderToken)} is null or empty");
         _paymentsProviderToken = paymentsProviderToken;
         return this;
     }
@@ -171,8 +176,10 @@ public class PaymentsBuilder
 
     public PreliminaryInvoice GetPreliminaryInvoice()
     {
-        if (_product is null) throw new InvalidOperationException("Product wasn't added");
-        if (string.IsNullOrWhiteSpace(_currency)) throw new InvalidOperationException("Currency isn't set");
+        if (_product is null)
+            throw new InvalidOperationException("Product wasn't added");
+        if (string.IsNullOrWhiteSpace(_currency))
+            throw new InvalidOperationException("Currency isn't set");
 
         return new()
         {
@@ -187,18 +194,24 @@ public class PaymentsBuilder
     public Shipping GetShippingOptions() => new(_shippingOptions.ToArray());
 
     public int GetTotalAmount() =>
-        (_product?.ProductPrices.Sum(price => price.Amount) ?? 0) +
-        _shippingOptions.Sum(x => x.Prices.Sum(p => p.Amount));
+        (_product?.ProductPrices.Sum(price => price.Amount) ?? 0)
+        + _shippingOptions.Sum(x => x.Prices.Sum(p => p.Amount));
 
-    public int GetTotalAmountWithoutShippingCost() => _product?.ProductPrices.Sum(price => price.Amount) ?? 0;
+    public int GetTotalAmountWithoutShippingCost() =>
+        _product?.ProductPrices.Sum(price => price.Amount) ?? 0;
 
     public SendInvoiceRequest BuildInvoiceRequest()
     {
-        if (_product is null) throw new InvalidOperationException("Product wasn't added");
-        if (string.IsNullOrWhiteSpace(_paymentsProviderToken)) throw new ArgumentException("Payments provider token is null or empty");
-        if (_chatId is null) throw new InvalidOperationException("ChatId is null");
-        if (string.IsNullOrWhiteSpace(_currency)) throw new InvalidOperationException("Currency isn't set");
-        if (string.IsNullOrWhiteSpace(_payload)) throw new InvalidOperationException("Payload isn't set");
+        if (_product is null)
+            throw new InvalidOperationException("Product wasn't added");
+        if (string.IsNullOrWhiteSpace(_paymentsProviderToken))
+            throw new ArgumentException("Payments provider token is null or empty");
+        if (_chatId is null)
+            throw new InvalidOperationException("ChatId is null");
+        if (string.IsNullOrWhiteSpace(_currency))
+            throw new InvalidOperationException("Currency isn't set");
+        if (string.IsNullOrWhiteSpace(_payload))
+            throw new InvalidOperationException("Payload isn't set");
 
         return new(
             chatId: _chatId.Value,
@@ -207,7 +220,8 @@ public class PaymentsBuilder
             payload: _payload,
             providerToken: _paymentsProviderToken,
             currency: _currency,
-            prices: _product.ProductPrices)
+            prices: _product.ProductPrices
+        )
         {
             PhotoUrl = _product.PhotoUrl,
             PhotoWidth = _product.PhotoWidth,
@@ -227,9 +241,13 @@ public class PaymentsBuilder
         };
     }
 
-    public AnswerShippingQueryRequest BuildShippingQueryRequest(string shippingQueryId, string? errorMessage = default)
+    public AnswerShippingQueryRequest BuildShippingQueryRequest(
+        string shippingQueryId,
+        string? errorMessage = default
+    )
     {
-        if (string.IsNullOrWhiteSpace(shippingQueryId)) throw new ArgumentNullException(nameof(shippingQueryId));
+        if (string.IsNullOrWhiteSpace(shippingQueryId))
+            throw new ArgumentNullException(nameof(shippingQueryId));
 
         AnswerShippingQueryRequest shippingQueryRequest = errorMessage is null
             ? new(shippingQueryId, _shippingOptions)
@@ -266,22 +284,29 @@ public class PaymentsBuilder
 
         public ShippingOptionsBuilder WithId(string id)
         {
-            if (string.IsNullOrWhiteSpace(id)) throw new ArgumentNullException(nameof(id));
+            if (string.IsNullOrWhiteSpace(id))
+                throw new ArgumentNullException(nameof(id));
             _id = id;
             return this;
         }
 
         public ShippingOptionsBuilder WithTitle(string title)
         {
-            if (string.IsNullOrWhiteSpace(title)) throw new ArgumentNullException(nameof(title));
+            if (string.IsNullOrWhiteSpace(title))
+                throw new ArgumentNullException(nameof(title));
             _title = title;
             return this;
         }
 
         public ShippingOptionsBuilder WithPrice(string label, int amount)
         {
-            if (string.IsNullOrWhiteSpace(label)) throw new ArgumentNullException(nameof(label));
-            if (amount <= 0) throw new ArgumentOutOfRangeException(nameof(amount), "Price must be greater than 0");
+            if (string.IsNullOrWhiteSpace(label))
+                throw new ArgumentNullException(nameof(label));
+            if (amount <= 0)
+                throw new ArgumentOutOfRangeException(
+                    nameof(amount),
+                    "Price must be greater than 0"
+                );
 
             _shippingPrices.Add(new(label, amount));
 
@@ -310,22 +335,26 @@ public class PaymentsBuilder
 
         public ProductBuilder WithTitle(string title)
         {
-            if (string.IsNullOrWhiteSpace(title)) throw new ArgumentException($"{nameof(title)} is null or empty");
+            if (string.IsNullOrWhiteSpace(title))
+                throw new ArgumentException($"{nameof(title)} is null or empty");
             _title = title;
             return this;
         }
 
         public ProductBuilder WithDescription(string description)
         {
-            if (string.IsNullOrWhiteSpace(description)) throw new ArgumentException($"{nameof(description)} is null or empty");
+            if (string.IsNullOrWhiteSpace(description))
+                throw new ArgumentException($"{nameof(description)} is null or empty");
             _description = description;
             return this;
         }
 
         public ProductBuilder WithPhoto(string url, int width, int height)
         {
-            if (string.IsNullOrWhiteSpace(url)) throw new ArgumentException($"{nameof(url)} is null or empty");
-            if (width < 1 || height < 1) throw new ArgumentException("Dimensions are invalid");
+            if (string.IsNullOrWhiteSpace(url))
+                throw new ArgumentException($"{nameof(url)} is null or empty");
+            if (width < 1 || height < 1)
+                throw new ArgumentException("Dimensions are invalid");
 
             _photoUrl = url;
             _photoWidth = width;
@@ -336,8 +365,13 @@ public class PaymentsBuilder
 
         public ProductBuilder WithProductPrice(string label, int amount)
         {
-            if (string.IsNullOrWhiteSpace(label)) throw new ArgumentNullException(nameof(label));
-            if (amount <= 0) throw new ArgumentOutOfRangeException(nameof(amount), "Price must be greater than 0");
+            if (string.IsNullOrWhiteSpace(label))
+                throw new ArgumentNullException(nameof(label));
+            if (amount <= 0)
+                throw new ArgumentOutOfRangeException(
+                    nameof(amount),
+                    "Price must be greater than 0"
+                );
             _productPrices.Add(new(label, amount));
             return this;
         }
@@ -346,7 +380,8 @@ public class PaymentsBuilder
             new()
             {
                 Title = _title ?? throw new InvalidOperationException("Title is null"),
-                Description = _description  ?? throw new InvalidOperationException("Description is null"),
+                Description =
+                    _description ?? throw new InvalidOperationException("Description is null"),
                 PhotoUrl = _photoUrl,
                 PhotoHeight = _photoHeight,
                 PhotoWidth = _photoWidth,

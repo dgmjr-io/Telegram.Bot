@@ -13,7 +13,6 @@ public class ChannelAdminBotTestFixture : AsyncLifetimeFixture
     public Chat Chat => _channelChatFixture.ChannelChat;
     public Message PinnedMessage { get; set; }
 
-
     public ChannelAdminBotTestFixture(TestsFixture fixture)
     {
         AddLifetime(
@@ -26,7 +25,10 @@ public class ChannelAdminBotTestFixture : AsyncLifetimeFixture
                 if (!string.IsNullOrEmpty(Chat.Photo?.BigFileId))
                 {
                     await using MemoryStream stream = new();
-                    await fixture.BotClient.GetInfoAndDownloadFileAsync(Chat.Photo.BigFileId, stream);
+                    await fixture.BotClient.GetInfoAndDownloadFileAsync(
+                        Chat.Photo.BigFileId,
+                        stream
+                    );
                     _oldChatPhoto = stream.ToArray();
                 }
             },

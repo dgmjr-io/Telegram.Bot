@@ -166,7 +166,9 @@ public class CreateInvoiceLinkRequest : RequestBase<string>
         string payload,
         string providerToken,
         string currency,
-        IEnumerable<LabeledPrice> prices) : base("createInvoiceLink")
+        IEnumerable<LabeledPrice> prices
+    )
+        : base("createInvoiceLink")
     {
         Title = title;
         Description = description;

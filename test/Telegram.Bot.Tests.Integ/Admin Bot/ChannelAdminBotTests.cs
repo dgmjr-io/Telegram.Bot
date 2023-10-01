@@ -30,10 +30,7 @@ public class ChannelAdminBotTests : IClassFixture<ChannelAdminBotTestFixture>
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.SetChatTitle)]
     public async Task Should_Set_Chat_Title()
     {
-        await BotClient.SetChatTitleAsync(
-            chatId: _classFixture.Chat.Id,
-            title: "Test Chat Title"
-        );
+        await BotClient.SetChatTitleAsync(chatId: _classFixture.Chat.Id, title: "Test Chat Title");
     }
 
     #endregion
@@ -65,7 +62,10 @@ public class ChannelAdminBotTests : IClassFixture<ChannelAdminBotTestFixture>
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.PinChatMessage)]
     public async Task Should_Pin_Message()
     {
-        Message msg = await BotClient.SendTextMessageAsync(_classFixture.Chat.Id, "Description to pin");
+        Message msg = await BotClient.SendTextMessageAsync(
+            _classFixture.Chat.Id,
+            "Description to pin"
+        );
 
         await BotClient.PinChatMessageAsync(
             chatId: _classFixture.Chat.Id,
@@ -84,9 +84,9 @@ public class ChannelAdminBotTests : IClassFixture<ChannelAdminBotTestFixture>
 
         Chat chat = await BotClient.GetChatAsync(_classFixture.Chat.Id);
 
-        Assert.True(JToken.DeepEquals(
-            JToken.FromObject(pinnedMsg), JToken.FromObject(chat.PinnedMessage)
-        ));
+        Assert.True(
+            JToken.DeepEquals(JToken.FromObject(pinnedMsg), JToken.FromObject(chat.PinnedMessage))
+        );
     }
 
     [OrderedFact("Should unpin chat message")]
@@ -162,8 +162,9 @@ public class ChannelAdminBotTests : IClassFixture<ChannelAdminBotTestFixture>
     {
         const string setName = "EvilMinds";
 
-        ApiRequestException exception = await Assert.ThrowsAsync<ApiRequestException>(async () =>
-            await _fixture.BotClient.SetChatStickerSetAsync(_classFixture.Chat.Id, setName)
+        ApiRequestException exception = await Assert.ThrowsAsync<ApiRequestException>(
+            async () =>
+                await _fixture.BotClient.SetChatStickerSetAsync(_classFixture.Chat.Id, setName)
         );
 
         Assert.Equal(400, exception.ErrorCode);

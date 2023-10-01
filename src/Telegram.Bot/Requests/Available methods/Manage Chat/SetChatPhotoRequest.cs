@@ -37,6 +37,5 @@ public class SetChatPhotoRequest : FileRequestBase<bool>, IChatTargetable
     }
 
     /// <inheritdoc />
-    public override HttpContent? ToHttpContent()
-        => ToMultipartFormDataContent("photo", Photo);
+    public override HttpContent? ToHttpContent() => ToMultipartFormDataContent("photo", Photo);
 }

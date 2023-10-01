@@ -59,9 +59,7 @@ public class TelegramBotClient : ITelegramBotClient
     /// <exception cref="ArgumentNullException">
     /// Thrown if <paramref name="options"/> is <c>null</c>
     /// </exception>
-    public TelegramBotClient(
-        TelegramBotClientOptions options,
-        HttpClient? httpClient = default)
+    public TelegramBotClient(TelegramBotClientOptions options, HttpClient? httpClient = default)
     {
         _options = options ?? throw new ArgumentNullException(nameof(options));
         _httpClient = httpClient ?? new HttpClient();
@@ -75,18 +73,19 @@ public class TelegramBotClient : ITelegramBotClient
     /// <exception cref="ArgumentException">
     /// Thrown if <paramref name="token"/> format is invalid
     /// </exception>
-    public TelegramBotClient(
-        string token,
-        HttpClient? httpClient = null) :
-        this(new TelegramBotClientOptions(token), httpClient)
-    { }
+    public TelegramBotClient(string token, HttpClient? httpClient = null)
+        : this(new TelegramBotClientOptions(token), httpClient) { }
 
     /// <inheritdoc />
     public virtual async Task<TResponse> MakeRequestAsync<TResponse>(
         IRequest<TResponse> request,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
-        if (request is null) { throw new ArgumentNullException(nameof(request)); }
+        if (request is null)
+        {
+            throw new ArgumentNullException(nameof(request));
+        }
 
         var url = $"{_options.BaseRequestUrl}/{request.MethodName}";
 
@@ -103,18 +102,21 @@ public class TelegramBotClient : ITelegramBotClient
                 request: request,
                 httpRequestMessage: httpRequest
             );
-            await OnMakingApiRequest.Invoke(
-                botClient: this,
-                args: requestEventArgs,
-                cancellationToken: cancellationToken
-            ).ConfigureAwait(false);
+            await OnMakingApiRequest
+                .Invoke(
+                    botClient: this,
+                    args: requestEventArgs,
+                    cancellationToken: cancellationToken
+                )
+                .ConfigureAwait(false);
         }
 
         using var httpResponse = await SendRequestAsync(
-            httpClient: _httpClient,
-            httpRequest: httpRequest,
-            cancellationToken: cancellationToken
-        ).ConfigureAwait(false);
+                httpClient: _httpClient,
+                httpRequest: httpRequest,
+                cancellationToken: cancellationToken
+            )
+            .ConfigureAwait(false);
 
         if (OnApiResponseReceived is not null)
         {
@@ -126,11 +128,13 @@ public class TelegramBotClient : ITelegramBotClient
                 responseMessage: httpResponse,
                 apiRequestEventArgs: requestEventArgs
             );
-            await OnApiResponseReceived.Invoke(
-                botClient: this,
-                args: responseEventArgs,
-                cancellationToken: cancellationToken
-            ).ConfigureAwait(false);
+            await OnApiResponseReceived
+                .Invoke(
+                    botClient: this,
+                    args: responseEventArgs,
+                    cancellationToken: cancellationToken
+                )
+                .ConfigureAwait(false);
         }
 
         if (httpResponse.StatusCode != HttpStatusCode.OK)
@@ -138,9 +142,11 @@ public class TelegramBotClient : ITelegramBotClient
             var failedApiResponse = await httpResponse
                 .DeserializeContentAsync<ApiResponse>(
                     guard: response =>
-                        response.ErrorCode == default ||
+                        response.ErrorCode == default
+                        ||
                         // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-                        response.Description is null
+                        response.Description
+                            is null
                 )
                 .ConfigureAwait(false);
 
@@ -149,8 +155,7 @@ public class TelegramBotClient : ITelegramBotClient
 
         var apiResponse = await httpResponse
             .DeserializeContentAsync<ApiResponse<TResponse>>(
-                guard: response => response.Ok == false ||
-                                   response.Result is null
+                guard: response => response.Ok == false || response.Result is null
             )
             .ConfigureAwait(false);
 
@@ -160,7 +165,8 @@ public class TelegramBotClient : ITelegramBotClient
         static async Task<HttpResponseMessage> SendRequestAsync(
             HttpClient httpClient,
             HttpRequestMessage httpRequest,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken
+        )
         {
             HttpResponseMessage? httpResponse;
             try
@@ -198,12 +204,14 @@ public class TelegramBotClient : ITelegramBotClient
     {
         try
         {
-            await MakeRequestAsync(request: new GetMeRequest(), cancellationToken: cancellationToken)
+            await MakeRequestAsync(
+                    request: new GetMeRequest(),
+                    cancellationToken: cancellationToken
+                )
                 .ConfigureAwait(false);
             return true;
         }
-        catch (ApiRequestException e)
-            when (e.ErrorCode == 401)
+        catch (ApiRequestException e) when (e.ErrorCode == 401)
         {
             return false;
         }
@@ -213,30 +221,37 @@ public class TelegramBotClient : ITelegramBotClient
     public async Task DownloadFileAsync(
         string filePath,
         Stream destination,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         if (string.IsNullOrWhiteSpace(filePath) || filePath.Length < 2)
         {
             throw new ArgumentException(message: "Invalid file path", paramName: nameof(filePath));
         }
 
-        if (destination is null) { throw new ArgumentNullException(nameof(destination)); }
+        if (destination is null)
+        {
+            throw new ArgumentNullException(nameof(destination));
+        }
 
         var fileUri = $"{_options.BaseFileUrl}/{filePath}";
         using HttpResponseMessage httpResponse = await GetResponseAsync(
-            httpClient: _httpClient,
-            fileUri: fileUri,
-            cancellationToken: cancellationToken
-        ).ConfigureAwait(false);
+                httpClient: _httpClient,
+                fileUri: fileUri,
+                cancellationToken: cancellationToken
+            )
+            .ConfigureAwait(false);
 
         if (!httpResponse.IsSuccessStatusCode)
         {
             var failedApiResponse = await httpResponse
                 .DeserializeContentAsync<ApiResponse>(
                     guard: response =>
-                        response.ErrorCode == default ||
+                        response.ErrorCode == default
+                        ||
                         // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-                        response.Description is null
+                        response.Description
+                            is null
                 )
                 .ConfigureAwait(false);
 
@@ -253,8 +268,7 @@ public class TelegramBotClient : ITelegramBotClient
 
         try
         {
-            await httpResponse.Content.CopyToAsync(destination)
-                .ConfigureAwait(false);
+            await httpResponse.Content.CopyToAsync(destination).ConfigureAwait(false);
         }
         catch (Exception exception)
         {
@@ -269,7 +283,8 @@ public class TelegramBotClient : ITelegramBotClient
         static async Task<HttpResponseMessage> GetResponseAsync(
             HttpClient httpClient,
             string fileUri,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken
+        )
         {
             HttpResponseMessage? httpResponse;
             try
@@ -284,12 +299,12 @@ public class TelegramBotClient : ITelegramBotClient
             }
             catch (TaskCanceledException exception)
             {
-                if (cancellationToken.IsCancellationRequested) { throw; }
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    throw;
+                }
 
-                throw new RequestException(
-                    message: "Request timed out",
-                    innerException: exception
-                );
+                throw new RequestException(message: "Request timed out", innerException: exception);
             }
             catch (Exception exception)
             {

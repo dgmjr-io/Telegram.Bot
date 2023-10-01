@@ -9,7 +9,6 @@ namespace Telegram.Bot.Requests;
 [JsonObject(MemberSerialization.OptIn, NamingStrategyType = typeof(SnakeCaseNamingStrategy))]
 public class SetMyDefaultAdministratorRightsRequest : RequestBase<bool>
 {
-
     /// <summary>
     /// Optional. An object describing new default administrator rights. If not specified, the default administrator
     /// rights will be cleared.
@@ -28,6 +27,5 @@ public class SetMyDefaultAdministratorRightsRequest : RequestBase<bool>
     ///
     /// </summary>
     public SetMyDefaultAdministratorRightsRequest()
-        : base("setMyDefaultAdministratorRights")
-    { }
+        : base("setMyDefaultAdministratorRights") { }
 }

@@ -14,8 +14,7 @@ public class MessageEntityTypeConverterTests
     [Fact]
     public void Should_Verify_All_MessageEntityType_Members()
     {
-        List<string> messageEntityTypeMembers = Enum
-            .GetNames<MessageEntityType>()
+        List<string> messageEntityTypeMembers = Enum.GetNames<MessageEntityType>()
             .OrderBy(x => x)
             .ToList();
         List<string> messageEntityDataMembers = new MessageEntityData()
@@ -29,7 +28,10 @@ public class MessageEntityTypeConverterTests
 
     [Theory]
     [ClassData(typeof(MessageEntityData))]
-    public void Should_Convert_MessageEntityType_To_String(MessageEntityType messageEntityType, string value)
+    public void Should_Convert_MessageEntityType_To_String(
+        MessageEntityType messageEntityType,
+        string value
+    )
     {
         MessageEntity messageEntity = new() { Type = messageEntityType };
         string expectedResult = @$"{{""type"":""{value}""}}";
@@ -41,7 +43,10 @@ public class MessageEntityTypeConverterTests
 
     [Theory]
     [ClassData(typeof(MessageEntityData))]
-    public void Should_Convert_String_To_MessageEntityType(MessageEntityType messageEntityType, string value)
+    public void Should_Convert_String_To_MessageEntityType(
+        MessageEntityType messageEntityType,
+        string value
+    )
     {
         MessageEntity expectedResult = new() { Type = messageEntityType };
         string jsonData = @$"{{""type"":""{value}""}}";

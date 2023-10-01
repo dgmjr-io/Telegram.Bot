@@ -21,7 +21,8 @@ internal static class HttpResponseMessageExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static async Task<T> DeserializeContentAsync<T>(
         this HttpResponseMessage httpResponse,
-        Func<T, bool> guard)
+        Func<T, bool> guard
+    )
         where T : class
     {
         Stream? contentStream = null;
@@ -44,8 +45,7 @@ internal static class HttpResponseMessageExtensions
                     .ReadAsStreamAsync()
                     .ConfigureAwait(continueOnCapturedContext: false);
 
-                deserializedObject = contentStream
-                    .DeserializeJsonFromStream<T>();
+                deserializedObject = contentStream.DeserializeJsonFromStream<T>();
             }
             catch (Exception exception)
             {
@@ -94,10 +94,7 @@ internal static class HttpResponseMessageExtensions
         Exception? exception = default
     ) =>
         exception is null
-            ? new(
-                message: message,
-                httpStatusCode: httpResponse.StatusCode
-            )
+            ? new(message: message, httpStatusCode: httpResponse.StatusCode)
             : new(
                 message: message,
                 httpStatusCode: httpResponse.StatusCode,

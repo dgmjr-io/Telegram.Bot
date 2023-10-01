@@ -45,11 +45,10 @@ public class DeleteMessageTests
             cacheTime: 0
         );
 
-        (Update messageUpdate, _) =
-            await _fixture.UpdateReceiver.GetInlineQueryResultUpdates(
-                chatId: _fixture.SupergroupChat.Id,
-                messageType: MessageType.Text
-            );
+        (Update messageUpdate, _) = await _fixture.UpdateReceiver.GetInlineQueryResultUpdates(
+            chatId: _fixture.SupergroupChat.Id,
+            messageType: MessageType.Text
+        );
 
         await Task.Delay(1_000);
 

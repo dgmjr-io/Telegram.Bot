@@ -57,8 +57,10 @@ public class EditMessageMediaRequest : FileRequestBase<Message>, IChatTargetable
     /// <inheritdoc />
     public override HttpContent? ToHttpContent()
     {
-        if (Media.Media.FileType is not FileType.Stream &&
-            Media is not IInputMediaThumb { Thumb.FileType: FileType.Stream })
+        if (
+            Media.Media.FileType is not FileType.Stream
+            && Media is not IInputMediaThumb { Thumb.FileType: FileType.Stream }
+        )
         {
             return base.ToHttpContent();
         }

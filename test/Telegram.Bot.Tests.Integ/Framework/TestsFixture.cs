@@ -48,45 +48,50 @@ public class TestsFixture : IDisposable
     public void Dispose()
     {
         Ex.WithCancellation(async token =>
-        {
-            await UpdateReceiver.DiscardNewUpdatesAsync(token);
-            var passed = RunSummary.Total - RunSummary.Skipped - RunSummary.Failed;
+            {
+                await UpdateReceiver.DiscardNewUpdatesAsync(token);
+                var passed = RunSummary.Total - RunSummary.Skipped - RunSummary.Failed;
 
-            await BotClient.SendTextMessageAsync(
-                chatId: SupergroupChat.Id,
-                text: string.Format(
-                    Constants.TestExecutionResultMessageFormat,
-                    RunSummary.Total,
-                    passed,
-                    RunSummary.Skipped,
-                    RunSummary.Failed
-                ),
-                parseMode: ParseMode.Markdown,
-                cancellationToken: token
-            );
-        }).GetAwaiter().GetResult();
+                await BotClient.SendTextMessageAsync(
+                    chatId: SupergroupChat.Id,
+                    text: string.Format(
+                        Constants.TestExecutionResultMessageFormat,
+                        RunSummary.Total,
+                        passed,
+                        RunSummary.Skipped,
+                        RunSummary.Failed
+                    ),
+                    parseMode: ParseMode.Markdown,
+                    cancellationToken: token
+                );
+            })
+            .GetAwaiter()
+            .GetResult();
     }
 
     public async Task<Message> SendTestInstructionsAsync(
         string instructions,
         ChatId chatId = default,
-        bool startInlineQuery = false)
+        bool startInlineQuery = false
+    )
     {
         var text = string.Format(Constants.InstructionsMessageFormat, instructions);
         chatId ??= SupergroupChat.Id;
 
         IReplyMarkup replyMarkup = startInlineQuery
-            ? (InlineKeyboardMarkup)InlineKeyboardButton.WithSwitchInlineQueryCurrentChat("Start inline query")
+            ? (InlineKeyboardMarkup)
+                InlineKeyboardButton.WithSwitchInlineQueryCurrentChat("Start inline query")
             : default;
 
-        return await Ex.WithCancellation(async token =>
-            await BotClient.SendTextMessageAsync(
-                chatId: chatId,
-                text: text,
-                parseMode: ParseMode.Markdown,
-                replyMarkup: replyMarkup,
-                cancellationToken: token
-            )
+        return await Ex.WithCancellation(
+            async token =>
+                await BotClient.SendTextMessageAsync(
+                    chatId: chatId,
+                    text: text,
+                    parseMode: ParseMode.Markdown,
+                    replyMarkup: replyMarkup,
+                    cancellationToken: token
+                )
         );
     }
 
@@ -98,28 +103,30 @@ public class TestsFixture : IDisposable
         string instructions = default,
         ChatId chatId = default
     ) =>
-        await Ex.WithCancellation(async token =>
-            await SendNotificationToChatAsync(
-                isForCollection: true,
-                name: collectionName,
-                instructions: instructions,
-                chatId: chatId,
-                cancellationToken: token
-            )
+        await Ex.WithCancellation(
+            async token =>
+                await SendNotificationToChatAsync(
+                    isForCollection: true,
+                    name: collectionName,
+                    instructions: instructions,
+                    chatId: chatId,
+                    cancellationToken: token
+                )
         );
 
     public async Task<Chat> GetChatFromTesterAsync(
         ChatType chatType,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         bool IsMatch(Update u) =>
-        (
-            u.Message?.Chat.Type == chatType &&
-            u.Message.Text?.StartsWith("/test", StringComparison.OrdinalIgnoreCase) == true
-        ) || (
-            ChatType.Channel == chatType &&
-            ChatType.Channel == u.Message?.ForwardFromChat?.Type
-        );
+            (
+                u.Message?.Chat.Type == chatType
+                && u.Message.Text?.StartsWith("/test", StringComparison.OrdinalIgnoreCase) == true
+            )
+            || (
+                ChatType.Channel == chatType && ChatType.Channel == u.Message?.ForwardFromChat?.Type
+            );
 
         var updates = await UpdateReceiver.GetUpdatesAsync(
             IsMatch,
@@ -138,15 +145,16 @@ public class TestsFixture : IDisposable
 
     public async Task<Chat> GetChatFromAdminAsync()
     {
-        static bool IsMatch(Update u) => u is
-        {
-            Message:
-            {
-                Type: MessageType.Contact,
-                ForwardFrom: not null,
-                NewChatMembers.Length: > 0,
-            }
-        };
+        static bool IsMatch(Update u) =>
+            u
+                is {
+                    Message:
+                    {
+                        Type: MessageType.Contact,
+                        ForwardFrom: not null,
+                        NewChatMembers.Length: > 0,
+                    }
+                };
 
         var update = await UpdateReceiver.GetUpdateAsync(IsMatch, updateTypes: UpdateType.Message);
 
@@ -154,7 +162,7 @@ public class TestsFixture : IDisposable
 
         var userId = update.Message switch
         {
-            { Contact.UserId: {} id } => id,
+            { Contact.UserId: { } id } => id,
             { ForwardFrom.Id: var id } => id,
             { NewChatMembers: { Length: 1 } members } => members[0].Id,
             _ => throw new InvalidOperationException()
@@ -179,22 +187,22 @@ public class TestsFixture : IDisposable
             diagnosticMessageSink: _diagnosticMessageSink
         );
 
-        var allowedUserNames = await Ex.WithCancellation(
-            async token =>
-            {
-                BotUser = await BotClient.GetMeAsync(token);
-                await BotClient.DeleteWebhookAsync(cancellationToken: token);
+        var allowedUserNames = await Ex.WithCancellation(async token =>
+        {
+            BotUser = await BotClient.GetMeAsync(token);
+            await BotClient.DeleteWebhookAsync(cancellationToken: token);
 
-                SupergroupChat = await FindSupergroupTestChatAsync(token);
-                return await FindAllowedTesterUserNames(token);
-            }
-        );
+            SupergroupChat = await FindSupergroupTestChatAsync(token);
+            return await FindAllowedTesterUserNames(token);
+        });
 
         UpdateReceiver = new(BotClient, allowedUserNames);
 
-        await Ex.WithCancellation(async token => await BotClient.SendTextMessageAsync(
-            chatId: SupergroupChat.Id,
-            text: $"""
+        await Ex.WithCancellation(
+            async token =>
+                await BotClient.SendTextMessageAsync(
+                    chatId: SupergroupChat.Id,
+                    text: $"""
                   ```
                   Test execution is starting...
                   ```
@@ -203,10 +211,11 @@ public class TestsFixture : IDisposable
 
                   {UpdateReceiver.GetTesters()}
                   """,
-            parseMode: ParseMode.Markdown,
-            disableNotification: true,
-            cancellationToken: token
-        ));
+                    parseMode: ParseMode.Markdown,
+                    disableNotification: true,
+                    cancellationToken: token
+                )
+        );
 
 #if DEBUG
         BotClient.OnMakingApiRequest += OnMakingApiRequest;
@@ -220,7 +229,8 @@ public class TestsFixture : IDisposable
         string instructions = default,
         ChatId chatId = default,
         bool switchInlineQuery = default,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         var textFormat = isForCollection
             ? Constants.StartCollectionMessageFormat
@@ -235,7 +245,8 @@ public class TestsFixture : IDisposable
         }
 
         IReplyMarkup replyMarkup = switchInlineQuery
-            ? (InlineKeyboardMarkup)InlineKeyboardButton.WithSwitchInlineQueryCurrentChat("Start inline query")
+            ? (InlineKeyboardMarkup)
+                InlineKeyboardButton.WithSwitchInlineQueryCurrentChat("Start inline query")
             : default;
 
         var task = BotClient.SendTextMessageAsync(
@@ -254,12 +265,15 @@ public class TestsFixture : IDisposable
         return await BotClient.GetChatAsync(supergroupChatId, cancellationToken);
     }
 
-    async Task<IEnumerable<string>> FindAllowedTesterUserNames(CancellationToken cancellationToken = default)
+    async Task<IEnumerable<string>> FindAllowedTesterUserNames(
+        CancellationToken cancellationToken = default
+    )
     {
         // Try to get user names from test configurations first
         var allowedUserNames = Configuration.AllowedUserNames;
 
-        if (allowedUserNames.Any()) return allowedUserNames;
+        if (allowedUserNames.Any())
+            return allowedUserNames;
 
         // Assume all chat admins are allowed testers
         var admins = await BotClient.GetChatAdministratorsAsync(SupergroupChat, cancellationToken);
@@ -279,7 +293,8 @@ public class TestsFixture : IDisposable
     async ValueTask OnMakingApiRequest(
         ITelegramBotClient botClient,
         ApiRequestEventArgs e,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         bool hasContent;
         string content;
@@ -297,7 +312,9 @@ public class TestsFixture : IDisposable
             {
                 if (formContent is StringContent stringContent)
                 {
-                    var stringifiedContent = await stringContent.ReadAsStringAsync(cancellationToken);
+                    var stringifiedContent = await stringContent.ReadAsStringAsync(
+                        cancellationToken
+                    );
                     stringifiedFormContent.Add(stringifiedContent);
                 }
                 else
@@ -321,9 +338,11 @@ public class TestsFixture : IDisposable
     async ValueTask OnApiResponseReceived(
         ITelegramBotClient botClient,
         ApiResponseEventArgs e,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
-        var content = await e.ResponseMessage.Content.ReadAsStringAsync(cancellationToken)
+        var content = await e.ResponseMessage.Content
+            .ReadAsStringAsync(cancellationToken)
             .ConfigureAwait(false);
 
         /* Debugging Hint: set breakpoints with conditions here in order to investigate the HTTP response received. */
@@ -338,8 +357,7 @@ public class TestsFixture : IDisposable
 
         public const string InstructionsMessageFormat = "👉 _Instructions_: 👈\n{0}";
 
-        public const string TestExecutionResultMessageFormat =
-            """
+        public const string TestExecutionResultMessageFormat = """
             Test execution is finished.
             Total: {0} tests
             ✅ `{1} passed`

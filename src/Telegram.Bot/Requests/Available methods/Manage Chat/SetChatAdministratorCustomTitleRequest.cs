@@ -8,7 +8,10 @@ namespace Telegram.Bot.Requests;
 /// Returns <see langword="true"/> on success.
 /// </summary>
 [JsonObject(MemberSerialization.OptIn, NamingStrategyType = typeof(SnakeCaseNamingStrategy))]
-public class SetChatAdministratorCustomTitleRequest : RequestBase<bool>, IChatTargetable, IUserTargetable
+public class SetChatAdministratorCustomTitleRequest
+    : RequestBase<bool>,
+        IChatTargetable,
+        IUserTargetable
 {
     /// <inheritdoc />
     [JsonProperty(Required = Required.Always)]

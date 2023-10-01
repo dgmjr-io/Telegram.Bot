@@ -20,7 +20,8 @@ public class XunitTestCollectionRunnerWithAssemblyFixture : XunitTestCollectionR
         IMessageBus messageBus,
         ITestCaseOrderer testCaseOrderer,
         ExceptionAggregator aggregator,
-        CancellationTokenSource cancellationTokenSource)
+        CancellationTokenSource cancellationTokenSource
+    )
         : base(
             testCollection,
             testCases,
@@ -28,7 +29,8 @@ public class XunitTestCollectionRunnerWithAssemblyFixture : XunitTestCollectionR
             messageBus,
             testCaseOrderer,
             aggregator,
-            cancellationTokenSource)
+            cancellationTokenSource
+        )
     {
         _assemblyFixtureMappings = assemblyFixtureMappings;
         _diagnosticMessageSink = diagnosticMessageSink;
@@ -37,7 +39,8 @@ public class XunitTestCollectionRunnerWithAssemblyFixture : XunitTestCollectionR
     protected override async Task<RunSummary> RunTestClassAsync(
         ITestClass testClass,
         IReflectionTypeInfo @class,
-        IEnumerable<IXunitTestCase> testCases)
+        IEnumerable<IXunitTestCase> testCases
+    )
     {
         // Don't want to use .Concat + .ToDictionary because of the possibility of overriding types,
         // so instead we'll just let collection fixtures override assembly fixtures.

@@ -108,7 +108,9 @@ public class QueuedUpdateReceiverTests
         Assert.Equal("foo", enumerator.Current.Message?.Text);
 
         cts.Cancel();
-        await Assert.ThrowsAnyAsync<OperationCanceledException>(async () => await enumerator.MoveNextAsync());
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(
+            async () => await enumerator.MoveNextAsync()
+        );
     }
 
     [Fact]
@@ -129,7 +131,9 @@ public class QueuedUpdateReceiverTests
 
         cts.CancelAfter(50);
 
-        await Assert.ThrowsAnyAsync<OperationCanceledException>(async () => await enumerator.MoveNextAsync());
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(
+            async () => await enumerator.MoveNextAsync()
+        );
 
         // ReSharper disable once MethodSupportsCancellation
         await Task.Delay(500);
@@ -154,7 +158,9 @@ public class QueuedUpdateReceiverTests
         await enumerator.MoveNextAsync();
         await enumerator.DisposeAsync();
 
-        await Assert.ThrowsAnyAsync<OperationCanceledException>(async () => await enumerator.MoveNextAsync());
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(
+            async () => await enumerator.MoveNextAsync()
+        );
     }
 
     [Fact]
@@ -164,17 +170,23 @@ public class QueuedUpdateReceiverTests
         CancellationTokenSource cts = new();
         bool seenException = false;
 
-        QueuedUpdateReceiver receiver = new(mockClient, pollingErrorHandler: (ex, _) =>
-        {
-            Assert.Same(mockClient.Options.ExceptionToThrow, ex);
-            seenException = true;
-            cts.Cancel();
-            return Task.CompletedTask;
-        });
+        QueuedUpdateReceiver receiver =
+            new(
+                mockClient,
+                pollingErrorHandler: (ex, _) =>
+                {
+                    Assert.Same(mockClient.Options.ExceptionToThrow, ex);
+                    seenException = true;
+                    cts.Cancel();
+                    return Task.CompletedTask;
+                }
+            );
 
         await using IAsyncEnumerator<Update> enumerator = receiver.GetAsyncEnumerator(cts.Token);
 
-        await Assert.ThrowsAsync<OperationCanceledException>(async () => await enumerator.MoveNextAsync());
+        await Assert.ThrowsAsync<OperationCanceledException>(
+            async () => await enumerator.MoveNextAsync()
+        );
         Assert.True(seenException);
     }
 
@@ -186,9 +198,13 @@ public class QueuedUpdateReceiverTests
 
         await using IAsyncEnumerator<Update> enumerator = receiver.GetAsyncEnumerator();
 
-        await Assert.ThrowsAsync<OperationCanceledException>(async () => await enumerator.MoveNextAsync());
+        await Assert.ThrowsAsync<OperationCanceledException>(
+            async () => await enumerator.MoveNextAsync()
+        );
 
-        Exception exception = await Assert.ThrowsAsync<Exception>(async () => await enumerator.MoveNextAsync());
+        Exception exception = await Assert.ThrowsAsync<Exception>(
+            async () => await enumerator.MoveNextAsync()
+        );
         Assert.Same(mockClient.Options.ExceptionToThrow, exception.InnerException);
     }
 
@@ -198,18 +214,28 @@ public class QueuedUpdateReceiverTests
         MockTelegramBotClient mockClient = new() { Options = { ExceptionToThrow = new("Oops") } };
         Exception? exceptionFromErrorHandler = null;
 
-        QueuedUpdateReceiver receiver = new(mockClient, pollingErrorHandler: (ex, _) =>
-        {
-            Assert.Same(mockClient.Options.ExceptionToThrow, ex);
-            throw exceptionFromErrorHandler = new("Oops2");
-        });
+        QueuedUpdateReceiver receiver =
+            new(
+                mockClient,
+                pollingErrorHandler: (ex, _) =>
+                {
+                    Assert.Same(mockClient.Options.ExceptionToThrow, ex);
+                    throw exceptionFromErrorHandler = new("Oops2");
+                }
+            );
 
         await using IAsyncEnumerator<Update> enumerator = receiver.GetAsyncEnumerator();
 
-        await Assert.ThrowsAsync<OperationCanceledException>(async () => await enumerator.MoveNextAsync());
+        await Assert.ThrowsAsync<OperationCanceledException>(
+            async () => await enumerator.MoveNextAsync()
+        );
 
-        Exception exception = await Assert.ThrowsAsync<Exception>(async () => await enumerator.MoveNextAsync());
-        AggregateException aggregateException = Assert.IsType<AggregateException>(exception.InnerException);
+        Exception exception = await Assert.ThrowsAsync<Exception>(
+            async () => await enumerator.MoveNextAsync()
+        );
+        AggregateException aggregateException = Assert.IsType<AggregateException>(
+            exception.InnerException
+        );
 
         Assert.NotNull(aggregateException);
         Assert.Equal(2, aggregateException.InnerExceptions.Count);

@@ -55,7 +55,9 @@ public class PromoteChatMemberRequest : RequestBase<bool>, IChatTargetable, IUse
     /// <summary>
     /// Pass <see langword="true"/>, if the administrator can manage voice chats
     /// </summary>
-    [Obsolete("This property will be removed in the next major version, use CanManageVideoChat instead")]
+    [Obsolete(
+        "This property will be removed in the next major version, use CanManageVideoChat instead"
+    )]
     [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
     public bool? CanManageVoiceChat { get; set; }
 

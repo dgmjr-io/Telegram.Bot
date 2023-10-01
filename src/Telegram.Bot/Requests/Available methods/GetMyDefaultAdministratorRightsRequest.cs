@@ -19,6 +19,5 @@ public class GetMyDefaultAdministratorRightsRequest : RequestBase<ChatAdministra
     ///
     /// </summary>
     public GetMyDefaultAdministratorRightsRequest()
-        : base("getMyDefaultAdministratorRights")
-    { }
+        : base("getMyDefaultAdministratorRights") { }
 }

@@ -5,5 +5,4 @@ namespace Telegram.Bot.Types;
 /// </summary>
 [Obsolete("This type will be removed in the next major version, use VoiceChatStarted instead")]
 [JsonObject(MemberSerialization.OptIn, NamingStrategyType = typeof(SnakeCaseNamingStrategy))]
-public class VoiceChatStarted
-{ }
+public class VoiceChatStarted { }

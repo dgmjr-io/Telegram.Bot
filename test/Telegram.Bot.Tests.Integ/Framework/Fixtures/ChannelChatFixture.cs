@@ -15,33 +15,33 @@ public class ChannelChatFixture : AsyncLifetimeFixture
     {
         _testsFixture = testsFixture;
 
-        AddLifetime(
-            initialize: async () =>
-            {
-                _testsFixture.ChannelChat ??= await GetChat(collectionName);
-                ChannelChat = _testsFixture.ChannelChat;
+        AddLifetime(initialize: async () =>
+        {
+            _testsFixture.ChannelChat ??= await GetChat(collectionName);
+            ChannelChat = _testsFixture.ChannelChat;
 
-                ChannelChatId = ChannelChat;
+            ChannelChatId = ChannelChat;
 
-                await _testsFixture.SendTestCollectionNotificationAsync(
-                    collectionName,
-                    $"Tests will be executed in channel {ChannelChatId}"
-                );
-            }
-        );
+            await _testsFixture.SendTestCollectionNotificationAsync(
+                collectionName,
+                $"Tests will be executed in channel {ChannelChatId}"
+            );
+        });
     }
 
     async Task<Chat> GetChat(string collectionName)
     {
         var chatId = _testsFixture.Configuration.ChannelChatId;
-        if (chatId is not null) return await _testsFixture.BotClient.GetChatAsync(chatId.Value);
+        if (chatId is not null)
+            return await _testsFixture.BotClient.GetChatAsync(chatId.Value);
 
         await _testsFixture.UpdateReceiver.DiscardNewUpdatesAsync();
 
         string botUserName = _testsFixture.BotUser.GetSafeUsername();
-        await _testsFixture.SendTestCollectionNotificationAsync(collectionName,
-            "No channel is set in test settings. Tester should forward a message from a channel " +
-            $"so bot can run tests there. @{botUserName} must be an admin in that channel."
+        await _testsFixture.SendTestCollectionNotificationAsync(
+            collectionName,
+            "No channel is set in test settings. Tester should forward a message from a channel "
+                + $"so bot can run tests there. @{botUserName} must be an admin in that channel."
         );
 
         return await _testsFixture.GetChatFromTesterAsync(ChatType.Channel);

@@ -51,7 +51,8 @@ public class UpdateReceiver
                     cancellationToken: cancellationToken
                 );
 
-                if (updates.Length == 0) break;
+                if (updates.Length == 0)
+                    break;
 
                 offset = updates[^1].Id + 1;
             }
@@ -66,7 +67,8 @@ public class UpdateReceiver
         Func<Update, bool>? predicate = default,
         int offset = 0,
         CancellationToken cancellationToken = default,
-        params UpdateType[] updateTypes)
+        params UpdateType[] updateTypes
+    )
     {
         CancellationTokenSource? cts = default;
         predicate ??= PassthroughPredicate;
@@ -93,7 +95,10 @@ public class UpdateReceiver
                     .Where(u => updateTypes.Contains(u.Type) && predicate(u))
                     .ToArray();
 
-                if (matchingUpdates.Length > 0) { break; }
+                if (matchingUpdates.Length > 0)
+                {
+                    break;
+                }
 
                 offset = updates.LastOrDefault()?.Id + 1 ?? 0;
                 await Task.Delay(TimeSpan.FromSeconds(1.5), cancellationToken);
@@ -116,7 +121,8 @@ public class UpdateReceiver
         int offset = 0,
         UpdatePosition updatePosition = UpdatePosition.Last,
         CancellationToken cancellationToken = default,
-        params UpdateType[] updateTypes)
+        params UpdateType[] updateTypes
+    )
     {
         Update[] updates = await GetUpdatesAsync(
             predicate: predicate,
@@ -138,34 +144,49 @@ public class UpdateReceiver
         int? messageId = default,
         string? data = default,
         bool discardNewUpdates = true,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
-        if (discardNewUpdates) { await DiscardNewUpdatesAsync(cancellationToken); }
+        if (discardNewUpdates)
+        {
+            await DiscardNewUpdatesAsync(cancellationToken);
+        }
 
         var updates = await GetUpdatesAsync(
-            predicate: u => (messageId is null || u.CallbackQuery?.Message?.MessageId == messageId) &&
-                            (data is null || u.CallbackQuery?.Data == data),
-            updateTypes: new [] { UpdateType.CallbackQuery },
+            predicate: u =>
+                (messageId is null || u.CallbackQuery?.Message?.MessageId == messageId)
+                && (data is null || u.CallbackQuery?.Data == data),
+            updateTypes: new[] { UpdateType.CallbackQuery },
             cancellationToken: cancellationToken
         );
 
-        if (discardNewUpdates) { await DiscardNewUpdatesAsync(cancellationToken); }
+        if (discardNewUpdates)
+        {
+            await DiscardNewUpdatesAsync(cancellationToken);
+        }
 
         return updates.First();
     }
 
     public async Task<Update> GetInlineQueryUpdateAsync(
         bool discardNewUpdates = true,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
-        if (discardNewUpdates) { await DiscardNewUpdatesAsync(cancellationToken); }
+        if (discardNewUpdates)
+        {
+            await DiscardNewUpdatesAsync(cancellationToken);
+        }
 
         var updates = await GetUpdatesAsync(
-            updateTypes: new [] { UpdateType.InlineQuery },
+            updateTypes: new[] { UpdateType.InlineQuery },
             cancellationToken: cancellationToken
         );
 
-        if (discardNewUpdates) { await DiscardNewUpdatesAsync(cancellationToken); }
+        if (discardNewUpdates)
+        {
+            await DiscardNewUpdatesAsync(cancellationToken);
+        }
 
         return updates.First();
     }
@@ -178,10 +199,14 @@ public class UpdateReceiver
     /// <param name="messageType">Type of message for chosen inline query e.g. Text message for article results</param>
     /// <param name="cancellationToken"></param>
     /// <returns>Message update generated for chosen result, and the update for chosen inline query result</returns>
-    public async Task<(Update MessageUpdate, Update ChosenResultUpdate)> GetInlineQueryResultUpdates(
+    public async Task<(
+        Update MessageUpdate,
+        Update ChosenResultUpdate
+    )> GetInlineQueryResultUpdates(
         long chatId,
         MessageType messageType,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         Update? messageUpdate = default;
         Update? chosenResultUpdate = default;
@@ -190,15 +215,20 @@ public class UpdateReceiver
         {
             await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
             var updates = await GetUpdatesAsync(
-                predicate: u => (u.Message is { Chat.Id: var id, Type: var type } &&
-                                 id == chatId && type == messageType) ||
-                                u.ChosenInlineResult is not null,
+                predicate: u =>
+                    (
+                        u.Message is { Chat.Id: var id, Type: var type }
+                        && id == chatId
+                        && type == messageType
+                    ) || u.ChosenInlineResult is not null,
                 cancellationToken: cancellationToken,
                 updateTypes: new[] { UpdateType.Message, UpdateType.ChosenInlineResult }
             );
 
             messageUpdate = updates.SingleOrDefault(u => u.Message?.Type == messageType);
-            chosenResultUpdate = updates.SingleOrDefault(u => u.Type == UpdateType.ChosenInlineResult);
+            chosenResultUpdate = updates.SingleOrDefault(
+                u => u.Type == UpdateType.ChosenInlineResult
+            );
         }
 
         cancellationToken.ThrowIfCancellationRequested();
@@ -208,14 +238,14 @@ public class UpdateReceiver
         static bool ShouldContinue(
             CancellationToken cancellationToken,
             (Update? update1, Update? update2) updates
-        ) =>
-            !cancellationToken.IsCancellationRequested && updates is not ({}, {});
+        ) => !cancellationToken.IsCancellationRequested && updates is not ({ }, { });
     }
 
     async Task<Update[]> GetOnlyAllowedUpdatesAsync(
         int offset,
         CancellationToken cancellationToken,
-        params UpdateType[] types)
+        params UpdateType[] types
+    )
     {
         var updates = await _botClient.GetUpdatesAsync(
             offset: offset,
@@ -229,33 +259,38 @@ public class UpdateReceiver
 
     bool IsAllowed(Update update)
     {
-        if (AllowedUsernames.All(string.IsNullOrWhiteSpace)) { return true; }
+        if (AllowedUsernames.All(string.IsNullOrWhiteSpace))
+        {
+            return true;
+        }
 
         return update.Type switch
         {
             UpdateType.Message
-                or UpdateType.InlineQuery
-                or UpdateType.CallbackQuery
-                or UpdateType.PreCheckoutQuery
-                or UpdateType.ShippingQuery
-                or UpdateType.ChosenInlineResult
-                or UpdateType.PollAnswer
-                or UpdateType.ChatMember
-                or UpdateType.MyChatMember
-                or UpdateType.ChatJoinRequest =>
-                AllowedUsernames.Contains(
+            or UpdateType.InlineQuery
+            or UpdateType.CallbackQuery
+            or UpdateType.PreCheckoutQuery
+            or UpdateType.ShippingQuery
+            or UpdateType.ChosenInlineResult
+            or UpdateType.PollAnswer
+            or UpdateType.ChatMember
+            or UpdateType.MyChatMember
+            or UpdateType.ChatJoinRequest
+                => AllowedUsernames.Contains(
                     update.GetUser().Username,
                     StringComparer.OrdinalIgnoreCase
                 ),
             UpdateType.Poll => true,
             UpdateType.EditedMessage
-                or UpdateType.ChannelPost
-                or UpdateType.EditedChannelPost => false,
-            _ => throw new ArgumentOutOfRangeException(
-                paramName: nameof(update.Type),
-                actualValue: update.Type,
-                message: $"Unsupported update type {update.Type}"
-            ),
+            or UpdateType.ChannelPost
+            or UpdateType.EditedChannelPost
+                => false,
+            _
+                => throw new ArgumentOutOfRangeException(
+                    paramName: nameof(update.Type),
+                    actualValue: update.Type,
+                    message: $"Unsupported update type {update.Type}"
+                ),
         };
     }
 }

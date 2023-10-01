@@ -12,8 +12,7 @@ public abstract class AsyncLifetimeFixture : IAsyncLifetime
 {
     readonly List<IAsyncLifetime> _lifetimes = new();
 
-    protected void AddLifetime(IAsyncLifetime lifetime) =>
-        _lifetimes.Add(lifetime);
+    protected void AddLifetime(IAsyncLifetime lifetime) => _lifetimes.Add(lifetime);
 
     protected void AddLifetime(Func<Task>? initialize = default, Func<Task>? dispose = default) =>
         _lifetimes.Add(new AsyncLifetimeAction(initialize, dispose));
@@ -72,12 +71,18 @@ public abstract class AsyncLifetimeFixture : IAsyncLifetime
 
         public async Task InitializeAsync()
         {
-            if (_initialize is not null) { await _initialize(); }
+            if (_initialize is not null)
+            {
+                await _initialize();
+            }
         }
 
         public async Task DisposeAsync()
         {
-            if (_dispose is not null) { await _dispose(); }
+            if (_dispose is not null)
+            {
+                await _dispose();
+            }
         }
     }
 }

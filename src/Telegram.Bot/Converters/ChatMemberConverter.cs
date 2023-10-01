@@ -10,6 +10,7 @@ internal class ChatMemberConverter : JsonConverter
 
     public override bool CanWrite => false;
     public override bool CanRead => true;
+
     public override bool CanConvert(Type objectType) =>
         BaseType.IsAssignableFrom(objectType.GetTypeInfo());
 
@@ -30,7 +31,8 @@ internal class ChatMemberConverter : JsonConverter
         JsonReader reader,
         Type objectType,
         object? existingValue,
-        JsonSerializer serializer)
+        JsonSerializer serializer
+    )
     {
         var jo = JObject.Load(reader);
         var status = jo["status"]?.ToObject<ChatMemberStatus>();
@@ -48,7 +50,10 @@ internal class ChatMemberConverter : JsonConverter
             ChatMemberStatus.Left => typeof(ChatMemberLeft),
             ChatMemberStatus.Kicked => typeof(ChatMemberBanned),
             ChatMemberStatus.Restricted => typeof(ChatMemberRestricted),
-            _ => throw new JsonSerializationException($"Unknown chat member status value of '{jo["status"]}'")
+            _
+                => throw new JsonSerializationException(
+                    $"Unknown chat member status value of '{jo["status"]}'"
+                )
         };
 
         // Remove status because status property only has getter

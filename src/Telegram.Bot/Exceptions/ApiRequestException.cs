@@ -25,8 +25,7 @@ public class ApiRequestException : RequestException
     /// </summary>
     /// <param name="message">The message that describes the error.</param>
     public ApiRequestException(string message)
-        : base(message)
-    { }
+        : base(message) { }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ApiRequestException"/> class.
@@ -34,8 +33,7 @@ public class ApiRequestException : RequestException
     /// <param name="message">The message.</param>
     /// <param name="errorCode">The error code.</param>
     public ApiRequestException(string message, int errorCode)
-        : base(message) =>
-        ErrorCode = errorCode;
+        : base(message) => ErrorCode = errorCode;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ApiRequestException"/> class.
@@ -46,8 +44,7 @@ public class ApiRequestException : RequestException
     /// if no inner exception is specified.
     /// </param>
     public ApiRequestException(string message, Exception innerException)
-        : base(message, innerException)
-    { }
+        : base(message, innerException) { }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ApiRequestException"/> class.
@@ -56,8 +53,7 @@ public class ApiRequestException : RequestException
     /// <param name="errorCode">The error code.</param>
     /// <param name="innerException">The inner exception.</param>
     public ApiRequestException(string message, int errorCode, Exception innerException)
-        : base(message, innerException) =>
-        ErrorCode = errorCode;
+        : base(message, innerException) => ErrorCode = errorCode;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ApiRequestException"/> class
@@ -83,7 +79,8 @@ public class ApiRequestException : RequestException
         string message,
         int errorCode,
         ResponseParameters? parameters,
-        Exception innerException)
+        Exception innerException
+    )
         : base(message, innerException)
     {
         ErrorCode = errorCode;

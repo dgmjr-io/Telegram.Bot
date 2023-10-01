@@ -73,7 +73,8 @@ public class SendStickerRequest : FileRequestBase<Message>, IChatTargetable
     public override HttpContent? ToHttpContent() =>
         Sticker switch
         {
-            InputFile sticker => ToMultipartFormDataContent(fileParameterName: "sticker", inputFile: sticker),
-            _                 => base.ToHttpContent()
+            InputFile sticker
+                => ToMultipartFormDataContent(fileParameterName: "sticker", inputFile: sticker),
+            _ => base.ToHttpContent()
         };
 }

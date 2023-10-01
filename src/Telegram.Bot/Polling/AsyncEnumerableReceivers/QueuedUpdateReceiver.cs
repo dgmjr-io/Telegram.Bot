@@ -38,7 +38,8 @@ public class QueuedUpdateReceiver : IAsyncEnumerable<Update>
     public QueuedUpdateReceiver(
         ITelegramBotClient botClient,
         ReceiverOptions? receiverOptions = default,
-        Func<Exception, CancellationToken, Task>? pollingErrorHandler = default)
+        Func<Exception, CancellationToken, Task>? pollingErrorHandler = default
+    )
     {
         _botClient = botClient ?? throw new ArgumentNullException(nameof(botClient));
         _receiverOptions = receiverOptions;
@@ -56,11 +57,15 @@ public class QueuedUpdateReceiver : IAsyncEnumerable<Update>
     /// <param name="cancellationToken">
     /// The <see cref="CancellationToken"/> with which you can stop receiving
     /// </param>
-    public IAsyncEnumerator<Update> GetAsyncEnumerator(CancellationToken cancellationToken = default)
+    public IAsyncEnumerator<Update> GetAsyncEnumerator(
+        CancellationToken cancellationToken = default
+    )
     {
         if (Interlocked.CompareExchange(ref _inProcess, 1, 0) is 1)
         {
-            throw new InvalidOperationException(nameof(GetAsyncEnumerator) + " may only be called once");
+            throw new InvalidOperationException(
+                nameof(GetAsyncEnumerator) + " may only be called once"
+            );
         }
 
         _enumerator = new(receiver: this, cancellationToken: cancellationToken);
@@ -96,11 +101,7 @@ public class QueuedUpdateReceiver : IAsyncEnumerable<Update>
             _allowedUpdates = receiver._receiverOptions?.AllowedUpdates;
 
             _channel = Channel.CreateUnbounded<Update>(
-                new()
-                {
-                    SingleReader = true,
-                    SingleWriter = true
-                }
+                new() { SingleReader = true, SingleWriter = true }
             );
 
 #pragma warning disable CA2016
@@ -110,7 +111,10 @@ public class QueuedUpdateReceiver : IAsyncEnumerable<Update>
 
         public ValueTask<bool> MoveNextAsync()
         {
-            if (_uncaughtException is not null) { throw _uncaughtException; }
+            if (_uncaughtException is not null)
+            {
+                throw _uncaughtException;
+            }
 
             _token.ThrowIfCancellationRequested();
 
@@ -136,9 +140,9 @@ public class QueuedUpdateReceiver : IAsyncEnumerable<Update>
             {
                 try
                 {
-                    _messageOffset = await _receiver._botClient.ThrowOutPendingUpdatesAsync(
-                        cancellationToken: _token
-                    ).ConfigureAwait(false);
+                    _messageOffset = await _receiver._botClient
+                        .ThrowOutPendingUpdatesAsync(cancellationToken: _token)
+                        .ConfigureAwait(false);
                 }
                 catch (OperationCanceledException)
                 {
@@ -174,7 +178,10 @@ public class QueuedUpdateReceiver : IAsyncEnumerable<Update>
                         {
                             // ReSharper disable once RedundantAssignment
                             var success = writer.TryWrite(update);
-                            Debug.Assert(success, "TryWrite should succeed as we are using an unbounded channel");
+                            Debug.Assert(
+                                success,
+                                "TryWrite should succeed as we are using an unbounded channel"
+                            );
                         }
                     }
                 }

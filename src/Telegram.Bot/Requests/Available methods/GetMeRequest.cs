@@ -12,6 +12,5 @@ public class GetMeRequest : ParameterlessRequest<User>
     /// Initializes a new request
     /// </summary>
     public GetMeRequest()
-        : base("getMe")
-    { }
+        : base("getMe") { }
 }

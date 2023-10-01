@@ -19,8 +19,7 @@ public class RequestException : Exception
     /// </summary>
     /// <param name="message">The message that describes the error.</param>
     public RequestException(string message)
-        : base(message)
-    { }
+        : base(message) { }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="RequestException"/> class.
@@ -33,8 +32,7 @@ public class RequestException : Exception
     /// (Nothing in Visual Basic) if no inner exception is specified.
     /// </param>
     public RequestException(string message, Exception innerException)
-        : base(message, innerException)
-    { }
+        : base(message, innerException) { }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="RequestException"/> class.
@@ -46,8 +44,7 @@ public class RequestException : Exception
     /// <see cref="HttpStatusCode"/> of the received response
     /// </param>
     public RequestException(string message, HttpStatusCode httpStatusCode)
-        : base(message) =>
-        HttpStatusCode = httpStatusCode;
+        : base(message) => HttpStatusCode = httpStatusCode;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="RequestException"/> class.
@@ -63,6 +60,5 @@ public class RequestException : Exception
     /// (Nothing in Visual Basic) if no inner exception is specified.
     /// </param>
     public RequestException(string message, HttpStatusCode httpStatusCode, Exception innerException)
-        : base(message, innerException) =>
-        HttpStatusCode = httpStatusCode;
+        : base(message, innerException) => HttpStatusCode = httpStatusCode;
 }

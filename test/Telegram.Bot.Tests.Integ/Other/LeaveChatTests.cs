@@ -17,14 +17,11 @@ public class LeaveChatTests
         _fixture = fixture;
     }
 
-    [OrderedFact("Should leave chat",
-        Skip = "Bot should stay in chat for other the test cases")]
+    [OrderedFact("Should leave chat", Skip = "Bot should stay in chat for other the test cases")]
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.LeaveChat)]
     public async Task Should_Get_Private_Chat()
     {
         // ToDo: Exception when leaving private chat
-        await BotClient.LeaveChatAsync(
-            chatId: _fixture.SupergroupChat
-        );
+        await BotClient.LeaveChatAsync(chatId: _fixture.SupergroupChat);
     }
 }

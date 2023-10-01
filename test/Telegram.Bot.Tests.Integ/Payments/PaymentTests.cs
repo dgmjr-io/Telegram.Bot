@@ -36,18 +36,24 @@ public class PaymentTests : IClassFixture<PaymentFixture>, IAsyncLifetime
     public async Task Should_Send_Invoice()
     {
         PaymentsBuilder paymentsBuilder = new PaymentsBuilder()
-            .WithProduct(_ => _
-                .WithTitle(title: "Lunar crater \"Copernicus\"")
-                .WithDescription(description:
-                    "It was named after the astronomer Nicolaus Copernicus. It may have been created by debris" +
-                    " from the breakup of the parent body of asteroid 495 Eulalia 800 million years ago.")
-                .WithProductPrice(label: "Price of land inside of the crater", amount: 400_000)
-                .WithProductPrice(label: "One-time fee", amount: 10_000)
-                .WithPhoto(
-                    url: "https://upload.wikimedia.org/wikipedia/commons/d/d4/Copernicus_%28LRO%29_2.png",
-                    width: 1264,
-                    height: 1264
-                ))
+            .WithProduct(
+                _ =>
+                    _.WithTitle(title: "Lunar crater \"Copernicus\"")
+                        .WithDescription(
+                            description: "It was named after the astronomer Nicolaus Copernicus. It may have been created by debris"
+                                + " from the breakup of the parent body of asteroid 495 Eulalia 800 million years ago."
+                        )
+                        .WithProductPrice(
+                            label: "Price of land inside of the crater",
+                            amount: 400_000
+                        )
+                        .WithProductPrice(label: "One-time fee", amount: 10_000)
+                        .WithPhoto(
+                            url: "https://upload.wikimedia.org/wikipedia/commons/d/d4/Copernicus_%28LRO%29_2.png",
+                            width: 1264,
+                            height: 1264
+                        )
+            )
             .WithCurrency(currency: "USD")
             .WithStartParameter(startParameter: "crater-copernicus")
             .WithPayload(payload: "<my-payload>")
@@ -75,23 +81,28 @@ public class PaymentTests : IClassFixture<PaymentFixture>, IAsyncLifetime
     public async Task Should_Answer_Shipping_Query_With_Ok()
     {
         PaymentsBuilder paymentsBuilder = new PaymentsBuilder()
-            .WithProduct(_ => _
-                .WithTitle(title: "Reproduction of \"La nascita di Venere\"")
-                .WithDescription(description:
-                    "Sandro Botticelli’s the Birth of Venus depicts the goddess Venus arriving at the shore" +
-                    " after her birth, when she had emerged from the sea fully-grown ")
-                .WithProductPrice(label: "Price of the painting", amount: 500_000)
-                .WithProductPrice(label: "Wooden frame", amount: 100_000)
-                .WithPhoto(
-                    url: "https://cdn.pixabay.com/photo/2012/10/26/03/16/painting-63186_1280.jpg",
-                    width: 1280,
-                    height: 820
-                ))
-            .WithShipping(_ => _
-                .WithTitle(title: "DHL Express")
-                .WithId(id: "dhl-express")
-                .WithPrice(label: "Packaging", amount: 400_000)
-                .WithPrice(label: "Shipping price", amount: 337_600))
+            .WithProduct(
+                _ =>
+                    _.WithTitle(title: "Reproduction of \"La nascita di Venere\"")
+                        .WithDescription(
+                            description: "Sandro Botticelli’s the Birth of Venus depicts the goddess Venus arriving at the shore"
+                                + " after her birth, when she had emerged from the sea fully-grown "
+                        )
+                        .WithProductPrice(label: "Price of the painting", amount: 500_000)
+                        .WithProductPrice(label: "Wooden frame", amount: 100_000)
+                        .WithPhoto(
+                            url: "https://cdn.pixabay.com/photo/2012/10/26/03/16/painting-63186_1280.jpg",
+                            width: 1280,
+                            height: 820
+                        )
+            )
+            .WithShipping(
+                _ =>
+                    _.WithTitle(title: "DHL Express")
+                        .WithId(id: "dhl-express")
+                        .WithPrice(label: "Packaging", amount: 400_000)
+                        .WithPrice(label: "Shipping price", amount: 337_600)
+            )
             .WithCurrency(currency: "USD")
             .WithPayload("<my-payload>")
             .WithFlexible()
@@ -103,7 +114,9 @@ public class PaymentTests : IClassFixture<PaymentFixture>, IAsyncLifetime
             .GetTotalAmountWithoutShippingCost()
             .CurrencyFormat();
 
-        string instruction = FormatInstructionWithCurrency($"Click on *Pay {totalCostWithoutShippingCost:C}* and send your shipping address.");
+        string instruction = FormatInstructionWithCurrency(
+            $"Click on *Pay {totalCostWithoutShippingCost:C}* and send your shipping address."
+        );
         await _fixture.SendTestInstructionsAsync(instruction, chatId: _classFixture.PrivateChat.Id);
 
         SendInvoiceRequest requestRequest = paymentsBuilder.BuildInvoiceRequest();
@@ -127,29 +140,36 @@ public class PaymentTests : IClassFixture<PaymentFixture>, IAsyncLifetime
         Assert.NotNull(shippingUpdate.ShippingQuery.ShippingAddress.PostCode);
     }
 
-    [OrderedFact("Should send invoice for no shipment option, and reply pre-checkout query with OK.")]
+    [OrderedFact(
+        "Should send invoice for no shipment option, and reply pre-checkout query with OK."
+    )]
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.SendInvoice)]
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.AnswerPreCheckoutQuery)]
     public async Task Should_Answer_PreCheckout_Query_With_Ok_And_Shipment_Option()
     {
         PaymentsBuilder paymentsBuilder = new PaymentsBuilder()
-            .WithProduct(_ => _
-                .WithTitle(title: "Reproduction of \"La nascita di Venere\"")
-                .WithDescription(description:
-                    "Sandro Botticelli’s the Birth of Venus depicts the goddess Venus arriving at the shore" +
-                    " after her birth, when she had emerged from the sea fully-grown ")
-                .WithProductPrice(label: "Price of the painting", amount: 500_000)
-                .WithProductPrice(label: "Wooden frame", amount: 100_000)
-                .WithPhoto(
-                    url: "https://cdn.pixabay.com/photo/2012/10/26/03/16/painting-63186_1280.jpg",
-                    width: 1280,
-                    height: 820
-                ))
-            .WithShipping(_ => _
-                .WithTitle(title: "DHL Express")
-                .WithId(id: "dhl-express")
-                .WithPrice(label: "Packaging", amount: 400_000)
-                .WithPrice(label: "Shipping price", amount: 337_600))
+            .WithProduct(
+                _ =>
+                    _.WithTitle(title: "Reproduction of \"La nascita di Venere\"")
+                        .WithDescription(
+                            description: "Sandro Botticelli’s the Birth of Venus depicts the goddess Venus arriving at the shore"
+                                + " after her birth, when she had emerged from the sea fully-grown "
+                        )
+                        .WithProductPrice(label: "Price of the painting", amount: 500_000)
+                        .WithProductPrice(label: "Wooden frame", amount: 100_000)
+                        .WithPhoto(
+                            url: "https://cdn.pixabay.com/photo/2012/10/26/03/16/painting-63186_1280.jpg",
+                            width: 1280,
+                            height: 820
+                        )
+            )
+            .WithShipping(
+                _ =>
+                    _.WithTitle(title: "DHL Express")
+                        .WithId(id: "dhl-express")
+                        .WithPrice(label: "Packaging", amount: 400_000)
+                        .WithPrice(label: "Shipping price", amount: 337_600)
+            )
             .WithCurrency("USD")
             .WithPayload("<my-payload>")
             .WithFlexible()
@@ -181,9 +201,7 @@ public class PaymentTests : IClassFixture<PaymentFixture>, IAsyncLifetime
         Update preCheckoutUpdate = await GetPreCheckoutQueryUpdate();
         PreCheckoutQuery query = preCheckoutUpdate.PreCheckoutQuery;
 
-        await _fixture.BotClient.AnswerPreCheckoutQueryAsync(
-            preCheckoutQueryId: query!.Id
-        );
+        await _fixture.BotClient.AnswerPreCheckoutQueryAsync(preCheckoutQueryId: query!.Id);
 
         PreliminaryInvoice preliminaryInvoice = paymentsBuilder.GetPreliminaryInvoice();
         int totalAmount = paymentsBuilder.GetTotalAmount();
@@ -207,23 +225,28 @@ public class PaymentTests : IClassFixture<PaymentFixture>, IAsyncLifetime
     public async Task Should_Receive_Successful_Payment_With_Shipment_Option()
     {
         PaymentsBuilder paymentsBuilder = new PaymentsBuilder()
-            .WithProduct(_ => _
-                .WithTitle(title: "Reproduction of \"La nascita di Venere\"")
-                .WithDescription(description:
-                    "Sandro Botticelli’s the Birth of Venus depicts the goddess Venus arriving at the shore" +
-                    " after her birth, when she had emerged from the sea fully-grown ")
-                .WithProductPrice(label: "Price of the painting", amount: 500_000)
-                .WithProductPrice(label: "Wooden frame", amount: 100_000)
-                .WithPhoto(
-                    url: "https://cdn.pixabay.com/photo/2012/10/26/03/16/painting-63186_1280.jpg",
-                    width: 1280,
-                    height: 820
-                ))
-            .WithShipping(_ => _
-                .WithTitle(title: "DHL Express")
-                .WithId(id: "dhl-express")
-                .WithPrice(label: "Packaging", amount: 400_000)
-                .WithPrice(label: "Shipping price", amount: 337_600))
+            .WithProduct(
+                _ =>
+                    _.WithTitle(title: "Reproduction of \"La nascita di Venere\"")
+                        .WithDescription(
+                            description: "Sandro Botticelli’s the Birth of Venus depicts the goddess Venus arriving at the shore"
+                                + " after her birth, when she had emerged from the sea fully-grown "
+                        )
+                        .WithProductPrice(label: "Price of the painting", amount: 500_000)
+                        .WithProductPrice(label: "Wooden frame", amount: 100_000)
+                        .WithPhoto(
+                            url: "https://cdn.pixabay.com/photo/2012/10/26/03/16/painting-63186_1280.jpg",
+                            width: 1280,
+                            height: 820
+                        )
+            )
+            .WithShipping(
+                _ =>
+                    _.WithTitle(title: "DHL Express")
+                        .WithId(id: "dhl-express")
+                        .WithPrice(label: "Packaging", amount: 400_000)
+                        .WithPrice(label: "Shipping price", amount: 337_600)
+            )
             .WithCurrency("USD")
             .WithPayload("<my-payload>")
             .RequireEmail()
@@ -260,9 +283,7 @@ public class PaymentTests : IClassFixture<PaymentFixture>, IAsyncLifetime
         Update preCheckoutUpdate = await GetPreCheckoutQueryUpdate();
         PreCheckoutQuery query = preCheckoutUpdate.PreCheckoutQuery;
 
-        await _fixture.BotClient.AnswerPreCheckoutQueryAsync(
-            preCheckoutQueryId: query!.Id
-        );
+        await _fixture.BotClient.AnswerPreCheckoutQueryAsync(preCheckoutQueryId: query!.Id);
 
         Update successfulPaymentUpdate = await GetSuccessfulPaymentUpdate();
         SuccessfulPayment successfulPayment = successfulPaymentUpdate.Message!.SuccessfulPayment;
@@ -291,17 +312,19 @@ public class PaymentTests : IClassFixture<PaymentFixture>, IAsyncLifetime
     public async Task Should_Receive_Successful_Payment_With_A_Tip()
     {
         PaymentsBuilder paymentsBuilder = new PaymentsBuilder()
-            .WithProduct(_ => _
-                .WithTitle(title: "Three tasty donuts")
-                .WithDescription(description: "Donuts with special glaze")
-                .WithProductPrice(label: "Donut with chocolate glaze", amount: 550)
-                .WithProductPrice(label: "Donut with vanilla glaze", amount: 500)
-                .WithProductPrice(label: "Donut with glaze", amount: 500)
-                .WithPhoto(
-                    url: "https://cdn.pixabay.com/photo/2017/11/22/00/18/donuts-2969490_960_720.jpg",
-                    width: 960,
-                    height: 640
-                ))
+            .WithProduct(
+                _ =>
+                    _.WithTitle(title: "Three tasty donuts")
+                        .WithDescription(description: "Donuts with special glaze")
+                        .WithProductPrice(label: "Donut with chocolate glaze", amount: 550)
+                        .WithProductPrice(label: "Donut with vanilla glaze", amount: 500)
+                        .WithProductPrice(label: "Donut with glaze", amount: 500)
+                        .WithPhoto(
+                            url: "https://cdn.pixabay.com/photo/2017/11/22/00/18/donuts-2969490_960_720.jpg",
+                            width: 960,
+                            height: 640
+                        )
+            )
             .WithCurrency("USD")
             .WithPayload("<my-payload>")
             .WithSuggestedTips(100, 150, 200)
@@ -323,15 +346,13 @@ public class PaymentTests : IClassFixture<PaymentFixture>, IAsyncLifetime
         Update preCheckoutUpdate = await GetPreCheckoutQueryUpdate();
         PreCheckoutQuery query = preCheckoutUpdate.PreCheckoutQuery;
 
-        await _fixture.BotClient.AnswerPreCheckoutQueryAsync(
-            preCheckoutQueryId: query!.Id
-        );
+        await _fixture.BotClient.AnswerPreCheckoutQueryAsync(preCheckoutQueryId: query!.Id);
 
         Update successfulPaymentUpdate = await GetSuccessfulPaymentUpdate();
         SuccessfulPayment successfulPayment = successfulPaymentUpdate.Message!.SuccessfulPayment;
         int totalAmount = paymentsBuilder.GetTotalAmount();
 
-        int[] suggestedTips = {100, 150, 200};
+        int[] suggestedTips = { 100, 150, 200 };
         int[] totalAmountWithTip = suggestedTips.Select(_ => _ + totalAmount).ToArray();
 
         Assert.Contains(totalAmountWithTip, _ => _ == successfulPayment!.TotalAmount);
@@ -346,23 +367,28 @@ public class PaymentTests : IClassFixture<PaymentFixture>, IAsyncLifetime
     public async Task Should_Answer_Shipping_Query_With_Error()
     {
         PaymentsBuilder paymentsBuilder = new PaymentsBuilder()
-            .WithProduct(_ => _
-                .WithTitle(title: "Reproduction of \"La nascita di Venere\"")
-                .WithDescription(description:
-                    "Sandro Botticelli’s the Birth of Venus depicts the goddess Venus arriving at the shore" +
-                    " after her birth, when she had emerged from the sea fully-grown ")
-                .WithProductPrice(label: "Price of the painting", amount: 500_000)
-                .WithProductPrice(label: "Wooden frame", amount: 100_000)
-                .WithPhoto(
-                    url: "https://cdn.pixabay.com/photo/2012/10/26/03/16/painting-63186_1280.jpg",
-                    width: 1280,
-                    height: 820
-                ))
-            .WithShipping(_ => _
-                .WithTitle(title: "DHL Express")
-                .WithId(id: "dhl-express")
-                .WithPrice(label: "Packaging", amount: 400_000)
-                .WithPrice(label: "Shipping price", amount: 337_600))
+            .WithProduct(
+                _ =>
+                    _.WithTitle(title: "Reproduction of \"La nascita di Venere\"")
+                        .WithDescription(
+                            description: "Sandro Botticelli’s the Birth of Venus depicts the goddess Venus arriving at the shore"
+                                + " after her birth, when she had emerged from the sea fully-grown "
+                        )
+                        .WithProductPrice(label: "Price of the painting", amount: 500_000)
+                        .WithProductPrice(label: "Wooden frame", amount: 100_000)
+                        .WithPhoto(
+                            url: "https://cdn.pixabay.com/photo/2012/10/26/03/16/painting-63186_1280.jpg",
+                            width: 1280,
+                            height: 820
+                        )
+            )
+            .WithShipping(
+                _ =>
+                    _.WithTitle(title: "DHL Express")
+                        .WithId(id: "dhl-express")
+                        .WithPrice(label: "Packaging", amount: 400_000)
+                        .WithPrice(label: "Shipping price", amount: 337_600)
+            )
             .WithCurrency("USD")
             .WithPayload("<my-payload>")
             .WithFlexible()
@@ -393,24 +419,29 @@ public class PaymentTests : IClassFixture<PaymentFixture>, IAsyncLifetime
         await BotClient.MakeRequestAsync(shippingQueryRequest);
     }
 
-    [OrderedFact("Should send invoice for no shipment option, and reply pre-checkout query with an error.")]
+    [OrderedFact(
+        "Should send invoice for no shipment option, and reply pre-checkout query with an error."
+    )]
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.SendInvoice)]
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.AnswerPreCheckoutQuery)]
     public async Task Should_Answer_PreCheckout_Query_With_Error_For_No_Shipment_Option()
     {
         PaymentsBuilder paymentsBuilder = new PaymentsBuilder()
-            .WithProduct(_ => _
-                .WithTitle(title: "Reproduction of \"La nascita di Venere\"")
-                .WithDescription(description:
-                    "Sandro Botticelli’s the Birth of Venus depicts the goddess Venus arriving at the shore" +
-                    " after her birth, when she had emerged from the sea fully-grown ")
-                .WithProductPrice(label: "Price of the painting", amount: 500_000)
-                .WithProductPrice(label: "Wooden frame", amount: 100_000)
-                .WithPhoto(
-                    url: "https://cdn.pixabay.com/photo/2012/10/26/03/16/painting-63186_1280.jpg",
-                    width: 1280,
-                    height: 820
-                ))
+            .WithProduct(
+                _ =>
+                    _.WithTitle(title: "Reproduction of \"La nascita di Venere\"")
+                        .WithDescription(
+                            description: "Sandro Botticelli’s the Birth of Venus depicts the goddess Venus arriving at the shore"
+                                + " after her birth, when she had emerged from the sea fully-grown "
+                        )
+                        .WithProductPrice(label: "Price of the painting", amount: 500_000)
+                        .WithProductPrice(label: "Wooden frame", amount: 100_000)
+                        .WithPhoto(
+                            url: "https://cdn.pixabay.com/photo/2012/10/26/03/16/painting-63186_1280.jpg",
+                            width: 1280,
+                            height: 820
+                        )
+            )
             .WithCurrency("USD")
             .WithPayload("<my-payload>")
             .WithPaymentProviderToken(_classFixture.PaymentProviderToken)
@@ -443,18 +474,21 @@ public class PaymentTests : IClassFixture<PaymentFixture>, IAsyncLifetime
     public async Task Should_Throw_When_Send_Invoice_Invalid_Provider_Data()
     {
         PaymentsBuilder paymentsBuilder = new PaymentsBuilder()
-            .WithProduct(_ => _
-                .WithTitle(title: "Reproduction of \"La nascita di Venere\"")
-                .WithDescription(description:
-                    "Sandro Botticelli’s the Birth of Venus depicts the goddess Venus arriving at the shore" +
-                    " after her birth, when she had emerged from the sea fully-grown ")
-                .WithProductPrice(label: "Price of the painting", amount: 500_000)
-                .WithProductPrice(label: "Wooden frame", amount: 100_000)
-                .WithPhoto(
-                    url: "https://cdn.pixabay.com/photo/2012/10/26/03/16/painting-63186_1280.jpg",
-                    width: 1280,
-                    height: 820
-                ))
+            .WithProduct(
+                _ =>
+                    _.WithTitle(title: "Reproduction of \"La nascita di Venere\"")
+                        .WithDescription(
+                            description: "Sandro Botticelli’s the Birth of Venus depicts the goddess Venus arriving at the shore"
+                                + " after her birth, when she had emerged from the sea fully-grown "
+                        )
+                        .WithProductPrice(label: "Price of the painting", amount: 500_000)
+                        .WithProductPrice(label: "Wooden frame", amount: 100_000)
+                        .WithPhoto(
+                            url: "https://cdn.pixabay.com/photo/2012/10/26/03/16/painting-63186_1280.jpg",
+                            width: 1280,
+                            height: 820
+                        )
+            )
             .WithCurrency("USD")
             .WithPayload("<my-payload>")
             .WithProviderData("INVALID-JSON")
@@ -476,28 +510,35 @@ public class PaymentTests : IClassFixture<PaymentFixture>, IAsyncLifetime
     public async Task Should_Throw_When_Answer_Shipping_Query_With_Duplicate_Shipping_Id()
     {
         PaymentsBuilder paymentsBuilder = new PaymentsBuilder()
-            .WithProduct(_ => _
-                .WithTitle(title: "Reproduction of \"La nascita di Venere\"")
-                .WithDescription(description:
-                    "Sandro Botticelli’s the Birth of Venus depicts the goddess Venus arriving at the shore" +
-                    " after her birth, when she had emerged from the sea fully-grown ")
-                .WithProductPrice(label: "Price of the painting", amount: 500_000)
-                .WithProductPrice(label: "Wooden frame", amount: 100_000)
-                .WithPhoto(
-                    url: "https://cdn.pixabay.com/photo/2012/10/26/03/16/painting-63186_1280.jpg",
-                    width: 1280,
-                    height: 820
-                ))
-            .WithShipping(_ => _
-                .WithTitle(title: "DHL Express")
-                .WithId(id: "dhl-express")
-                .WithPrice(label: "Packaging", amount: 400_000)
-                .WithPrice(label: "Shipping price", amount: 337_600))
-            .WithShipping(_ => _
-                .WithTitle(title: "DHL Express (Duplicate)")
-                .WithId(id: "dhl-express")
-                .WithPrice(label: "Packaging", amount: 400_000)
-                .WithPrice(label: "Shipping price", amount: 337_600))
+            .WithProduct(
+                _ =>
+                    _.WithTitle(title: "Reproduction of \"La nascita di Venere\"")
+                        .WithDescription(
+                            description: "Sandro Botticelli’s the Birth of Venus depicts the goddess Venus arriving at the shore"
+                                + " after her birth, when she had emerged from the sea fully-grown "
+                        )
+                        .WithProductPrice(label: "Price of the painting", amount: 500_000)
+                        .WithProductPrice(label: "Wooden frame", amount: 100_000)
+                        .WithPhoto(
+                            url: "https://cdn.pixabay.com/photo/2012/10/26/03/16/painting-63186_1280.jpg",
+                            width: 1280,
+                            height: 820
+                        )
+            )
+            .WithShipping(
+                _ =>
+                    _.WithTitle(title: "DHL Express")
+                        .WithId(id: "dhl-express")
+                        .WithPrice(label: "Packaging", amount: 400_000)
+                        .WithPrice(label: "Shipping price", amount: 337_600)
+            )
+            .WithShipping(
+                _ =>
+                    _.WithTitle(title: "DHL Express (Duplicate)")
+                        .WithId(id: "dhl-express")
+                        .WithPrice(label: "Packaging", amount: 400_000)
+                        .WithPrice(label: "Shipping price", amount: 337_600)
+            )
             .WithCurrency("USD")
             .WithPayload("<my-payload>")
             .WithFlexible()
@@ -541,32 +582,38 @@ public class PaymentTests : IClassFixture<PaymentFixture>, IAsyncLifetime
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.SendInvoice)]
     public async Task Should_Send_Invoice_With_Reply_Markup()
     {
-        InlineKeyboardMarkup replyMarkup = new(new[]
-        {
-            new[]
-            {
-                InlineKeyboardButton.WithPayment("Pay this invoice"),
-                InlineKeyboardButton.WithUrl("Repository", "https://github.com/TelegramBots/Telegram.Bot")
-            },
-            new[]
-            {
-                InlineKeyboardButton.WithCallbackData("Some other button")
-            }
-        });
+        InlineKeyboardMarkup replyMarkup =
+            new(
+                new[]
+                {
+                    new[]
+                    {
+                        InlineKeyboardButton.WithPayment("Pay this invoice"),
+                        InlineKeyboardButton.WithUrl(
+                            "Repository",
+                            "https://github.com/TelegramBots/Telegram.Bot"
+                        )
+                    },
+                    new[] { InlineKeyboardButton.WithCallbackData("Some other button") }
+                }
+            );
 
         PaymentsBuilder paymentsBuilder = new PaymentsBuilder()
-            .WithProduct(_ => _
-                .WithTitle(title: "Reproduction of \"La nascita di Venere\"")
-                .WithDescription(description:
-                    "Sandro Botticelli’s the Birth of Venus depicts the goddess Venus arriving at the shore" +
-                    " after her birth, when she had emerged from the sea fully-grown ")
-                .WithProductPrice(label: "Price of the painting", amount: 500_000)
-                .WithProductPrice(label: "Wooden frame", amount: 100_000)
-                .WithPhoto(
-                    url: "https://cdn.pixabay.com/photo/2012/10/26/03/16/painting-63186_1280.jpg",
-                    width: 1280,
-                    height: 820
-                ))
+            .WithProduct(
+                _ =>
+                    _.WithTitle(title: "Reproduction of \"La nascita di Venere\"")
+                        .WithDescription(
+                            description: "Sandro Botticelli’s the Birth of Venus depicts the goddess Venus arriving at the shore"
+                                + " after her birth, when she had emerged from the sea fully-grown "
+                        )
+                        .WithProductPrice(label: "Price of the painting", amount: 500_000)
+                        .WithProductPrice(label: "Wooden frame", amount: 100_000)
+                        .WithPhoto(
+                            url: "https://cdn.pixabay.com/photo/2012/10/26/03/16/painting-63186_1280.jpg",
+                            width: 1280,
+                            height: 820
+                        )
+            )
             .WithCurrency("USD")
             .WithPayload("<my-payload>")
             .WithReplyMarkup(replyMarkup)
@@ -596,7 +643,8 @@ public class PaymentTests : IClassFixture<PaymentFixture>, IAsyncLifetime
     {
         Update[] updates = await _fixture.UpdateReceiver.GetUpdatesAsync(
             cancellationToken: cancellationToken,
-            updateTypes: UpdateType.PreCheckoutQuery);
+            updateTypes: UpdateType.PreCheckoutQuery
+        );
 
         Update update = updates.Single();
 
@@ -621,6 +669,7 @@ public class PaymentTests : IClassFixture<PaymentFixture>, IAsyncLifetime
     }
 
     public async Task InitializeAsync() => await _fixture.UpdateReceiver.DiscardNewUpdatesAsync();
+
     public Task DisposeAsync() => Task.CompletedTask;
 
     public static string FormatInstructionWithCurrency(FormattableString instruction) =>

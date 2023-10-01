@@ -11,33 +11,34 @@ public class DocumentSerializationTests
     [Fact(DisplayName = "Should serialize a document message")]
     public void Should_Serialize_DocumentMessage()
     {
-        Message documentMessage = new()
-        {
-            MessageId = 1234,
-            From = new()
+        Message documentMessage =
+            new()
             {
-                Id = 123_456_789,
-                FirstName = "TelegramBots",
-                Username = "Telegram_Bots"
-            },
-            Chat = new()
-            {
-                Id = -9_877_654_320_000,
-                Title = "Test Chat",
-                Type = ChatType.Supergroup,
-                CanSetStickerSet = true
-            },
-            Document = new()
-            {
-                FileId = "KLAHCVUydfS_jHIBildtwpmvxZg",
-                FileUniqueId = "AgADcOsAAhUdZAc",
-                FileName = "test_file.txt",
-                FileSize = 123_456,
-                MimeType = "plain/text"
-            },
-            Date = DateTime.UtcNow,
-            Caption = "Test Document Description"
-        };
+                MessageId = 1234,
+                From = new()
+                {
+                    Id = 123_456_789,
+                    FirstName = "TelegramBots",
+                    Username = "Telegram_Bots"
+                },
+                Chat = new()
+                {
+                    Id = -9_877_654_320_000,
+                    Title = "Test Chat",
+                    Type = ChatType.Supergroup,
+                    CanSetStickerSet = true
+                },
+                Document = new()
+                {
+                    FileId = "KLAHCVUydfS_jHIBildtwpmvxZg",
+                    FileUniqueId = "AgADcOsAAhUdZAc",
+                    FileName = "test_file.txt",
+                    FileSize = 123_456,
+                    MimeType = "plain/text"
+                },
+                Date = DateTime.UtcNow,
+                Caption = "Test Document Description"
+            };
 
         string json = JsonConvert.SerializeObject(documentMessage);
 

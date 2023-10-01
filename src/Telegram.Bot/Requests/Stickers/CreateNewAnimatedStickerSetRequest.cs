@@ -31,11 +31,11 @@ public class CreateNewAnimatedStickerSetRequest : CreateNewStickerSetRequest
         string title,
         InputFile tgsSticker,
         string emojis
-    ) : base(userId, name, title, emojis)
-        => TgsSticker = tgsSticker;
+    )
+        : base(userId, name, title, emojis) => TgsSticker = tgsSticker;
 #pragma warning restore CS1573
 
     /// <inheritdoc />
-    public override HttpContent? ToHttpContent()
-        => ToMultipartFormDataContent(fileParameterName: "tgs_sticker", inputFile: TgsSticker);
+    public override HttpContent? ToHttpContent() =>
+        ToMultipartFormDataContent(fileParameterName: "tgs_sticker", inputFile: TgsSticker);
 }

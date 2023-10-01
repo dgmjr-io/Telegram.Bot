@@ -34,8 +34,7 @@ public abstract class BotCommandScope
     /// <summary>
     /// Create a <see cref="BotCommandScope"/> instance for all chat administrators
     /// </summary>
-    public static BotCommandScopeAllChatAdministrators AllChatAdministrators() =>
-        new();
+    public static BotCommandScopeAllChatAdministrators AllChatAdministrators() => new();
 
     /// <summary>
     /// Create a <see cref="BotCommandScope"/> instance for a specific <see cref="Chat"/>

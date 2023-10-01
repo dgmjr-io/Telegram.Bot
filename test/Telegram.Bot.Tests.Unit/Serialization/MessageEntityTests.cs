@@ -27,12 +27,13 @@ public class MessageEntityTests
     [Fact(DisplayName = "Should serialize message entity with phone number type")]
     public void Should_Serialize_Message_Entity_With_Phone_Number_Type()
     {
-        MessageEntity messageEntity = new()
-        {
-            Length = 10,
-            Offset = 10,
-            Type = MessageEntityType.PhoneNumber
-        };
+        MessageEntity messageEntity =
+            new()
+            {
+                Length = 10,
+                Offset = 10,
+                Type = MessageEntityType.PhoneNumber
+            };
 
         string? json = JsonConvert.SerializeObject(messageEntity);
 
@@ -61,12 +62,13 @@ public class MessageEntityTests
     [Fact(DisplayName = "Should serialize message entity with unknown type")]
     public void Should_Serialize_Message_Entity_With_Unknown_Type()
     {
-        MessageEntity messageEntity = new()
-        {
-            Length = 10,
-            Offset = 10,
-            Type = 0
-        };
+        MessageEntity messageEntity =
+            new()
+            {
+                Length = 10,
+                Offset = 10,
+                Type = 0
+            };
 
         string? json = JsonConvert.SerializeObject(messageEntity);
 

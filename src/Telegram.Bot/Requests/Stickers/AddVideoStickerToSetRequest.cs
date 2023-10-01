@@ -30,11 +30,11 @@ public class AddVideoStickerToSetRequest : AddStickerToSetRequest
         string name,
         InputFile webmSticker,
         string emojis
-    ) : base(userId, name, emojis)
-        => WebmSticker = webmSticker;
+    )
+        : base(userId, name, emojis) => WebmSticker = webmSticker;
 #pragma warning restore CS1573
 
     /// <inheritdoc />
-    public override HttpContent? ToHttpContent()
-        => ToMultipartFormDataContent(fileParameterName: "webm_sticker", inputFile: WebmSticker);
+    public override HttpContent? ToHttpContent() =>
+        ToMultipartFormDataContent(fileParameterName: "webm_sticker", inputFile: WebmSticker);
 }

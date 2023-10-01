@@ -23,7 +23,10 @@ public class InlineQueryResultTypeConverterTests
     [InlineData(InlineQueryResultType.Voice, "voice")]
     [InlineData(InlineQueryResultType.Game, "game")]
     [InlineData(InlineQueryResultType.Sticker, "sticker")]
-    public void Should_Convert_InlineQueryResultType_To_String(InlineQueryResultType inlineQueryResultType, string value)
+    public void Should_Convert_InlineQueryResultType_To_String(
+        InlineQueryResultType inlineQueryResultType,
+        string value
+    )
     {
         InlineQueryResult inlineQuery = new() { Type = inlineQueryResultType };
         string expectedResult = @$"{{""type"":""{value}""}}";
@@ -48,7 +51,10 @@ public class InlineQueryResultTypeConverterTests
     [InlineData(InlineQueryResultType.Voice, "voice")]
     [InlineData(InlineQueryResultType.Game, "game")]
     [InlineData(InlineQueryResultType.Sticker, "sticker")]
-    public void Should_Convert_String_To_InlineQueryResultType(InlineQueryResultType inlineQueryResultType, string value)
+    public void Should_Convert_String_To_InlineQueryResultType(
+        InlineQueryResultType inlineQueryResultType,
+        string value
+    )
     {
         InlineQueryResult expectedResult = new() { Type = inlineQueryResultType };
         string jsonData = @$"{{""type"":""{value}""}}";

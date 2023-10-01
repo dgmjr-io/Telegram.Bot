@@ -31,7 +31,10 @@ public class SupergroupAdminBotTestsFixture : AsyncLifetimeFixture
                 if (!string.IsNullOrEmpty(chat.Photo?.BigFileId))
                 {
                     await using MemoryStream stream = new();
-                    await TestsFixture.BotClient.GetInfoAndDownloadFileAsync(chat.Photo.BigFileId, stream);
+                    await TestsFixture.BotClient.GetInfoAndDownloadFileAsync(
+                        chat.Photo.BigFileId,
+                        stream
+                    );
 
                     _oldChatPhoto = stream.ToArray();
                 }
@@ -55,7 +58,6 @@ public class SupergroupAdminBotTestsFixture : AsyncLifetimeFixture
                 await TestsFixture.BotClient.SetChatPermissionsAsync(
                     TestsFixture.SupergroupChat,
                     _existingDefaultPermissions!
-
                 );
 
                 // Revoke invite link created during the test run

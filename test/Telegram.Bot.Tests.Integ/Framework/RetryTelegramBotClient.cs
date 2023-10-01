@@ -20,7 +20,8 @@ internal class TestClientOptions : TelegramBotClientOptions
         string? baseUrl,
         bool useTestEnvironment,
         int retryCount,
-        TimeSpan defaultTimeout)
+        TimeSpan defaultTimeout
+    )
         : base(token, baseUrl, useTestEnvironment)
     {
         RetryCount = retryCount;
@@ -33,9 +34,7 @@ internal class RetryTelegramBotClient : TelegramBotClient
     readonly IMessageSink _diagnosticMessageSink;
     readonly TestClientOptions _options;
 
-    public RetryTelegramBotClient(
-        IMessageSink diagnosticMessageSink,
-        TestClientOptions options)
+    public RetryTelegramBotClient(IMessageSink diagnosticMessageSink, TestClientOptions options)
         : base(options)
     {
         _diagnosticMessageSink = diagnosticMessageSink;
@@ -44,7 +43,8 @@ internal class RetryTelegramBotClient : TelegramBotClient
 
     public override async Task<TResponse> MakeRequestAsync<TResponse>(
         IRequest<TResponse> request,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         ApiRequestException apiRequestException = default!;
 
@@ -62,7 +62,8 @@ internal class RetryTelegramBotClient : TelegramBotClient
                     ? _options.DefaultTimeout
                     : TimeSpan.FromSeconds(e.Parameters.RetryAfter.Value);
 
-                var message = $"Retry attempt {i + 1}. Waiting for {timeout} seconds before retrying.";
+                var message =
+                    $"Retry attempt {i + 1}. Waiting for {timeout} seconds before retrying.";
                 _diagnosticMessageSink.OnMessage(new DiagnosticMessage(message));
                 await Task.Delay(timeout, cancellationToken);
             }

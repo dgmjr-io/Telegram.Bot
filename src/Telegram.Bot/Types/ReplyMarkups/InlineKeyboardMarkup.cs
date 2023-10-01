@@ -25,16 +25,14 @@ public class InlineKeyboardMarkup : IReplyMarkup
     /// </summary>
     /// <param name="inlineKeyboardButton">Keyboard button</param>
     public InlineKeyboardMarkup(InlineKeyboardButton inlineKeyboardButton)
-        : this(new[] { inlineKeyboardButton })
-    { }
+        : this(new[] { inlineKeyboardButton }) { }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="InlineKeyboardMarkup"/> class with a one-row keyboard
     /// </summary>
     /// <param name="inlineKeyboardRow">The inline keyboard row</param>
     public InlineKeyboardMarkup(IEnumerable<InlineKeyboardButton> inlineKeyboardRow)
-        : this(new[] { inlineKeyboardRow })
-    { }
+        : this(new[] { inlineKeyboardRow }) { }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="InlineKeyboardMarkup"/> class.
@@ -48,8 +46,7 @@ public class InlineKeyboardMarkup : IReplyMarkup
     /// Generate an empty inline keyboard markup
     /// </summary>
     /// <returns>Empty inline keyboard markup</returns>
-    public static InlineKeyboardMarkup Empty() =>
-        new(Array.Empty<InlineKeyboardButton[]>());
+    public static InlineKeyboardMarkup Empty() => new(Array.Empty<InlineKeyboardButton[]>());
 
     /// <summary>
     /// Generate an inline keyboard markup with one button
@@ -72,8 +69,9 @@ public class InlineKeyboardMarkup : IReplyMarkup
     /// </summary>
     /// <param name="inlineKeyboard">Keyboard buttons</param>
     [return: NotNullIfNotNull("inlineKeyboard")]
-    public static implicit operator InlineKeyboardMarkup?(IEnumerable<InlineKeyboardButton>[]? inlineKeyboard) =>
-        inlineKeyboard is null ? default : new(inlineKeyboard);
+    public static implicit operator InlineKeyboardMarkup?(
+        IEnumerable<InlineKeyboardButton>[]? inlineKeyboard
+    ) => inlineKeyboard is null ? default : new(inlineKeyboard);
 
     /// <summary>
     /// Generate an inline keyboard markup from multiple buttons on 1 row

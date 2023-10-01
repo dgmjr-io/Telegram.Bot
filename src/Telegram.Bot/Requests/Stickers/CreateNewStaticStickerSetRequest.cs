@@ -35,15 +35,18 @@ public class CreateNewStaticStickerSetRequest : CreateNewStickerSetRequest
         string title,
         IInputFile pngSticker,
         string emojis
-    ) : base(userId, name, title, emojis)
-        => PngSticker = pngSticker ?? throw new ArgumentNullException(nameof(pngSticker), "Sticker is null");
+    )
+        : base(userId, name, title, emojis) =>
+        PngSticker =
+            pngSticker ?? throw new ArgumentNullException(nameof(pngSticker), "Sticker is null");
 #pragma warning restore CS1573
 
     /// <inheritdoc />
-    public override HttpContent? ToHttpContent()
-        => PngSticker switch
+    public override HttpContent? ToHttpContent() =>
+        PngSticker switch
         {
-            InputFile file => ToMultipartFormDataContent(fileParameterName: "png_sticker", inputFile: file),
-            _              => base.ToHttpContent()
+            InputFile file
+                => ToMultipartFormDataContent(fileParameterName: "png_sticker", inputFile: file),
+            _ => base.ToHttpContent()
         };
 }

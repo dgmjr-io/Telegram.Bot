@@ -8,10 +8,10 @@ internal class ChatIdConverter : JsonConverter<ChatId?>
     {
         switch (value)
         {
-            case { Username: {} username }:
+            case { Username: { } username }:
                 writer.WriteValue(username);
                 break;
-            case { Identifier: {} identifier }:
+            case { Identifier: { } identifier }:
                 writer.WriteValue(identifier);
                 break;
             case null:
@@ -27,7 +27,8 @@ internal class ChatIdConverter : JsonConverter<ChatId?>
         Type objectType,
         ChatId? existingValue,
         bool hasExistingValue,
-        JsonSerializer serializer)
+        JsonSerializer serializer
+    )
     {
         var value = JToken.ReadFrom(reader).Value<string>();
         return value is null ? null : new(value);

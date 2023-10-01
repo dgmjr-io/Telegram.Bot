@@ -19,7 +19,10 @@ public class PaymentFixture : PrivateChatFixture
 
         if (PaymentProviderToken.Length < 5)
         {
-            throw new ArgumentException("Payment provider token is invalid", nameof(PaymentProviderToken));
+            throw new ArgumentException(
+                "Payment provider token is invalid",
+                nameof(PaymentProviderToken)
+            );
         }
     }
 }

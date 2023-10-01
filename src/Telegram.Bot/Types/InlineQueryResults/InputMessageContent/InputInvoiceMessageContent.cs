@@ -164,7 +164,8 @@ public class InputInvoiceMessageContent : InputMessageContent
         string payload,
         string providerToken,
         string currency,
-        IEnumerable<LabeledPrice> prices)
+        IEnumerable<LabeledPrice> prices
+    )
     {
         Title = title;
         Description = description;

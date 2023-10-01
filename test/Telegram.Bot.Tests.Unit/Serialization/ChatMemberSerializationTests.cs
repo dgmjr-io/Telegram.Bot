@@ -47,20 +47,21 @@ public class ChatMemberSerializationTests
     [Fact]
     public void Should_Serialize_Chat_Member_Member()
     {
-        ChatMemberOwner creator = new()
-        {
-            User = new()
+        ChatMemberOwner creator =
+            new()
             {
-                Id = 12345,
-                IsBot = true,
-                FirstName = "First Name",
-                LastName = "Last Name",
-                Username = "test_bot",
-                LanguageCode = "en_US",
-            },
-            IsAnonymous = true,
-            CustomTitle = "Custom test title"
-        };
+                User = new()
+                {
+                    Id = 12345,
+                    IsBot = true,
+                    FirstName = "First Name",
+                    LastName = "Last Name",
+                    Username = "test_bot",
+                    LanguageCode = "en_US",
+                },
+                IsAnonymous = true,
+                CustomTitle = "Custom test title"
+            };
 
         string? chatMemberJson = JsonConvert.SerializeObject(creator);
         Assert.Contains(@"""status"":""creator""", chatMemberJson);
@@ -78,19 +79,20 @@ public class ChatMemberSerializationTests
     [Fact]
     public void Should_Serialize_Chat_Member_Banned()
     {
-        ChatMemberBanned creator = new()
-        {
-            User = new()
+        ChatMemberBanned creator =
+            new()
             {
-                Id = 12345,
-                IsBot = true,
-                FirstName = "First Name",
-                LastName = "Last Name",
-                Username = "test_bot",
-                LanguageCode = "en_US",
-            },
-            UntilDate = new(2021, 4, 2, 0, 0, 0, DateTimeKind.Utc)
-        };
+                User = new()
+                {
+                    Id = 12345,
+                    IsBot = true,
+                    FirstName = "First Name",
+                    LastName = "Last Name",
+                    Username = "test_bot",
+                    LanguageCode = "en_US",
+                },
+                UntilDate = new(2021, 4, 2, 0, 0, 0, DateTimeKind.Utc)
+            };
 
         string? chatMemberJson = JsonConvert.SerializeObject(creator);
 
@@ -108,18 +110,19 @@ public class ChatMemberSerializationTests
     [Fact]
     public void Should_Serialize_Chat_Member_Banned_2()
     {
-        ChatMemberBanned creator = new()
-        {
-            User = new()
+        ChatMemberBanned creator =
+            new()
             {
-                Id = 12345,
-                IsBot = true,
-                FirstName = "First Name",
-                LastName = "Last Name",
-                Username = "test_bot",
-                LanguageCode = "en_US",
-            },
-        };
+                User = new()
+                {
+                    Id = 12345,
+                    IsBot = true,
+                    FirstName = "First Name",
+                    LastName = "Last Name",
+                    Username = "test_bot",
+                    LanguageCode = "en_US",
+                },
+            };
 
         string chatMemberJson = JsonConvert.SerializeObject(creator);
 

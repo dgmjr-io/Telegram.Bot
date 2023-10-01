@@ -13,6 +13,7 @@ public class Dice
     /// </summary>
     [JsonProperty(Required = Required.Always)]
     public string Emoji { get; set; } = default!;
+
     /// <summary>
     /// Value of the dice, 1-6 for <see cref="Telegram.Bot.Types.Enums.Emoji.Dice" /> (“🎲”),
     /// <see cref="Darts" /> (“🎯”) and <see cref="Bowling"/> ("🎳"), 1-5 for <see cref="Basketball" /> (“🏀”) and

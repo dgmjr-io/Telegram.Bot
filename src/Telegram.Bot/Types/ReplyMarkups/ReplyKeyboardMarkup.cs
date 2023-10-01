@@ -45,17 +45,14 @@ public class ReplyKeyboardMarkup : ReplyMarkupBase
     /// </summary>
     /// <param name="button">Button on keyboard</param>
     public ReplyKeyboardMarkup(KeyboardButton button)
-        : this(new[] { button })
-    {
-    }
+        : this(new[] { button }) { }
 
     /// <summary>
     /// Initializes a new instance of <see cref="ReplyKeyboardMarkup"/>
     /// </summary>
     /// <param name="keyboardRow">The keyboard row.</param>
     public ReplyKeyboardMarkup(IEnumerable<KeyboardButton> keyboardRow)
-        : this(new[] { keyboardRow })
-    { }
+        : this(new[] { keyboardRow }) { }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ReplyKeyboardMarkup"/> class.
@@ -72,18 +69,14 @@ public class ReplyKeyboardMarkup : ReplyMarkupBase
     /// </summary>
     /// <param name="text">Button's text</param>
     public static implicit operator ReplyKeyboardMarkup?(string? text) =>
-        text is null
-            ? default
-            : new(new[] { new KeyboardButton(text) });
+        text is null ? default : new(new[] { new KeyboardButton(text) });
 
     /// <summary>
     /// Generates a reply keyboard markup with multiple buttons on one row
     /// </summary>
     /// <param name="texts">Texts of buttons</param>
     public static implicit operator ReplyKeyboardMarkup?(string[]? texts) =>
-        texts is null
-            ? default
-            : new[] { texts };
+        texts is null ? default : new[] { texts };
 
     /// <summary>
     /// Generates a reply keyboard markup with multiple buttons
@@ -93,7 +86,6 @@ public class ReplyKeyboardMarkup : ReplyMarkupBase
         textsItems is null
             ? default
             : new ReplyKeyboardMarkup(
-                textsItems.Select(texts =>
-                    texts.Select(t => new KeyboardButton(t))
-                ));
+                textsItems.Select(texts => texts.Select(t => new KeyboardButton(t)))
+            );
 }

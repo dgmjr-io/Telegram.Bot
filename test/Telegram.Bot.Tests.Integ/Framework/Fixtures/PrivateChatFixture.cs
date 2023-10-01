@@ -10,18 +10,16 @@ public class PrivateChatFixture : AsyncLifetimeFixture
 
     public PrivateChatFixture(TestsFixture testsFixture, string collectionName)
     {
-        AddLifetime(
-            initialize: async () =>
-            {
-                testsFixture.PrivateChat ??= await GetChat(testsFixture, collectionName);
-                PrivateChat = testsFixture.PrivateChat;
+        AddLifetime(initialize: async () =>
+        {
+            testsFixture.PrivateChat ??= await GetChat(testsFixture, collectionName);
+            PrivateChat = testsFixture.PrivateChat;
 
-                await testsFixture.SendTestCollectionNotificationAsync(
-                    collectionName,
-                    $"Tests will be executed in chat with @{PrivateChat.GetSafeUsername()}"
-                );
-            }
-        );
+            await testsFixture.SendTestCollectionNotificationAsync(
+                collectionName,
+                $"Tests will be executed in chat with @{PrivateChat.GetSafeUsername()}"
+            );
+        });
     }
 
     static async Task<Chat> GetChat(TestsFixture testsFixture, string collectionName)
@@ -37,9 +35,10 @@ public class PrivateChatFixture : AsyncLifetimeFixture
             await testsFixture.UpdateReceiver.DiscardNewUpdatesAsync();
 
             string botUsername = testsFixture.BotUser.GetSafeUsername();
-            await testsFixture.SendTestCollectionNotificationAsync(collectionName,
-                $"No value is set for `{nameof(TestConfiguration.TesterPrivateChatId)}` in test " +
-                $"settings. Tester should send /test command in private chat with @{botUsername}."
+            await testsFixture.SendTestCollectionNotificationAsync(
+                collectionName,
+                $"No value is set for `{nameof(TestConfiguration.TesterPrivateChatId)}` in test "
+                    + $"settings. Tester should send /test command in private chat with @{botUsername}."
             );
 
             chat = await testsFixture.GetChatFromTesterAsync(ChatType.Private);

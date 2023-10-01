@@ -9,7 +9,8 @@ namespace Telegram.Bot.Tests.Integ.Framework;
 
 public class TestConfiguration : IValidatableObject
 {
-    private static readonly Regex UsernamePattern = new("[a-zA-Z0-9_]+", RegexOptions.Compiled | RegexOptions.CultureInvariant);
+    private static readonly Regex UsernamePattern =
+        new("[a-zA-Z0-9_]+", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
     [Required(ErrorMessage = "API token is not provided or is empty.")]
     [RegularExpression("[0-9]+:.+", ErrorMessage = "API is invalid.")]
@@ -43,18 +44,27 @@ public class TestConfiguration : IValidatableObject
         {
             if (!UsernamePattern.IsMatch(username))
             {
-                yield return new($"Username {username} is invalid", new [] { nameof(AllowedUserNames) });
+                yield return new(
+                    $"Username {username} is invalid",
+                    new[] { nameof(AllowedUserNames) }
+                );
             }
         }
 
         if (RetryCount < 0)
         {
-            yield return new("RetryCount must be greater or equal to 0", new [] { nameof(RetryCount) });
+            yield return new(
+                "RetryCount must be greater or equal to 0",
+                new[] { nameof(RetryCount) }
+            );
         }
 
         if (DefaultRetryTimeout < 0)
         {
-            yield return new("DefaultRetryTimeout must be greater or equal to 0", new [] { nameof(RetryCount) });
+            yield return new(
+                "DefaultRetryTimeout must be greater or equal to 0",
+                new[] { nameof(RetryCount) }
+            );
         }
 
         yield return ValidationResult.Success!;

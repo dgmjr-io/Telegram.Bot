@@ -31,7 +31,10 @@ public sealed class ConfigurationProvider : IDisposable
                 if (x.AllowedUserNamesString is not null)
                 {
                     x.AllowedUserNames = x.AllowedUserNamesString
-                        .Split(",", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                        .Split(
+                            ",",
+                            StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries
+                        )
                         .ToArray();
                 }
             });

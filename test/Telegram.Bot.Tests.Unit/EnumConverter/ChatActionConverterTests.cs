@@ -47,7 +47,9 @@ public class ChatActionConverterTests
         SendChatActionRequest expectedResult = new() { Type = chatAction };
         string jsonData = @$"{{""type"":""{value}""}}";
 
-        SendChatActionRequest? result = JsonConvert.DeserializeObject<SendChatActionRequest>(jsonData);
+        SendChatActionRequest? result = JsonConvert.DeserializeObject<SendChatActionRequest>(
+            jsonData
+        );
 
         Assert.NotNull(result);
         Assert.Equal(expectedResult.Type, result.Type);
@@ -58,7 +60,9 @@ public class ChatActionConverterTests
     {
         string jsonData = @$"{{""type"":""{int.MaxValue}""}}";
 
-        SendChatActionRequest? result = JsonConvert.DeserializeObject<SendChatActionRequest>(jsonData);
+        SendChatActionRequest? result = JsonConvert.DeserializeObject<SendChatActionRequest>(
+            jsonData
+        );
 
         Assert.NotNull(result);
         Assert.Equal((ChatAction)0, result.Type);
@@ -69,7 +73,9 @@ public class ChatActionConverterTests
     {
         SendChatActionRequest sendChatActionRequest = new() { Type = (ChatAction)int.MaxValue };
 
-        Assert.Throws<NotSupportedException>(() => JsonConvert.SerializeObject(sendChatActionRequest));
+        Assert.Throws<NotSupportedException>(
+            () => JsonConvert.SerializeObject(sendChatActionRequest)
+        );
     }
 
     [JsonObject(MemberSerialization.OptIn, NamingStrategyType = typeof(SnakeCaseNamingStrategy))]

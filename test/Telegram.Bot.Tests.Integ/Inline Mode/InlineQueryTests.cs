@@ -30,9 +30,9 @@ public class InlineQueryTests
     public async Task Should_Answer_Inline_Query_With_Article()
     {
         await _fixture.SendTestInstructionsAsync(
-            "1. Start an inline query\n" +
-            "2. Wait for bot to answer it\n" +
-            "3. Choose the answer",
+            "1. Start an inline query\n"
+                + "2. Wait for bot to answer it\n"
+                + "3. Choose the answer",
             startInlineQuery: true
         );
 
@@ -46,7 +46,10 @@ public class InlineQueryTests
             new InlineQueryResultArticle(
                 id: "article:bot-api",
                 title: "Telegram Bot API",
-                inputMessageContent: new InputTextMessageContent("https://core.telegram.org/bots/api"))
+                inputMessageContent: new InputTextMessageContent(
+                    "https://core.telegram.org/bots/api"
+                )
+            )
             {
                 Description = "The Bot API is an HTTP-based interface created for developers",
             },
@@ -60,13 +63,11 @@ public class InlineQueryTests
         );
 
         // Wait for tester to choose a result and send it(as a message) to the chat
-        (
-            Update messageUpdate,
-            Update chosenResultUpdate
-        ) = await _fixture.UpdateReceiver.GetInlineQueryResultUpdates(
-            chatId: _fixture.SupergroupChat.Id,
-            messageType: MessageType.Text
-        );
+        (Update messageUpdate, Update chosenResultUpdate) =
+            await _fixture.UpdateReceiver.GetInlineQueryResultUpdates(
+                chatId: _fixture.SupergroupChat.Id,
+                messageType: MessageType.Text
+            );
 
         Assert.Equal(MessageType.Text, messageUpdate.Message!.Type);
         Assert.Equal("article:bot-api", chosenResultUpdate.ChosenInlineResult!.ResultId);
@@ -78,9 +79,9 @@ public class InlineQueryTests
     public async Task Should_Get_Message_From_Inline_Query_With_ViaBot()
     {
         await _fixture.SendTestInstructionsAsync(
-            "1. Start an inline query\n" +
-            "2. Wait for bot to answer it\n" +
-            "3. Choose the answer",
+            "1. Start an inline query\n"
+                + "2. Wait for bot to answer it\n"
+                + "3. Choose the answer",
             startInlineQuery: true
         );
 
@@ -91,7 +92,10 @@ public class InlineQueryTests
             new InlineQueryResultArticle(
                 id: "article:bot-api",
                 title: "Telegram Bot API",
-                inputMessageContent: new InputTextMessageContent("https://core.telegram.org/bots/api"))
+                inputMessageContent: new InputTextMessageContent(
+                    "https://core.telegram.org/bots/api"
+                )
+            )
             {
                 Description = "The Bot API is an HTTP-based interface created for developers",
             },
@@ -170,7 +174,8 @@ public class InlineQueryTests
                 id: resultId,
                 latitude: -37.8721897f,
                 longitude: 175.6810213f,
-                title: "Hobbiton Movie Set")
+                title: "Hobbiton Movie Set"
+            )
         };
 
         await BotClient.AnswerInlineQueryAsync(
@@ -210,7 +215,8 @@ public class InlineQueryTests
                 latitude: -37.8721897f,
                 longitude: 175.6810213f,
                 title: "Hobbiton Movie Set",
-                address: "501 Buckland Rd, Hinuera, Matamata 3472, New Zealand")
+                address: "501 Buckland Rd, Hinuera, Matamata 3472, New Zealand"
+            )
         };
 
         await BotClient.AnswerInlineQueryAsync(
@@ -272,7 +278,9 @@ public class InlineQueryTests
         Assert.Equal(caption, messageUpdate.Message.Caption);
     }
 
-    [OrderedFact("Should send a photo and answer inline query with a cached photo using its file_id")]
+    [OrderedFact(
+        "Should send a photo and answer inline query with a cached photo using its file_id"
+    )]
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.AnswerInlineQuery)]
     public async Task Should_Answer_Inline_Query_With_Cached_Photo()
     {
@@ -282,8 +290,8 @@ public class InlineQueryTests
             photoMessage = await BotClient.SendPhotoAsync(
                 chatId: _fixture.SupergroupChat,
                 photo: new InputFile(stream),
-                replyMarkup: (InlineKeyboardMarkup)InlineKeyboardButton
-                    .WithSwitchInlineQueryCurrentChat("Start inline query")
+                replyMarkup: (InlineKeyboardMarkup)
+                    InlineKeyboardButton.WithSwitchInlineQueryCurrentChat("Start inline query")
             );
         }
 
@@ -295,7 +303,8 @@ public class InlineQueryTests
         {
             new InlineQueryResultCachedPhoto(
                 id: resultId,
-                photoFileId: photoMessage.Photo!.First().FileId)
+                photoFileId: photoMessage.Photo!.First().FileId
+            )
             {
                 Caption = caption
             }
@@ -338,7 +347,8 @@ public class InlineQueryTests
                 id: resultId,
                 videoUrl: "https://pixabay.com/en/videos/download/video-10737_medium.mp4",
                 thumbUrl: "https://i.vimeocdn.com/video/646283246_640x360.jpg",
-                title: "Sunset Landscape")
+                title: "Sunset Landscape"
+            )
             {
                 Description = "A beautiful scene"
             }
@@ -383,8 +393,9 @@ public class InlineQueryTests
                 videoUrl: "https://www.youtube.com/watch?v=1S0CTtY8Qa0",
                 thumbUrl: "https://www.youtube.com/watch?v=1S0CTtY8Qa0",
                 title: "Rocket Launch",
-                inputMessageContent:
-                new InputTextMessageContent("[Rocket Launch](https://www.youtube.com/watch?v=1S0CTtY8Qa0)")
+                inputMessageContent: new InputTextMessageContent(
+                    "[Rocket Launch](https://www.youtube.com/watch?v=1S0CTtY8Qa0)"
+                )
                 {
                     ParseMode = ParseMode.Markdown
                 }
@@ -409,7 +420,9 @@ public class InlineQueryTests
         Assert.Equal(iqUpdate.InlineQuery.Query, resultUpdate.ChosenInlineResult.Query);
     }
 
-    [OrderedFact("Should send a video and answer inline query with a cached video using its file_id")]
+    [OrderedFact(
+        "Should send a video and answer inline query with a cached video using its file_id"
+    )]
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.AnswerInlineQuery)]
     public async Task Should_Answer_Inline_Query_With_Cached_Video()
     {
@@ -417,8 +430,8 @@ public class InlineQueryTests
         Message videoMessage = await BotClient.SendVideoAsync(
             chatId: _fixture.SupergroupChat,
             video: new InputFileUrl("https://pixabay.com/en/videos/download/video-7122_medium.mp4"),
-            replyMarkup: (InlineKeyboardMarkup)InlineKeyboardButton
-                .WithSwitchInlineQueryCurrentChat("Start inline query")
+            replyMarkup: (InlineKeyboardMarkup)
+                InlineKeyboardButton.WithSwitchInlineQueryCurrentChat("Start inline query")
         );
 
         Update iqUpdate = await _fixture.UpdateReceiver.GetInlineQueryUpdateAsync();
@@ -429,7 +442,8 @@ public class InlineQueryTests
             new InlineQueryResultCachedVideo(
                 id: resultId,
                 videoFileId: videoMessage.Video!.FileId,
-                title: "New Year's Eve Fireworks")
+                title: "New Year's Eve Fireworks"
+            )
             {
                 Description = "2017 Fireworks in Germany"
             }
@@ -469,9 +483,9 @@ public class InlineQueryTests
         {
             new InlineQueryResultAudio(
                 id: resultId,
-                audioUrl:
-                "https://upload.wikimedia.org/wikipedia/commons/transcoded/b/bb/Test_ogg_mp3_48kbps.wav/Test_ogg_mp3_48kbps.wav.mp3",
-                title: "Test ogg mp3")
+                audioUrl: "https://upload.wikimedia.org/wikipedia/commons/transcoded/b/bb/Test_ogg_mp3_48kbps.wav/Test_ogg_mp3_48kbps.wav.mp3",
+                title: "Test ogg mp3"
+            )
             {
                 Performer = "Shishirdasika",
                 AudioDuration = 25
@@ -496,21 +510,25 @@ public class InlineQueryTests
         Assert.Equal(iqUpdate.InlineQuery.Query, resultUpdate.ChosenInlineResult.Query);
     }
 
-    [OrderedFact("Should send an audio and answer inline query with a cached audio using its file_id")]
+    [OrderedFact(
+        "Should send an audio and answer inline query with a cached audio using its file_id"
+    )]
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.SendAudio)]
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.AnswerInlineQuery)]
     public async Task Should_Answer_Inline_Query_With_Cached_Audio()
     {
         Message audioMessage;
-        await using (FileStream stream = System.IO.File.OpenRead(Constants.PathToFile.Audio.CantinaRagMp3))
+        await using (
+            FileStream stream = System.IO.File.OpenRead(Constants.PathToFile.Audio.CantinaRagMp3)
+        )
         {
             audioMessage = await BotClient.SendAudioAsync(
                 chatId: _fixture.SupergroupChat,
                 audio: new InputFile(stream),
                 performer: "Jackson F. Smith",
                 duration: 201,
-                replyMarkup: (InlineKeyboardMarkup)InlineKeyboardButton
-                    .WithSwitchInlineQueryCurrentChat("Start inline query")
+                replyMarkup: (InlineKeyboardMarkup)
+                    InlineKeyboardButton.WithSwitchInlineQueryCurrentChat("Start inline query")
             );
         }
 
@@ -519,9 +537,7 @@ public class InlineQueryTests
         const string resultId = "audio_result";
         InlineQueryResult[] results =
         {
-            new InlineQueryResultCachedAudio(
-                id: resultId,
-                audioFileId: audioMessage.Audio!.FileId)
+            new InlineQueryResultCachedAudio(id: resultId, audioFileId: audioMessage.Audio!.FileId)
             {
                 Caption = "Jackson F. Smith - Cantina Rag"
             }
@@ -562,7 +578,8 @@ public class InlineQueryTests
             new InlineQueryResultVoice(
                 id: resultId,
                 voiceUrl: "http://www.vorbis.com/music/Hydrate-Kenny_Beltrey.ogg",
-                title: "Hydrate - Kenny Beltrey")
+                title: "Hydrate - Kenny Beltrey"
+            )
             {
                 Caption = "Hydrate - Kenny Beltrey",
                 VoiceDuration = 265
@@ -587,19 +604,23 @@ public class InlineQueryTests
         Assert.Equal(iqUpdate.InlineQuery.Query, resultUpdate.ChosenInlineResult.Query);
     }
 
-    [OrderedFact("Should send an audio and answer inline query with a cached audio using its file_id")]
+    [OrderedFact(
+        "Should send an audio and answer inline query with a cached audio using its file_id"
+    )]
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.AnswerInlineQuery)]
     public async Task Should_Answer_Inline_Query_With_Cached_Voice()
     {
         Message voiceMessage;
-        await using (FileStream stream = System.IO.File.OpenRead(Constants.PathToFile.Audio.TestOgg))
+        await using (
+            FileStream stream = System.IO.File.OpenRead(Constants.PathToFile.Audio.TestOgg)
+        )
         {
             voiceMessage = await BotClient.SendVoiceAsync(
                 chatId: _fixture.SupergroupChat,
                 voice: new InputFile(stream),
                 duration: 24,
-                replyMarkup: (InlineKeyboardMarkup)InlineKeyboardButton
-                    .WithSwitchInlineQueryCurrentChat("Start inline query")
+                replyMarkup: (InlineKeyboardMarkup)
+                    InlineKeyboardButton.WithSwitchInlineQueryCurrentChat("Start inline query")
             );
         }
 
@@ -651,7 +672,8 @@ public class InlineQueryTests
                 id: resultId,
                 documentUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
                 title: "Dummy PDF File",
-                mimeType: "application/pdf")
+                mimeType: "application/pdf"
+            )
             {
                 Caption = "Dummy PDF File",
                 Description = "Dummy PDF File for testing",
@@ -676,18 +698,22 @@ public class InlineQueryTests
         Assert.Equal(iqUpdate.InlineQuery.Query, resultUpdate.ChosenInlineResult.Query);
     }
 
-    [OrderedFact("Should send a document and answer inline query with a cached document using its file_id")]
+    [OrderedFact(
+        "Should send a document and answer inline query with a cached document using its file_id"
+    )]
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.AnswerInlineQuery)]
     public async Task Should_Answer_Inline_Query_With_Cached_Document()
     {
         Message documentMessage;
-        await using (FileStream stream = System.IO.File.OpenRead(Constants.PathToFile.Documents.Hamlet))
+        await using (
+            FileStream stream = System.IO.File.OpenRead(Constants.PathToFile.Documents.Hamlet)
+        )
         {
             documentMessage = await BotClient.SendDocumentAsync(
                 chatId: _fixture.SupergroupChat,
                 document: new InputFile(stream),
-                replyMarkup: (InlineKeyboardMarkup)InlineKeyboardButton
-                    .WithSwitchInlineQueryCurrentChat("Start inline query")
+                replyMarkup: (InlineKeyboardMarkup)
+                    InlineKeyboardButton.WithSwitchInlineQueryCurrentChat("Start inline query")
             );
         }
 
@@ -699,7 +725,8 @@ public class InlineQueryTests
             new InlineQueryResultCachedDocument(
                 id: resultId,
                 documentFileId: documentMessage.Document!.FileId,
-                title: "Test Document")
+                title: "Test Document"
+            )
             {
                 Caption = "The Tragedy of Hamlet, Prince of Denmark",
                 Description = "Sample PDF Document",
@@ -741,7 +768,8 @@ public class InlineQueryTests
             new InlineQueryResultGif(
                 id: resultId,
                 gifUrl: "https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif",
-                thumbUrl: "https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif")
+                thumbUrl: "https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif"
+            )
             {
                 Caption = "Rotating Earth",
                 GifDuration = 4,
@@ -776,18 +804,19 @@ public class InlineQueryTests
     {
         Message gifMessage = await BotClient.SendDocumentAsync(
             chatId: _fixture.SupergroupChat,
-            document: new InputFileUrl("https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif"),
-            replyMarkup: (InlineKeyboardMarkup)InlineKeyboardButton
-                .WithSwitchInlineQueryCurrentChat("Start inline query"));
+            document: new InputFileUrl(
+                "https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif"
+            ),
+            replyMarkup: (InlineKeyboardMarkup)
+                InlineKeyboardButton.WithSwitchInlineQueryCurrentChat("Start inline query")
+        );
 
         Update iqUpdate = await _fixture.UpdateReceiver.GetInlineQueryUpdateAsync();
 
         const string resultId = "gif_result";
         InlineQueryResult[] results =
         {
-            new InlineQueryResultCachedGif(
-                id: resultId,
-                gifFileId: gifMessage.Document!.FileId)
+            new InlineQueryResultCachedGif(id: resultId, gifFileId: gifMessage.Document!.FileId)
             {
                 Caption = "Rotating Earth",
             }
@@ -828,7 +857,8 @@ public class InlineQueryTests
             new InlineQueryResultMpeg4Gif(
                 id: resultId,
                 mpeg4Url: "https://pixabay.com/en/videos/download/video-10737_medium.mp4",
-                thumbUrl: "https://i.vimeocdn.com/video/646283246_640x360.jpg")
+                thumbUrl: "https://i.vimeocdn.com/video/646283246_640x360.jpg"
+            )
             {
                 Caption = "A beautiful scene",
             },
@@ -852,15 +882,20 @@ public class InlineQueryTests
         Assert.Equal(iqUpdate.InlineQuery.Query, resultUpdate.ChosenInlineResult.Query);
     }
 
-    [OrderedFact("Should send an mpeg4 gif and answer inline query with a cached mpeg4 gif using its file_id")]
+    [OrderedFact(
+        "Should send an mpeg4 gif and answer inline query with a cached mpeg4 gif using its file_id"
+    )]
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.AnswerInlineQuery)]
     public async Task Should_Answer_Inline_Query_With_Cached_Mpeg4Gif()
     {
         Message gifMessage = await BotClient.SendDocumentAsync(
             chatId: _fixture.SupergroupChat,
-            document: new InputFileUrl("https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif"),
-            replyMarkup: (InlineKeyboardMarkup)InlineKeyboardButton
-                .WithSwitchInlineQueryCurrentChat("Start inline query"));
+            document: new InputFileUrl(
+                "https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif"
+            ),
+            replyMarkup: (InlineKeyboardMarkup)
+                InlineKeyboardButton.WithSwitchInlineQueryCurrentChat("Start inline query")
+        );
 
         Update iqUpdate = await _fixture.UpdateReceiver.GetInlineQueryUpdateAsync();
 
@@ -869,7 +904,8 @@ public class InlineQueryTests
         {
             new InlineQueryResultCachedMpeg4Gif(
                 id: resultId,
-                mpeg4FileId: gifMessage.Document!.FileId)
+                mpeg4FileId: gifMessage.Document!.FileId
+            )
             {
                 Caption = "Rotating Earth",
             }
@@ -910,7 +946,10 @@ public class InlineQueryTests
         const string resultId = "sticker_result";
         InlineQueryResult[] results =
         {
-            new InlineQueryResultCachedSticker(id: resultId, stickerFileId: stickerSet.Stickers[0].FileId)
+            new InlineQueryResultCachedSticker(
+                id: resultId,
+                stickerFileId: stickerSet.Stickers[0].FileId
+            )
         };
 
         await BotClient.AnswerInlineQueryAsync(
@@ -991,7 +1030,10 @@ public class InlineQueryTests
             new InlineQueryResultArticle(
                 id: "article:bot-api",
                 title: "Telegram Bot API",
-                inputMessageContent: new InputTextMessageContent("https://core.telegram.org/bots/api"))
+                inputMessageContent: new InputTextMessageContent(
+                    "https://core.telegram.org/bots/api"
+                )
+            )
             {
                 Description = "The Bot API is an HTTP-based interface created for developers",
             },
@@ -999,15 +1041,19 @@ public class InlineQueryTests
 
         await Task.Delay(10_000);
 
-        ApiRequestException exception = await Assert.ThrowsAsync<ApiRequestException>(() =>
-            BotClient.AnswerInlineQueryAsync(
-                inlineQueryId: queryUpdate.InlineQuery!.Id,
-                results: results,
-                cacheTime: 0
-            )
+        ApiRequestException exception = await Assert.ThrowsAsync<ApiRequestException>(
+            () =>
+                BotClient.AnswerInlineQueryAsync(
+                    inlineQueryId: queryUpdate.InlineQuery!.Id,
+                    results: results,
+                    cacheTime: 0
+                )
         );
 
-        Assert.Equal("Bad Request: query is too old and response timeout expired or query ID is invalid", exception.Message);
+        Assert.Equal(
+            "Bad Request: query is too old and response timeout expired or query ID is invalid",
+            exception.Message
+        );
         Assert.Equal(400, exception.ErrorCode);
     }
 }

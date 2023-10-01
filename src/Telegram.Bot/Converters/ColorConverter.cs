@@ -17,12 +17,11 @@ internal class NullableColorConverter : JsonConverter<Color?>
         Type objectType,
         Color? existingValue,
         bool hasExistingValue,
-        JsonSerializer serializer)
+        JsonSerializer serializer
+    )
     {
         var value = JToken.ReadFrom(reader).Value<int?>();
-        return value is not null
-            ? new Color(value.Value)
-            : new Color?();
+        return value is not null ? new Color(value.Value) : new Color?();
     }
 }
 
@@ -36,7 +35,8 @@ internal class ColorConverter : JsonConverter<Color>
         Type objectType,
         Color existingValue,
         bool hasExistingValue,
-        JsonSerializer serializer)
+        JsonSerializer serializer
+    )
     {
         var value = JToken.ReadFrom(reader).Value<int>();
         return new(value);

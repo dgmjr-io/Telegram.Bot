@@ -17,7 +17,8 @@ internal static class TelegramBotClientExtensions
     /// </returns>
     internal static async Task<int> ThrowOutPendingUpdatesAsync(
         this ITelegramBotClient botClient,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
         var request = new GetUpdatesRequest
         {
@@ -26,13 +27,20 @@ internal static class TelegramBotClientExtensions
             Timeout = 0,
             AllowedUpdates = Array.Empty<UpdateType>(),
         };
-        var updates = await botClient.MakeRequestAsync(request: request, cancellationToken: cancellationToken)
+        var updates = await botClient
+            .MakeRequestAsync(request: request, cancellationToken: cancellationToken)
             .ConfigureAwait(false);
 
 #if NET6_0_OR_GREATER
-        if (updates.Length > 0) { return updates[^1].Id + 1; }
+        if (updates.Length > 0)
+        {
+            return updates[^1].Id + 1;
+        }
 #else
-        if (updates.Length > 0) { return updates[updates.Length - 1].Id + 1; }
+        if (updates.Length > 0)
+        {
+            return updates[updates.Length - 1].Id + 1;
+        }
 #endif
         return 0;
     }

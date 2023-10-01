@@ -26,8 +26,5 @@ public interface IUpdateReceiver
     /// A <see cref="Task"/> that will be completed when cancellation will be requested through
     /// <paramref name="cancellationToken"/>
     /// </returns>
-    Task ReceiveAsync(
-        IUpdateHandler updateHandler,
-        CancellationToken cancellationToken = default
-    );
+    Task ReceiveAsync(IUpdateHandler updateHandler, CancellationToken cancellationToken = default);
 }

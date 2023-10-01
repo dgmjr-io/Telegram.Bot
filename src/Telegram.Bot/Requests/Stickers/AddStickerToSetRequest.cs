@@ -39,10 +39,7 @@ public abstract class AddStickerToSetRequest : FileRequestBase<bool>, IUserTarge
     /// <param name="userId">User identifier</param>
     /// <param name="name">Sticker set name</param>
     /// <param name="emojis">One or more emoji corresponding to the sticker</param>
-    protected AddStickerToSetRequest(
-        long userId,
-        string name,
-        string emojis)
+    protected AddStickerToSetRequest(long userId, string name, string emojis)
         : base("addStickerToSet")
     {
         UserId = userId;

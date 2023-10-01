@@ -29,10 +29,7 @@ public class SupergroupAdminBotTests : IClassFixture<SupergroupAdminBotTestsFixt
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.SetChatTitle)]
     public async Task Should_Set_Chat_Title()
     {
-        await BotClient.SetChatTitleAsync(
-            chatId: _classFixture.Chat.Id,
-            title: "Test Chat Title"
-        );
+        await BotClient.SetChatTitleAsync(chatId: _classFixture.Chat.Id, title: "Test Chat Title");
     }
 
     #endregion
@@ -43,17 +40,18 @@ public class SupergroupAdminBotTests : IClassFixture<SupergroupAdminBotTestsFixt
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.SetChatPermissions)]
     public async Task Should_Set_New_Default_Permissions()
     {
-        ChatPermissions newDefaultPermissions = new()
-        {
-            CanInviteUsers = false,
-            CanSendMediaMessages = true,
-            CanChangeInfo = false,
-            CanSendMessages = true,
-            CanPinMessages = false,
-            CanSendPolls = false,
-            CanSendOtherMessages = false,
-            CanAddWebPagePreviews = false
-        };
+        ChatPermissions newDefaultPermissions =
+            new()
+            {
+                CanInviteUsers = false,
+                CanSendMediaMessages = true,
+                CanChangeInfo = false,
+                CanSendMessages = true,
+                CanPinMessages = false,
+                CanSendPolls = false,
+                CanSendOtherMessages = false,
+                CanAddWebPagePreviews = false
+            };
 
         await BotClient.SetChatPermissionsAsync(_classFixture.Chat.Id, newDefaultPermissions);
         Chat supergroup = await BotClient.GetChatAsync(_classFixture.Chat.Id);
@@ -82,9 +80,7 @@ public class SupergroupAdminBotTests : IClassFixture<SupergroupAdminBotTestsFixt
     {
         // ToDo: exception Bad Request: chat description is not modified
 
-        await BotClient.SetChatDescriptionAsync(
-            chatId: _classFixture.Chat.Id
-        );
+        await BotClient.SetChatDescriptionAsync(chatId: _classFixture.Chat.Id);
     }
 
     #endregion
@@ -95,10 +91,18 @@ public class SupergroupAdminBotTests : IClassFixture<SupergroupAdminBotTestsFixt
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.PinChatMessage)]
     public async Task Should_Pin_Message()
     {
-        Message msg1 = await _classFixture.TestsFixture.SendTestInstructionsAsync("🧷 This message will be deleted second");
-        Message msg2 = await _classFixture.TestsFixture.SendTestInstructionsAsync("🧷 This will be deleted as group");
-        Message msg3 = await _classFixture.TestsFixture.SendTestInstructionsAsync("🧷 This will be deleted with previous one");
-        Message msg4 = await _classFixture.TestsFixture.SendTestInstructionsAsync("🧷 This message will be deleted first");
+        Message msg1 = await _classFixture.TestsFixture.SendTestInstructionsAsync(
+            "🧷 This message will be deleted second"
+        );
+        Message msg2 = await _classFixture.TestsFixture.SendTestInstructionsAsync(
+            "🧷 This will be deleted as group"
+        );
+        Message msg3 = await _classFixture.TestsFixture.SendTestInstructionsAsync(
+            "🧷 This will be deleted with previous one"
+        );
+        Message msg4 = await _classFixture.TestsFixture.SendTestInstructionsAsync(
+            "🧷 This message will be deleted first"
+        );
 
         await BotClient.PinChatMessageAsync(
             chatId: _classFixture.Chat.Id,
@@ -137,9 +141,9 @@ public class SupergroupAdminBotTests : IClassFixture<SupergroupAdminBotTestsFixt
 
         Chat chat = await BotClient.GetChatAsync(_classFixture.Chat.Id);
 
-        Assert.True(JToken.DeepEquals(
-            JToken.FromObject(pinnedMsg), JToken.FromObject(chat.PinnedMessage)
-        ));
+        Assert.True(
+            JToken.DeepEquals(JToken.FromObject(pinnedMsg), JToken.FromObject(chat.PinnedMessage))
+        );
     }
 
     [OrderedFact("Should unpin last chat message")]
@@ -155,10 +159,12 @@ public class SupergroupAdminBotTests : IClassFixture<SupergroupAdminBotTestsFixt
 
         Message secondsFromEndPinnedMessage = _classFixture.PinnedMessages[^2];
 
-        Assert.True(JToken.DeepEquals(
-            JToken.FromObject(secondsFromEndPinnedMessage),
-            JToken.FromObject(chat.PinnedMessage)
-        ));
+        Assert.True(
+            JToken.DeepEquals(
+                JToken.FromObject(secondsFromEndPinnedMessage),
+                JToken.FromObject(chat.PinnedMessage)
+            )
+        );
     }
 
     [OrderedFact("Should unpin first chat message")]
@@ -225,14 +231,16 @@ public class SupergroupAdminBotTests : IClassFixture<SupergroupAdminBotTestsFixt
 
     #region 6. Chat Sticker Set
 
-    [OrderedFact("Should throw exception when trying to set sticker set for a chat with less than 100 members")]
+    [OrderedFact(
+        "Should throw exception when trying to set sticker set for a chat with less than 100 members"
+    )]
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.SetChatStickerSet)]
     public async Task Should_Throw_On_Setting_Chat_Sticker_Set()
     {
         const string setName = "EvilMinds";
 
-        ApiRequestException exception = await Assert.ThrowsAsync<ApiRequestException>(() =>
-            BotClient.SetChatStickerSetAsync(_classFixture.Chat.Id, setName)
+        ApiRequestException exception = await Assert.ThrowsAsync<ApiRequestException>(
+            () => BotClient.SetChatStickerSetAsync(_classFixture.Chat.Id, setName)
         );
 
         Assert.Equal(400, exception.ErrorCode);
@@ -251,7 +259,7 @@ public class SupergroupAdminBotTests : IClassFixture<SupergroupAdminBotTestsFixt
 
         // Milliseconds are ignored during conversion to unix timestamp since it counts only up to
         // seconds, so for equality to work later on assertion we need to zero out milliseconds
-        DateTime expireDate = createdAt.With(new () {Millisecond = 0}).AddHours(1);
+        DateTime expireDate = createdAt.With(new() { Millisecond = 0 }).AddHours(1);
 
         string inviteLinkName = $"Created at {createdAt:yyyy-MM-ddTHH:mm:ss}Z";
 
@@ -288,7 +296,7 @@ public class SupergroupAdminBotTests : IClassFixture<SupergroupAdminBotTestsFixt
 
         // Milliseconds are ignored during conversion to unix timestamp since it counts only up to
         // seconds, so for equality to work later on assertion we need to zero out milliseconds
-        DateTime expireDate = editedAt.With(new () {Millisecond = 0}).AddHours(1);
+        DateTime expireDate = editedAt.With(new() { Millisecond = 0 }).AddHours(1);
 
         string inviteLinkName = $"Edited at {editedAt:yyyy-MM-ddTHH:mm:ss}Z";
 
@@ -312,7 +320,10 @@ public class SupergroupAdminBotTests : IClassFixture<SupergroupAdminBotTestsFixt
         Assert.Equal(chatInviteLink.InviteLink, editedChatInviteLink.InviteLink);
         Assert.Equal(chatInviteLink.IsPrimary, editedChatInviteLink.IsPrimary);
         Assert.False(editedChatInviteLink.CreatesJoinRequest);
-        Assert.Equal(chatInviteLink.PendingJoinRequestCount, editedChatInviteLink.PendingJoinRequestCount);
+        Assert.Equal(
+            chatInviteLink.PendingJoinRequestCount,
+            editedChatInviteLink.PendingJoinRequestCount
+        );
         Assert.Equal(chatInviteLink.IsRevoked, editedChatInviteLink.IsRevoked);
 
         _classFixture.ChatInviteLink = editedChatInviteLink;
@@ -338,8 +349,14 @@ public class SupergroupAdminBotTests : IClassFixture<SupergroupAdminBotTestsFixt
         Assert.Equal(editedChatInviteLink.ExpireDate, revokedChatInviteLink.ExpireDate);
         Assert.Equal(editedChatInviteLink.IsPrimary, revokedChatInviteLink.IsPrimary);
         Assert.Equal(editedChatInviteLink.MemberLimit, revokedChatInviteLink.MemberLimit);
-        Assert.Equal(editedChatInviteLink.CreatesJoinRequest, revokedChatInviteLink.CreatesJoinRequest);
-        Assert.Equal(editedChatInviteLink.PendingJoinRequestCount, revokedChatInviteLink.PendingJoinRequestCount);
+        Assert.Equal(
+            editedChatInviteLink.CreatesJoinRequest,
+            revokedChatInviteLink.CreatesJoinRequest
+        );
+        Assert.Equal(
+            editedChatInviteLink.PendingJoinRequestCount,
+            revokedChatInviteLink.PendingJoinRequestCount
+        );
         Assert.True(revokedChatInviteLink.IsRevoked);
     }
 }

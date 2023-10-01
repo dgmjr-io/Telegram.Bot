@@ -31,24 +31,22 @@ public class GamesFixture : AsyncLifetimeFixture
     {
         GameShortName = "game1";
 
-        AddLifetime(
-            initialize: async () =>
+        AddLifetime(initialize: async () =>
+        {
+            try
             {
-                try
-                {
-                    await fixture.BotClient.SendGameAsync(fixture.SupergroupChat.Id, GameShortName);
-                }
-                catch (ApiRequestException e)
-                {
-                    throw new ArgumentException(
-                        $@"Bot doesn't have game: ""{GameShortName}"". Make sure you set up a game with @BotFather.",
-                        e
-                    );
-                }
-
-                Player = await GetPlayerIdFromChatAdmins(fixture, fixture.SupergroupChat.Id);
+                await fixture.BotClient.SendGameAsync(fixture.SupergroupChat.Id, GameShortName);
             }
-        );
+            catch (ApiRequestException e)
+            {
+                throw new ArgumentException(
+                    $@"Bot doesn't have game: ""{GameShortName}"". Make sure you set up a game with @BotFather.",
+                    e
+                );
+            }
+
+            Player = await GetPlayerIdFromChatAdmins(fixture, fixture.SupergroupChat.Id);
+        });
     }
 
     static async Task<User> GetPlayerIdFromChatAdmins(TestsFixture testsFixture, long chatId)

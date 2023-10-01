@@ -1,5 +1,3 @@
-
-
 // ReSharper disable once CheckNamespace
 namespace Telegram.Bot.Types.InlineQueryResults;
 
@@ -92,7 +90,9 @@ public class InlineQueryResultVenue : InlineQueryResult
         double latitude,
         double longitude,
         string title,
-        string address) : base(id)
+        string address
+    )
+        : base(id)
     {
         Latitude = latitude;
         Longitude = longitude;

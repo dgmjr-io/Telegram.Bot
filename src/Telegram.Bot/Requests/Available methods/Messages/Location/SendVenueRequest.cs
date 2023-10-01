@@ -105,7 +105,9 @@ public class SendVenueRequest : RequestBase<Message>, IChatTargetable
         double latitude,
         double longitude,
         string title,
-        string address) : base("sendVenue")
+        string address
+    )
+        : base("sendVenue")
     {
         ChatId = chatId;
         Latitude = latitude;

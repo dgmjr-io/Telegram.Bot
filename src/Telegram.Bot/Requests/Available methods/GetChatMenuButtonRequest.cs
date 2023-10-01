@@ -19,6 +19,5 @@ public class GetChatMenuButtonRequest : RequestBase<MenuButton>
     /// Initializes a new request
     /// </summary>
     public GetChatMenuButtonRequest()
-        : base("getChatMenuButton")
-    { }
+        : base("getChatMenuButton") { }
 }

@@ -56,7 +56,11 @@ public class EditInlineMessageLiveLocationRequest : RequestBase<bool>
     /// <param name="inlineMessageId">Identifier of the inline message</param>
     /// <param name="latitude">Latitude of new location</param>
     /// <param name="longitude">Longitude of new location</param>
-    public EditInlineMessageLiveLocationRequest(string inlineMessageId, double latitude, double longitude)
+    public EditInlineMessageLiveLocationRequest(
+        string inlineMessageId,
+        double latitude,
+        double longitude
+    )
         : base("editMessageLiveLocation")
     {
         InlineMessageId = inlineMessageId;

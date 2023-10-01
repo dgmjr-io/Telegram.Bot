@@ -17,16 +17,20 @@ public class RetryFactDiscoverer : IXunitTestCaseDiscoverer
     public IEnumerable<IXunitTestCase> Discover(
         ITestFrameworkDiscoveryOptions discoveryOptions,
         ITestMethod testMethod,
-        IAttributeInfo factAttribute)
+        IAttributeInfo factAttribute
+    )
     {
-        int maxRetries = factAttribute
-            .GetNamedArgument<int>(nameof(OrderedFactAttribute.MaxRetries));
+        int maxRetries = factAttribute.GetNamedArgument<int>(
+            nameof(OrderedFactAttribute.MaxRetries)
+        );
 
-        int delaySeconds = factAttribute
-            .GetNamedArgument<int>(nameof(OrderedFactAttribute.DelaySeconds));
+        int delaySeconds = factAttribute.GetNamedArgument<int>(
+            nameof(OrderedFactAttribute.DelaySeconds)
+        );
 
-        string exceptionTypeFullName = factAttribute
-            .GetNamedArgument<string>(nameof(OrderedFactAttribute.ExceptionTypeFullName));
+        string exceptionTypeFullName = factAttribute.GetNamedArgument<string>(
+            nameof(OrderedFactAttribute.ExceptionTypeFullName)
+        );
 
         var retryTestCase = new RetryTestCase(
             _diagnosticMessageSink,

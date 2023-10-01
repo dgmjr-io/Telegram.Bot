@@ -97,8 +97,7 @@ public class InlineKeyboardButton : IKeyboardButton
     /// </summary>
     /// <param name="text">Label text on the button</param>
     /// <param name="url">HTTP or tg:// url to be opened when button is pressed</param>
-    public static InlineKeyboardButton WithUrl(string text, string url) =>
-        new(text) { Url = url };
+    public static InlineKeyboardButton WithUrl(string text, string url) => new(text) { Url = url };
 
     /// <summary>
     /// Creates an inline keyboard button that opens a HTTP url to automatically authorize the user
@@ -156,8 +155,10 @@ public class InlineKeyboardButton : IKeyboardButton
     /// If set, pressing the button will insert the bot’s username and the specified inline query in the current
     /// chat’s input field. Can be empty, in which case only the bot’s username will be inserted.
     /// </param>
-    public static InlineKeyboardButton WithSwitchInlineQueryCurrentChat(string text, string query = "") =>
-        new(text) { SwitchInlineQueryCurrentChat = query };
+    public static InlineKeyboardButton WithSwitchInlineQueryCurrentChat(
+        string text,
+        string query = ""
+    ) => new(text) { SwitchInlineQueryCurrentChat = query };
 
     /// <summary>
     /// Creates an inline keyboard button. Pressing the button will launch the game.
@@ -166,15 +167,16 @@ public class InlineKeyboardButton : IKeyboardButton
     /// <param name="callbackGame">
     /// Description of the game that will be launched when the user presses the button.
     /// </param>
-    public static InlineKeyboardButton WithCallBackGame(string text, CallbackGame? callbackGame = default) =>
-        new(text) { CallbackGame = callbackGame ?? new() };
+    public static InlineKeyboardButton WithCallBackGame(
+        string text,
+        CallbackGame? callbackGame = default
+    ) => new(text) { CallbackGame = callbackGame ?? new() };
 
     /// <summary>
     /// Creates an inline keyboard button for a PayButton
     /// </summary>
     /// <param name="text">Label text on the button</param>
-    public static InlineKeyboardButton WithPayment(string text) =>
-        new(text) { Pay = true };
+    public static InlineKeyboardButton WithPayment(string text) => new(text) { Pay = true };
 
     /// <summary>
     /// Generate an inline keyboard button to request a web app
@@ -194,7 +196,5 @@ public class InlineKeyboardButton : IKeyboardButton
     /// The result of the conversion.
     /// </returns>
     public static implicit operator InlineKeyboardButton?(string? textAndCallbackData) =>
-        textAndCallbackData is null
-            ? default
-            : WithCallbackData(textAndCallbackData);
+        textAndCallbackData is null ? default : WithCallbackData(textAndCallbackData);
 }

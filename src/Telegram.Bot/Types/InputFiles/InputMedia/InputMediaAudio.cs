@@ -7,10 +7,7 @@ namespace Telegram.Bot.Types;
 /// Represents an audio file to be treated as music to be sent.
 /// </summary>
 [JsonObject(MemberSerialization.OptIn, NamingStrategyType = typeof(SnakeCaseNamingStrategy))]
-public class InputMediaAudio :
-    InputMedia,
-    IInputMediaThumb,
-    IAlbumInputMedia
+public class InputMediaAudio : InputMedia, IInputMediaThumb, IAlbumInputMedia
 {
     /// <inheritdoc />
     [JsonProperty(Required = Required.Always)]
@@ -43,6 +40,5 @@ public class InputMediaAudio :
     /// </summary>
     /// <param name="media">File to send</param>
     public InputMediaAudio(IInputFile media)
-        : base(media)
-    { }
+        : base(media) { }
 }

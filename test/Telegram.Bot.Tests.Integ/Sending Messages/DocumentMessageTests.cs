@@ -70,8 +70,9 @@ public class SendingDocumentMessageTests
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.SendDocument)]
     public async Task Should_Send_Document_With_Thumb()
     {
-        await using Stream
-            documentStream = System.IO.File.OpenRead(Constants.PathToFile.Documents.Hamlet),
+        await using Stream documentStream = System.IO.File.OpenRead(
+                Constants.PathToFile.Documents.Hamlet
+            ),
             thumbStream = System.IO.File.OpenRead(Constants.PathToFile.Thumbnail.TheAbilityToBreak);
 
         Message message = await BotClient.SendDocumentAsync(

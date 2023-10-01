@@ -33,7 +33,8 @@ public class EditMessageContentTests2
             (MessageEntityType.Bold, "<b>bold</b>"),
             (MessageEntityType.Italic, "<i>italic</i>"),
         };
-        string messageText = $"{originalMessagePrefix}{string.Join("\n", entityValueMappings.Select(tuple => tuple.Value))}";
+        string messageText =
+            $"{originalMessagePrefix}{string.Join("\n", entityValueMappings.Select(tuple => tuple.Value))}";
 
         Message originalMessage = await BotClient.SendTextMessageAsync(
             chatId: _fixture.SupergroupChat.Id,
@@ -44,7 +45,8 @@ public class EditMessageContentTests2
         await Task.Delay(1_000);
 
         const string modifiedMessagePrefix = "modified\n";
-        messageText = $"{modifiedMessagePrefix}{string.Join("\n", entityValueMappings.Select(tuple => tuple.Value))}";
+        messageText =
+            $"{modifiedMessagePrefix}{string.Join("\n", entityValueMappings.Select(tuple => tuple.Value))}";
 
         Message editedMessage = await BotClient.EditMessageTextAsync(
             chatId: originalMessage.Chat.Id,
@@ -109,7 +111,10 @@ public class EditMessageContentTests2
         await Task.Delay(1_000);
 
         const string captionPrefix = "Modified caption";
-        (MessageEntityType Type, string Value) captionEntity = (MessageEntityType.Italic, "_with Markdown_");
+        (MessageEntityType Type, string Value) captionEntity = (
+            MessageEntityType.Italic,
+            "_with Markdown_"
+        );
         string caption = $"{captionPrefix} {captionEntity.Value}";
 
         Message editedMessage = await BotClient.EditMessageCaptionAsync(

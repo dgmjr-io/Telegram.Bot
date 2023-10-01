@@ -35,7 +35,9 @@ public class MethodNameTests
         Assert.Equal(@"{""method"":""deleteWebhook""}", request);
     }
 
-    [Fact(DisplayName = "Should serialize an empty object when not a parameterless webhook response")]
+    [Fact(
+        DisplayName = "Should serialize an empty object when not a parameterless webhook response"
+    )]
     public void Should_Serialize_Empty_Object_When_Not_Parameterless_Webhook_Response()
     {
         DeleteWebhookRequest deleteWebhookRequest = new() { IsWebhookResponse = false };
@@ -53,7 +55,9 @@ public class MethodNameTests
         Assert.NotNull(content);
     }
 
-    [Fact(DisplayName = "Should build a StringContent with method name in parameterless webhook responses")]
+    [Fact(
+        DisplayName = "Should build a StringContent with method name in parameterless webhook responses"
+    )]
     public async Task Should_Build_StringContent_With_MethodName_In_Parameterless_Webhook_ResponseAsync()
     {
         CloseRequest closeRequest = new() { IsWebhookResponse = true };
@@ -67,7 +71,9 @@ public class MethodNameTests
         Assert.Equal(@"{""method"":""close""}", body);
     }
 
-    [Fact(DisplayName = "Should not build an HttpContent when not a parameterless webhook responses")]
+    [Fact(
+        DisplayName = "Should not build an HttpContent when not a parameterless webhook responses"
+    )]
     public void Should_Not_Serialize_MethodName_When_Not_Parameterless_Webhook_Responses()
     {
         CloseRequest closeRequest = new() { IsWebhookResponse = false };

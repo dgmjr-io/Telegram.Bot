@@ -67,7 +67,12 @@ public class EditMessageLiveLocationRequest : RequestBase<Message>, IChatTargeta
     /// <param name="messageId">Identifier of the message to edit</param>
     /// <param name="latitude">Latitude of new location</param>
     /// <param name="longitude">Longitude of new location</param>
-    public EditMessageLiveLocationRequest(ChatId chatId, int messageId, double latitude, double longitude)
+    public EditMessageLiveLocationRequest(
+        ChatId chatId,
+        int messageId,
+        double latitude,
+        double longitude
+    )
         : base("editMessageLiveLocation")
     {
         ChatId = chatId;

@@ -6,9 +6,10 @@ internal class BanTimeUnixDateTimeConverter : UnixDateTimeConverter
 {
     public override object? ReadJson(
         JsonReader reader,
-         Type objectType,
-         object? existingValue,
-         JsonSerializer serializer)
+        Type objectType,
+        object? existingValue,
+        JsonSerializer serializer
+    )
     {
         var nonNullable = Nullable.GetUnderlyingType(objectType) is null;
 

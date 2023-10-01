@@ -97,7 +97,8 @@ public class SendPhotoRequest : FileRequestBase<Message>, IChatTargetable
     public override HttpContent? ToHttpContent() =>
         Photo switch
         {
-            InputFile photo => ToMultipartFormDataContent(fileParameterName: "photo", inputFile: photo),
-            _               => base.ToHttpContent()
+            InputFile photo
+                => ToMultipartFormDataContent(fileParameterName: "photo", inputFile: photo),
+            _ => base.ToHttpContent()
         };
 }

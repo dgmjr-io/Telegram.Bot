@@ -17,7 +17,11 @@ public class ReceiveAsyncTests
         CancellationTokenSource cancellationTokenSource = new();
 
         int updateCount = 0;
-        async Task HandleUpdate(ITelegramBotClient botClient, Update update, CancellationToken token)
+        async Task HandleUpdate(
+            ITelegramBotClient botClient,
+            Update update,
+            CancellationToken token
+        )
         {
             updateCount++;
             Assert.NotNull(update.Message?.Text);
@@ -29,10 +33,11 @@ public class ReceiveAsyncTests
             }
         }
 
-        DefaultUpdateHandler updateHandler = new(
-            updateHandler: HandleUpdate,
-            pollingErrorHandler: async (_, _, token) => await Task.Delay(10, token)
-        );
+        DefaultUpdateHandler updateHandler =
+            new(
+                updateHandler: HandleUpdate,
+                pollingErrorHandler: async (_, _, token) => await Task.Delay(10, token)
+            );
 
         CancellationToken cancellationToken = cancellationTokenSource.Token;
         await bot.ReceiveAsync(updateHandler, cancellationToken: cancellationToken);
@@ -48,7 +53,11 @@ public class ReceiveAsyncTests
         MockTelegramBotClient bot = new("foo-bar", "throw");
 
         int updateCount = 0;
-        async Task HandleUpdate(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+        async Task HandleUpdate(
+            ITelegramBotClient botClient,
+            Update update,
+            CancellationToken cancellationToken
+        )
         {
             updateCount++;
             await Task.Delay(10, cancellationToken);
@@ -58,10 +67,11 @@ public class ReceiveAsyncTests
             }
         }
 
-        DefaultUpdateHandler updateHandler = new(
-            updateHandler: HandleUpdate,
-            pollingErrorHandler: async (_, _, token) => await Task.Delay(10, token)
-        );
+        DefaultUpdateHandler updateHandler =
+            new(
+                updateHandler: HandleUpdate,
+                pollingErrorHandler: async (_, _, token) => await Task.Delay(10, token)
+            );
 
         try
         {
@@ -83,27 +93,30 @@ public class ReceiveAsyncTests
     {
         CancellationTokenSource cancellationTokenSource = new(TimeSpan.FromSeconds(4));
 
-        MockTelegramBotClient bot = new(new MockClientOptions
-        {
-            Messages = new[] { "foo-bar", "baz", "quux" },
-            HandleNegativeOffset = true
-        });
+        MockTelegramBotClient bot =
+            new(
+                new MockClientOptions
+                {
+                    Messages = new[] { "foo-bar", "baz", "quux" },
+                    HandleNegativeOffset = true
+                }
+            );
 
         int handleCount = 0;
 
         Task HandleUpdate(
             ITelegramBotClient botClient,
             Update update,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken
+        )
         {
             handleCount += 1;
             return Task.CompletedTask;
-        };
+        }
+        ;
 
-        DefaultUpdateHandler updateHandler = new(
-            updateHandler: HandleUpdate,
-            pollingErrorHandler: (_, _, _) => Task.CompletedTask
-        );
+        DefaultUpdateHandler updateHandler =
+            new(updateHandler: HandleUpdate, pollingErrorHandler: (_, _, _) => Task.CompletedTask);
 
         await bot.ReceiveAsync(
             updateHandler,

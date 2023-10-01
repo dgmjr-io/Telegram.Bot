@@ -38,17 +38,18 @@ public class RequestSerializationTests
     {
         GetUpdatesRequest request = new() { Offset = 12345 };
 
-        JsonSerializerSettings settings = new()
-        {
-            NullValueHandling = NullValueHandling.Include,
-            ContractResolver = new CamelCasePropertyNamesContractResolver
+        JsonSerializerSettings settings =
+            new()
             {
-                IgnoreSerializableAttribute = true,
-                IgnoreShouldSerializeMembers = true
-            },
-            DateFormatHandling = DateFormatHandling.IsoDateFormat,
-            DateTimeZoneHandling = DateTimeZoneHandling.Unspecified
-        };
+                NullValueHandling = NullValueHandling.Include,
+                ContractResolver = new CamelCasePropertyNamesContractResolver
+                {
+                    IgnoreSerializableAttribute = true,
+                    IgnoreShouldSerializeMembers = true
+                },
+                DateFormatHandling = DateFormatHandling.IsoDateFormat,
+                DateTimeZoneHandling = DateTimeZoneHandling.Unspecified
+            };
 
         string serializeRequest = JsonConvert.SerializeObject(request, settings);
 
@@ -64,13 +65,14 @@ public class RequestSerializationTests
     public async Task Should_Serialize_CreateChatInviteLink_Request()
     {
         DateTime expireDate = new(2022, 1, 8, 10, 33, 45, DateTimeKind.Utc);
-        CreateChatInviteLinkRequest createChatInviteLinkRequest = new(chatId: 1_000_000)
-        {
-            ExpireDate = expireDate,
-            CreatesJoinRequest = true,
-            MemberLimit = 123,
-            Name = "Test link name"
-        };
+        CreateChatInviteLinkRequest createChatInviteLinkRequest =
+            new(chatId: 1_000_000)
+            {
+                ExpireDate = expireDate,
+                CreatesJoinRequest = true,
+                MemberLimit = 123,
+                Name = "Test link name"
+            };
 
         HttpContent createChatInviteLinkContent = createChatInviteLinkRequest.ToHttpContent()!;
 

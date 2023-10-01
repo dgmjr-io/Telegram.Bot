@@ -10,14 +10,15 @@ public class XunitTestFrameworkExecutorWithAssemblyFixture : XunitTestFrameworkE
     public XunitTestFrameworkExecutorWithAssemblyFixture(
         AssemblyName assemblyName,
         ISourceInformationProvider sourceInformationProvider,
-        IMessageSink diagnosticMessageSink)
-        : base(assemblyName, sourceInformationProvider, diagnosticMessageSink)
-    { }
+        IMessageSink diagnosticMessageSink
+    )
+        : base(assemblyName, sourceInformationProvider, diagnosticMessageSink) { }
 
     protected override async void RunTestCases(
         IEnumerable<IXunitTestCase> testCases,
         IMessageSink executionMessageSink,
-        ITestFrameworkExecutionOptions executionOptions)
+        ITestFrameworkExecutionOptions executionOptions
+    )
     {
         using var assemblyRunner = new XunitTestAssemblyRunnerWithAssemblyFixture(
             TestAssembly,

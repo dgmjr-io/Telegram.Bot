@@ -9,10 +9,7 @@ namespace Telegram.Bot.Tests.Integ.Framework;
 
 public static class Asserts
 {
-    public static void JsonEquals(
-        object expected,
-        object actual,
-        params string[] excludeFields)
+    public static void JsonEquals(object expected, object actual, params string[] excludeFields)
     {
         if (expected is null || actual is null)
         {

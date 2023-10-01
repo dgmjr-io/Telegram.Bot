@@ -60,7 +60,9 @@ public class AnswerShippingQueryRequest : RequestBase<bool>
     /// <param name="shippingOptions">A JSON-serialized array of available shipping options</param>
     public AnswerShippingQueryRequest(
         string shippingQueryId,
-        IEnumerable<ShippingOption> shippingOptions) : base("answerShippingQuery")
+        IEnumerable<ShippingOption> shippingOptions
+    )
+        : base("answerShippingQuery")
     {
         ShippingQueryId = shippingQueryId;
         Ok = true;

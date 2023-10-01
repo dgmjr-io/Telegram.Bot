@@ -20,7 +20,6 @@ public class MockClientOptions
     public string[] Messages { get; set; } = Array.Empty<string>();
     public int RequestDelay { get; set; } = 10;
     public Exception? ExceptionToThrow { get; set; }
-
 }
 
 public class MockTelegramBotClient : ITelegramBotClient
@@ -33,9 +32,7 @@ public class MockTelegramBotClient : ITelegramBotClient
     public MockTelegramBotClient(MockClientOptions? options = default)
     {
         Options = options ?? new MockClientOptions();
-        _messages = new(
-            Options.Messages.Select(message => message.Split('-').ToArray())
-        );
+        _messages = new(Options.Messages.Select(message => message.Split('-').ToArray()));
     }
 
     public MockTelegramBotClient(params string[] messages)
@@ -46,13 +43,20 @@ public class MockTelegramBotClient : ITelegramBotClient
 
     public async Task<TResponse> MakeRequestAsync<TResponse>(
         IRequest<TResponse> request,
-        CancellationToken cancellationToken = default)
+        CancellationToken cancellationToken = default
+    )
     {
-        if (request is not GetUpdatesRequest getUpdatesRequest) { throw new NotImplementedException(); }
+        if (request is not GetUpdatesRequest getUpdatesRequest)
+        {
+            throw new NotImplementedException();
+        }
 
         await Task.Delay(Options.RequestDelay, cancellationToken);
 
-        if (Options.ExceptionToThrow is not null) { throw Options.ExceptionToThrow; }
+        if (Options.ExceptionToThrow is not null)
+        {
+            throw Options.ExceptionToThrow;
+        }
 
         if (Options.HandleNegativeOffset && getUpdatesRequest.Offset == -1)
         {
@@ -61,17 +65,16 @@ public class MockTelegramBotClient : ITelegramBotClient
 
             _messages.Clear();
 
-            return (TResponse)(object) new[]
-            {
-                new Update
-                {
-                    Message = new()
+            return (TResponse)
+                (object)
+                    new[]
                     {
-                        Text = lastMessage
-                    },
-                    Id = messageCount
-                }
-            };
+                        new Update
+                        {
+                            Message = new() { Text = lastMessage },
+                            Id = messageCount
+                        }
+                    };
         }
 
         if (!_messages.TryDequeue(out string[]? messages))
@@ -79,14 +82,18 @@ public class MockTelegramBotClient : ITelegramBotClient
             return (TResponse)(object)Array.Empty<Update>();
         }
 
-        return (TResponse)(object)messages.Select((_, i) => new Update
-        {
-            Message = new()
-            {
-                Text = messages[i]
-            },
-            Id = getUpdatesRequest.Offset ?? 0 + i + 1
-        }).ToArray();
+        return (TResponse)
+            (object)
+                messages
+                    .Select(
+                        (_, i) =>
+                            new Update
+                            {
+                                Message = new() { Text = messages[i] },
+                                Id = getUpdatesRequest.Offset ?? 0 + i + 1
+                            }
+                    )
+                    .ToArray();
     }
 
     public TimeSpan Timeout { get; set; } = TimeSpan.FromMilliseconds(50);
@@ -101,11 +108,13 @@ public class MockTelegramBotClient : ITelegramBotClient
     public long? BotId => throw new NotImplementedException();
     public event AsyncEventHandler<ApiRequestEventArgs>? OnMakingApiRequest;
     public event AsyncEventHandler<ApiResponseEventArgs>? OnApiResponseReceived;
+
     public Task DownloadFileAsync(
         string filePath,
         Stream destination,
-        CancellationToken cancellationToken = default) =>
-        throw new NotImplementedException();
+        CancellationToken cancellationToken = default
+    ) => throw new NotImplementedException();
+
     public Task<bool> TestApiAsync(CancellationToken cancellationToken = default) =>
         throw new NotImplementedException();
 }

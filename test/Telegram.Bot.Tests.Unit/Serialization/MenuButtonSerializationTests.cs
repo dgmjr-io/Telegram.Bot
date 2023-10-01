@@ -33,11 +33,12 @@ public class MenuButtonSerializationTests
     [Fact]
     public void Should_Serialize_Menu_Button_Web_App()
     {
-        MenuButtonWebApp webAppButton = new()
-        {
-            WebApp = new() { Url = "https://example.com/link/to/web/app" },
-            Text = "Test text"
-        };
+        MenuButtonWebApp webAppButton =
+            new()
+            {
+                WebApp = new() { Url = "https://example.com/link/to/web/app" },
+                Text = "Test text"
+            };
 
         string webAppButtonJson = JsonConvert.SerializeObject(webAppButton);
         Assert.Contains(@"""type"":""web_app""", webAppButtonJson);

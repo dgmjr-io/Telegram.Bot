@@ -38,14 +38,19 @@ public class AddStaticStickerToSetRequest : AddStickerToSetRequest
         string name,
         IInputFile pngSticker,
         string emojis
-    ) : base(userId, name, emojis)
-        => PngSticker = pngSticker;
+    )
+        : base(userId, name, emojis) => PngSticker = pngSticker;
 #pragma warning restore CS1573
 
     /// <inheritdoc />
     public override HttpContent? ToHttpContent() =>
-        PngSticker switch {
-            InputFile pngSticker => ToMultipartFormDataContent(fileParameterName: "png_sticker", inputFile: pngSticker),
-            _                    => base.ToHttpContent()
+        PngSticker switch
+        {
+            InputFile pngSticker
+                => ToMultipartFormDataContent(
+                    fileParameterName: "png_sticker",
+                    inputFile: pngSticker
+                ),
+            _ => base.ToHttpContent()
         };
 }

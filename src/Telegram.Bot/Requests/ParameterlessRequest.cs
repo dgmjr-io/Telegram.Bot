@@ -14,8 +14,7 @@ public class ParameterlessRequest<TResult> : RequestBase<TResult>
     /// </summary>
     /// <param name="methodName">Name of request method</param>
     public ParameterlessRequest(string methodName)
-        : base(methodName)
-    { }
+        : base(methodName) { }
 
     /// <summary>
     /// Initializes an instance of <see cref="ParameterlessRequest{TResult}"/>
@@ -23,12 +22,9 @@ public class ParameterlessRequest<TResult> : RequestBase<TResult>
     /// <param name="methodName">Name of request method</param>
     /// <param name="method">HTTP request method</param>
     public ParameterlessRequest(string methodName, HttpMethod method)
-        : base(methodName, method)
-    { }
+        : base(methodName, method) { }
 
     /// <inheritdoc cref="RequestBase{TResponse}.ToHttpContent"/>
     public override HttpContent? ToHttpContent() =>
-        IsWebhookResponse
-            ? base.ToHttpContent()
-            : default;
+        IsWebhookResponse ? base.ToHttpContent() : default;
 }

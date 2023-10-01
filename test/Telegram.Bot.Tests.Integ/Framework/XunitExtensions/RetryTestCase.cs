@@ -16,8 +16,7 @@ public class RetryTestCase : XunitTestCase
 
     [EditorBrowsable(EditorBrowsableState.Never)]
     [Obsolete("Called by the de-serializer", true)]
-    public RetryTestCase()
-    { }
+    public RetryTestCase() { }
 
     public RetryTestCase(
         IMessageSink diagnosticMessageSink,
@@ -25,17 +24,14 @@ public class RetryTestCase : XunitTestCase
         ITestMethod testMethod,
         int maxRetries,
         int delaySeconds,
-        string exceptionTypeFullName)
-        : base(
-            diagnosticMessageSink,
-            testMethodDisplay,
-            TestMethodDisplayOptions.All,
-            testMethod)
+        string exceptionTypeFullName
+    )
+        : base(diagnosticMessageSink, testMethodDisplay, TestMethodDisplayOptions.All, testMethod)
     {
         _maxRetries = maxRetries;
         _delaySeconds = delaySeconds;
-        _exceptionTypeFullName = exceptionTypeFullName ??
-                                 throw new ArgumentNullException(nameof(exceptionTypeFullName));
+        _exceptionTypeFullName =
+            exceptionTypeFullName ?? throw new ArgumentNullException(nameof(exceptionTypeFullName));
     }
 
     /// <inheritdoc cref="XunitTestCase"/>
@@ -50,7 +46,8 @@ public class RetryTestCase : XunitTestCase
         IMessageBus messageBus,
         object[] constructorArguments,
         ExceptionAggregator aggregator,
-        CancellationTokenSource cancellationTokenSource)
+        CancellationTokenSource cancellationTokenSource
+    )
     {
         int runCount = 0;
         while (true)
@@ -93,17 +90,15 @@ public class RetryTestCase : XunitTestCase
 
             runCount += 1;
 
-            var testRunHasUnexpectedErrors = aggregator.HasExceptions ||
-                                             summary.Failed is 0;
+            var testRunHasUnexpectedErrors = aggregator.HasExceptions || summary.Failed is 0;
 
             var retryExceeded = runCount > _maxRetries;
 
-            var testRunHasExpectedException = summary.Failed is 1 &&
-                                              !delayedMessageBus.ContainsException(_exceptionTypeFullName);
+            var testRunHasExpectedException =
+                summary.Failed is 1 && !delayedMessageBus.ContainsException(_exceptionTypeFullName);
 
-            var testCaseRunShouldReturn = testRunHasUnexpectedErrors ||
-                                          retryExceeded ||
-                                          testRunHasExpectedException;
+            var testCaseRunShouldReturn =
+                testRunHasUnexpectedErrors || retryExceeded || testRunHasExpectedException;
 
             if (testCaseRunShouldReturn)
             {
@@ -111,12 +106,14 @@ public class RetryTestCase : XunitTestCase
                 return summary;
             }
 
-            diagnosticMessageSink.OnMessage(new DiagnosticMessage(
-                format: "Execution of '{0}' failed (attempt #{1}), retrying in {2} seconds...",
-                DisplayName,
-                runCount,
-                _delaySeconds
-            ));
+            diagnosticMessageSink.OnMessage(
+                new DiagnosticMessage(
+                    format: "Execution of '{0}' failed (attempt #{1}), retrying in {2} seconds...",
+                    DisplayName,
+                    runCount,
+                    _delaySeconds
+                )
+            );
 
             await Task.Delay(_delaySeconds * 1_000);
         }
@@ -137,6 +134,8 @@ public class RetryTestCase : XunitTestCase
 
         _maxRetries = data.GetValue<int>(nameof(OrderedFactAttribute.MaxRetries));
         _delaySeconds = data.GetValue<int>(nameof(OrderedFactAttribute.DelaySeconds));
-        _exceptionTypeFullName = data.GetValue<string>(nameof(OrderedFactAttribute.ExceptionTypeFullName));
+        _exceptionTypeFullName = data.GetValue<string>(
+            nameof(OrderedFactAttribute.ExceptionTypeFullName)
+        );
     }
 }

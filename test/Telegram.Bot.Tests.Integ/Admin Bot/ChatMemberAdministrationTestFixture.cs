@@ -10,7 +10,8 @@ public class ChatMemberAdministrationTestFixture : IAsyncLifetime
 {
     readonly TestsFixture _testsFixture;
 
-    public ChatMemberAdministrationTestFixture(TestsFixture testsFixture) => _testsFixture = testsFixture;
+    public ChatMemberAdministrationTestFixture(TestsFixture testsFixture) =>
+        _testsFixture = testsFixture;
 
     public Chat RegularMemberChat { get; private set; }
     public long RegularMemberUserId { get; private set; }
@@ -23,7 +24,7 @@ public class ChatMemberAdministrationTestFixture : IAsyncLifetime
     {
         Chat chat;
 
-        if (testsFixture.Configuration.RegularGroupMemberId is {} userId)
+        if (testsFixture.Configuration.RegularGroupMemberId is { } userId)
         {
             chat = await testsFixture.BotClient.GetChatAsync(userId);
         }
@@ -31,22 +32,30 @@ public class ChatMemberAdministrationTestFixture : IAsyncLifetime
         {
             await testsFixture.UpdateReceiver.DiscardNewUpdatesAsync();
 
-            await testsFixture.SendTestCollectionNotificationAsync(collectionName,
-                $"No value is set for `{nameof(TestConfiguration.RegularGroupMemberId)}` " +
-                "in test settings.\n" + "An admin should either forward a message from non-admin member," +
-                " send his/her contact or add a non-admin member to the group."
+            await testsFixture.SendTestCollectionNotificationAsync(
+                collectionName,
+                $"No value is set for `{nameof(TestConfiguration.RegularGroupMemberId)}` "
+                    + "in test settings.\n"
+                    + "An admin should either forward a message from non-admin member,"
+                    + " send his/her contact or add a non-admin member to the group."
             );
 
             chat = await testsFixture.GetChatFromAdminAsync();
         }
 
-        if (chat.Username is not null) return chat;
+        if (chat.Username is not null)
+            return chat;
 
-        await testsFixture.SendTestCollectionNotificationAsync(collectionName,
-            $"[{chat.FirstName}](tg://user?id={chat.Id}) doesn't have a username.\n" +
-            "❎ Failing tests...");
+        await testsFixture.SendTestCollectionNotificationAsync(
+            collectionName,
+            $"[{chat.FirstName}](tg://user?id={chat.Id}) doesn't have a username.\n"
+                + "❎ Failing tests..."
+        );
 
-        throw new ArgumentNullException(nameof(chat.Username), "Chat member doesn't have a username");
+        throw new ArgumentNullException(
+            nameof(chat.Username),
+            "Chat member doesn't have a username"
+        );
     }
 
     public async Task InitializeAsync()

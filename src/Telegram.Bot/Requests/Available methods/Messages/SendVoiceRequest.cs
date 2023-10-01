@@ -97,7 +97,8 @@ public class SendVoiceRequest : FileRequestBase<Message>, IChatTargetable
     public override HttpContent? ToHttpContent() =>
         Voice switch
         {
-            InputFile voice => ToMultipartFormDataContent(fileParameterName: "voice", inputFile: voice),
-            _               => base.ToHttpContent()
+            InputFile voice
+                => ToMultipartFormDataContent(fileParameterName: "voice", inputFile: voice),
+            _ => base.ToHttpContent()
         };
 }

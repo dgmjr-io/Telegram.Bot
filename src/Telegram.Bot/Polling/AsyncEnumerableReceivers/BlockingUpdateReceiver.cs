@@ -32,7 +32,8 @@ public class BlockingUpdateReceiver : IAsyncEnumerable<Update>
     public BlockingUpdateReceiver(
         ITelegramBotClient botClient,
         ReceiverOptions? receiverOptions = default,
-        Func<Exception, CancellationToken, Task>? pollingErrorHandler = default)
+        Func<Exception, CancellationToken, Task>? pollingErrorHandler = default
+    )
     {
         _botClient = botClient ?? throw new ArgumentNullException(nameof(botClient));
         _receiverOptions = receiverOptions;
@@ -45,11 +46,15 @@ public class BlockingUpdateReceiver : IAsyncEnumerable<Update>
     /// <param name="cancellationToken">
     /// The <see cref="CancellationToken"/> with which you can stop receiving
     /// </param>
-    public IAsyncEnumerator<Update> GetAsyncEnumerator(CancellationToken cancellationToken = default)
+    public IAsyncEnumerator<Update> GetAsyncEnumerator(
+        CancellationToken cancellationToken = default
+    )
     {
         if (Interlocked.CompareExchange(ref _inProcess, 1, 0) is 1)
         {
-            throw new InvalidOperationException(nameof(GetAsyncEnumerator) + " may only be called once");
+            throw new InvalidOperationException(
+                nameof(GetAsyncEnumerator) + " may only be called once"
+            );
         }
 
         return new Enumerator(receiver: this, cancellationToken: cancellationToken);
@@ -84,9 +89,7 @@ public class BlockingUpdateReceiver : IAsyncEnumerable<Update>
 
             _updateIndex += 1;
 
-            return _updateIndex < _updateArray.Length
-                ? new(true)
-                : new(ReceiveUpdatesAsync());
+            return _updateIndex < _updateArray.Length ? new(true) : new(ReceiveUpdatesAsync());
         }
 
         async Task<bool> ReceiveUpdatesAsync()
@@ -100,9 +103,9 @@ public class BlockingUpdateReceiver : IAsyncEnumerable<Update>
             {
                 try
                 {
-                    _messageOffset = await _receiver._botClient.ThrowOutPendingUpdatesAsync(
-                        cancellationToken: _token
-                    ).ConfigureAwait(false);
+                    _messageOffset = await _receiver._botClient
+                        .ThrowOutPendingUpdatesAsync(cancellationToken: _token)
+                        .ConfigureAwait(false);
                 }
                 catch (OperationCanceledException)
                 {
@@ -126,7 +129,7 @@ public class BlockingUpdateReceiver : IAsyncEnumerable<Update>
                             request: new GetUpdatesRequest
                             {
                                 Offset = _messageOffset,
-                                Timeout = (int) _receiver._botClient.Timeout.TotalSeconds,
+                                Timeout = (int)_receiver._botClient.Timeout.TotalSeconds,
                                 Limit = _limit,
                                 AllowedUpdates = _allowedUpdates,
                             },

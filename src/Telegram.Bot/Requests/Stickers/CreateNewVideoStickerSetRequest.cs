@@ -31,11 +31,13 @@ public class CreateNewVideoStickerSetRequest : CreateNewStickerSetRequest
         string title,
         InputFile webmSticker,
         string emojis
-    ) : base(userId, name, title, emojis)
-        => WebmSticker = webmSticker ?? throw new ArgumentNullException(nameof(webmSticker), "Sticker is null");
+    )
+        : base(userId, name, title, emojis) =>
+        WebmSticker =
+            webmSticker ?? throw new ArgumentNullException(nameof(webmSticker), "Sticker is null");
 #pragma warning restore CS1573
 
     /// <inheritdoc />
-    public override HttpContent ToHttpContent()
-        => ToMultipartFormDataContent(fileParameterName: "webm_sticker", inputFile: WebmSticker);
+    public override HttpContent ToHttpContent() =>
+        ToMultipartFormDataContent(fileParameterName: "webm_sticker", inputFile: WebmSticker);
 }

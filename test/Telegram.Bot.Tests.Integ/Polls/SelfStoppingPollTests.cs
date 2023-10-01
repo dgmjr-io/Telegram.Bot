@@ -22,14 +22,15 @@ public class SelfStoppingPollTests : IClassFixture<SelfStoppingPollTestsFixture>
 
     [OrderedFact(
         "Should send self closing anonymous poll by period",
-        Skip = "Fails on CI server for some reason, the resulting poll is public")]
+        Skip = "Fails on CI server for some reason, the resulting poll is public"
+    )]
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.SendPoll)]
     public async Task Should_Send_Self_Closing_Poll_Anonymous_Poll_By_Period()
     {
         Message message = await BotClient.SendPollAsync(
             chatId: Fixture.SupergroupChat,
             question: "Who shot first?",
-            options: new[] {"Han Solo", "Greedo", "I don't care"},
+            options: new[] { "Han Solo", "Greedo", "I don't care" },
             openPeriod: 6
         );
 
@@ -76,7 +77,8 @@ public class SelfStoppingPollTests : IClassFixture<SelfStoppingPollTestsFixture>
 
     [OrderedFact(
         "Should send self closing anonymous poll by date",
-        Skip = "Fails on CI server for some reason, the resulting poll is public")]
+        Skip = "Fails on CI server for some reason, the resulting poll is public"
+    )]
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.SendPoll)]
     public async Task Should_Send_Self_Closing_Poll_Anonymous_Poll_By_Date()
     {
@@ -85,7 +87,7 @@ public class SelfStoppingPollTests : IClassFixture<SelfStoppingPollTestsFixture>
         Message message = await BotClient.SendPollAsync(
             chatId: Fixture.SupergroupChat,
             question: "Who shot first?",
-            options: new[] {"Han Solo", "Greedo", "I don't care"},
+            options: new[] { "Han Solo", "Greedo", "I don't care" },
             closeDate: closeDate
         );
 

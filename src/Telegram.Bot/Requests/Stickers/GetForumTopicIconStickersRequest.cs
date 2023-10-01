@@ -10,6 +10,6 @@ public class GetForumTopicIconStickersRequest : RequestBase<Sticker[]>
     /// <summary>
     ///
     /// </summary>
-    public GetForumTopicIconStickersRequest() : base("getForumTopicIconStickers")
-    { }
+    public GetForumTopicIconStickersRequest()
+        : base("getForumTopicIconStickers") { }
 }

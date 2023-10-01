@@ -20,10 +20,12 @@ public class DefaultUpdateHandler : IUpdateHandler
     /// <param name="pollingErrorHandler">The function to invoke when an error occurs</param>
     public DefaultUpdateHandler(
         Func<ITelegramBotClient, Update, CancellationToken, Task> updateHandler,
-        Func<ITelegramBotClient, Exception, CancellationToken, Task> pollingErrorHandler)
+        Func<ITelegramBotClient, Exception, CancellationToken, Task> pollingErrorHandler
+    )
     {
         _updateHandler = updateHandler ?? throw new ArgumentNullException(nameof(updateHandler));
-        _pollingErrorHandler = pollingErrorHandler ?? throw new ArgumentNullException(nameof(pollingErrorHandler));
+        _pollingErrorHandler =
+            pollingErrorHandler ?? throw new ArgumentNullException(nameof(pollingErrorHandler));
     }
 
     /// <inheritdoc />
@@ -31,14 +33,12 @@ public class DefaultUpdateHandler : IUpdateHandler
         ITelegramBotClient botClient,
         Update update,
         CancellationToken cancellationToken
-    ) =>
-        await _updateHandler(botClient, update, cancellationToken).ConfigureAwait(false);
+    ) => await _updateHandler(botClient, update, cancellationToken).ConfigureAwait(false);
 
     /// <inheritdoc />
     public async Task HandlePollingErrorAsync(
         ITelegramBotClient botClient,
         Exception exception,
         CancellationToken cancellationToken
-    ) =>
-        await _pollingErrorHandler(botClient, exception, cancellationToken).ConfigureAwait(false);
+    ) => await _pollingErrorHandler(botClient, exception, cancellationToken).ConfigureAwait(false);
 }

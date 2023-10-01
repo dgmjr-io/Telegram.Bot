@@ -29,12 +29,12 @@ public class PrivateChatReplyMarkupTests : IClassFixture<PrivateChatReplyMarkupT
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.SendMessage)]
     public async Task Should_Receive_Contact_Info()
     {
-        ReplyKeyboardMarkup replyKeyboardMarkup = new (
-            keyboardRow: new[] { KeyboardButton.WithRequestContact("Share Contact"), })
-        {
-            ResizeKeyboard = true,
-            OneTimeKeyboard = true,
-        };
+        ReplyKeyboardMarkup replyKeyboardMarkup =
+            new(keyboardRow: new[] { KeyboardButton.WithRequestContact("Share Contact"), })
+            {
+                ResizeKeyboard = true,
+                OneTimeKeyboard = true,
+            };
 
         await BotClient.SendTextMessageAsync(
             chatId: _classFixture.PrivateChat,
@@ -63,7 +63,9 @@ public class PrivateChatReplyMarkupTests : IClassFixture<PrivateChatReplyMarkupT
         await BotClient.SendTextMessageAsync(
             chatId: _classFixture.PrivateChat,
             text: "Share your location using the keyboard reply markup",
-            replyMarkup: new ReplyKeyboardMarkup(KeyboardButton.WithRequestLocation("Share Location"))
+            replyMarkup: new ReplyKeyboardMarkup(
+                KeyboardButton.WithRequestLocation("Share Location")
+            )
         );
 
         Message locationMessage = await GetMessageFromChat(MessageType.Location);
@@ -78,16 +80,18 @@ public class PrivateChatReplyMarkupTests : IClassFixture<PrivateChatReplyMarkupT
     }
 
     async Task<Message> GetMessageFromChat(MessageType messageType) =>
-        (await _fixture.UpdateReceiver.GetUpdateAsync(
-            predicate: u => u.Message!.Type == messageType &&
-                            u.Message.Chat.Id == _classFixture.PrivateChat.Id,
-            updateTypes: UpdateType.Message
-        )).Message;
+        (
+            await _fixture.UpdateReceiver.GetUpdateAsync(
+                predicate: u =>
+                    u.Message!.Type == messageType
+                    && u.Message.Chat.Id == _classFixture.PrivateChat.Id,
+                updateTypes: UpdateType.Message
+            )
+        ).Message;
 
     public class Fixture : PrivateChatFixture
     {
         public Fixture(TestsFixture testsFixture)
-            : base(testsFixture, Constants.TestCollections.ReplyMarkup)
-        { }
+            : base(testsFixture, Constants.TestCollections.ReplyMarkup) { }
     }
 }

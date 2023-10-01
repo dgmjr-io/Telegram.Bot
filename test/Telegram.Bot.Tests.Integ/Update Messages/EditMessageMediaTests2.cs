@@ -41,7 +41,9 @@ public class EditMessageMediaTests2
 
         // Replace video with a document by uploading the new file
         Message editedMessage;
-        await using (Stream stream = System.IO.File.OpenRead(Constants.PathToFile.Certificate.PublicKey))
+        await using (
+            Stream stream = System.IO.File.OpenRead(Constants.PathToFile.Certificate.PublicKey)
+        )
         {
             editedMessage = await BotClient.EditMessageMediaAsync(
                 chatId: originalMessage.Chat,
@@ -70,7 +72,11 @@ public class EditMessageMediaTests2
         // Upload a GIF file to Telegram servers and obtain its file_id. This file_id will be used later in test.
         Message gifMessage = await BotClient.SendDocumentAsync(
             chatId: _fixture.SupergroupChat,
-            document: new InputFileUrl(new Uri("https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif")),
+            document: new InputFileUrl(
+                new Uri(
+                    "https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif"
+                )
+            ),
             caption: "`file_id` of this GIF will be used"
         );
 
@@ -79,14 +85,18 @@ public class EditMessageMediaTests2
         // Send a photo to chat. This media will be changed later in test.
         Message originalMessage = await BotClient.SendPhotoAsync(
             chatId: _fixture.SupergroupChat,
-            photo: new InputFileUrl(new Uri("https://cdn.pixabay.com/photo/2017/08/30/12/45/girl-2696947_640.jpg")),
+            photo: new InputFileUrl(
+                new Uri("https://cdn.pixabay.com/photo/2017/08/30/12/45/girl-2696947_640.jpg")
+            ),
             caption: "This message will be edited shortly"
         );
 
         await Task.Delay(500);
 
         // Replace audio with another audio by uploading the new file. A thumbnail image is also uploaded.
-        await using Stream thumbStream = System.IO.File.OpenRead(Constants.PathToFile.Thumbnail.Video);
+        await using Stream thumbStream = System.IO.File.OpenRead(
+            Constants.PathToFile.Thumbnail.Video
+        );
         Message editedMessage = await BotClient.EditMessageMediaAsync(
             chatId: originalMessage.Chat,
             messageId: originalMessage.MessageId,

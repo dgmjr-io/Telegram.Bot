@@ -39,22 +39,31 @@ public class ChatId : IEquatable<ChatId>
     /// <exception cref="ArgumentNullException">Thrown when string value is <c>null</c></exception>
     public ChatId(string username)
     {
-        if (username is null) { throw new ArgumentNullException(nameof(username)); }
+        if (username is null)
+        {
+            throw new ArgumentNullException(nameof(username));
+        }
         if (username.Length > 1 && username[0] == '@')
         {
             Username = username;
         }
-        else if (long.TryParse(
-            s: username,
-            style: NumberStyles.Integer,
-            provider: CultureInfo.InvariantCulture,
-            result: out var identifier))
+        else if (
+            long.TryParse(
+                s: username,
+                style: NumberStyles.Integer,
+                provider: CultureInfo.InvariantCulture,
+                result: out var identifier
+            )
+        )
         {
             Identifier = identifier;
         }
         else
         {
-            throw new ArgumentException("Username value should be Identifier or Username that starts with @", nameof(username));
+            throw new ArgumentException(
+                "Username value should be Identifier or Username that starts with @",
+                nameof(username)
+            );
         }
     }
 
@@ -83,7 +92,8 @@ public class ChatId : IEquatable<ChatId>
     /// Create a <c>string</c> out of a <see cref="ChatId"/>
     /// </summary>
     /// <returns>The <see cref="ChatId"/> as <c>string</c></returns>
-    public override string ToString() => (Username ?? Identifier?.ToString(CultureInfo.InvariantCulture))!;
+    public override string ToString() =>
+        (Username ?? Identifier?.ToString(CultureInfo.InvariantCulture))!;
 
     /// <summary>
     /// Create a <see cref="ChatId"/> using unique identifier for the chat
@@ -115,7 +125,10 @@ public class ChatId : IEquatable<ChatId>
     /// </summary>
     public static bool operator ==(ChatId? obj1, ChatId? obj2)
     {
-        if (obj1 is null || obj2 is null) { return false; }
+        if (obj1 is null || obj2 is null)
+        {
+            return false;
+        }
 
         if (obj1.Identifier is not null && obj2.Identifier is not null)
         {

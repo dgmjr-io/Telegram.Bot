@@ -25,7 +25,6 @@ public class TestCollectionOrderer : ITestCollectionOrderer
         Constants.TestCollections.ChatMemberAdministration,
         Constants.TestCollections.Exceptions,
         Constants.TestCollections.NativePolls,
-
         // Tests without the need for user interaction:
         Constants.TestCollections.GettingUpdates,
         Constants.TestCollections.BotCommands,
@@ -58,7 +57,9 @@ public class TestCollectionOrderer : ITestCollectionOrderer
         Constants.TestCollections.SendCopyMessage
     };
 
-    public IEnumerable<ITestCollection> OrderTestCollections(IEnumerable<ITestCollection> testCollections)
+    public IEnumerable<ITestCollection> OrderTestCollections(
+        IEnumerable<ITestCollection> testCollections
+    )
     {
         testCollections = testCollections.OrderBy(FindExecutionOrder);
 
@@ -88,6 +89,6 @@ public class TestCollectionOrderer : ITestCollectionOrderer
             );
         }
 
-        return (int) order;
+        return (int)order;
     }
 }

@@ -14,10 +14,7 @@ public class StickerTypeConverterTests
     [Fact]
     public void Should_Verify_All_StickerType_Members()
     {
-        List<string> stickerTypeMembers = Enum
-            .GetNames<StickerType>()
-            .OrderBy(x => x)
-            .ToList();
+        List<string> stickerTypeMembers = Enum.GetNames<StickerType>().OrderBy(x => x).ToList();
         List<string> stickerTypeDataMembers = new StickerTypeData()
             .Select(x => Enum.GetName(typeof(StickerType), x[0]))
             .OrderBy(x => x)
@@ -26,7 +23,6 @@ public class StickerTypeConverterTests
         Assert.Equal(stickerTypeMembers.Count, stickerTypeDataMembers.Count);
         Assert.Equal(stickerTypeMembers, stickerTypeDataMembers);
     }
-
 
     [Theory]
     [ClassData(typeof(StickerTypeData))]

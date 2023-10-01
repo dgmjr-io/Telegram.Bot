@@ -21,8 +21,10 @@ public class ApiExceptionsTests
         _fixture = fixture;
     }
 
-    [OrderedFact("Should throw ChatNotInitiatedException while trying to send message to a user who hasn't " +
-                 "started a chat with bot but bot knows about him/her.")]
+    [OrderedFact(
+        "Should throw ChatNotInitiatedException while trying to send message to a user who hasn't "
+            + "started a chat with bot but bot knows about him/her."
+    )]
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.SendMessage)]
     public async Task Should_Throw_Exception_ChatNotInitiatedException()
     {
@@ -40,11 +42,12 @@ public class ApiExceptionsTests
 
         User forwardFromUser = forwardedMessageUpdate.Message!.ForwardFrom!;
 
-        ApiRequestException e = await Assert.ThrowsAsync<ApiRequestException>(async () =>
-            await BotClient.SendTextMessageAsync(
-                forwardFromUser.Id,
-                $"Error! If you see this message, talk to @{forwardFromUser.Username}"
-            )
+        ApiRequestException e = await Assert.ThrowsAsync<ApiRequestException>(
+            async () =>
+                await BotClient.SendTextMessageAsync(
+                    forwardFromUser.Id,
+                    $"Error! If you see this message, talk to @{forwardFromUser.Username}"
+                )
         );
 
         Assert.Equal(403, e.ErrorCode);

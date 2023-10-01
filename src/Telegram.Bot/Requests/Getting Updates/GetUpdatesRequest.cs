@@ -65,6 +65,5 @@ public class GetUpdatesRequest : RequestBase<Update[]>
     /// Initializes a new GetUpdates request
     /// </summary>
     public GetUpdatesRequest()
-        : base("getUpdates")
-    { }
+        : base("getUpdates") { }
 }

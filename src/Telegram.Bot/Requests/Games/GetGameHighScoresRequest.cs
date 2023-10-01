@@ -14,7 +14,10 @@ namespace Telegram.Bot.Requests;
 /// them. Please note that this behavior is subject to change.
 /// </remarks>
 [JsonObject(MemberSerialization.OptIn, NamingStrategyType = typeof(SnakeCaseNamingStrategy))]
-public class GetGameHighScoresRequest : RequestBase<GameHighScore[]>, IUserTargetable, IChatTargetable
+public class GetGameHighScoresRequest
+    : RequestBase<GameHighScore[]>,
+        IUserTargetable,
+        IChatTargetable
 {
     /// <inheritdoc />
     [JsonProperty(Required = Required.Always)]

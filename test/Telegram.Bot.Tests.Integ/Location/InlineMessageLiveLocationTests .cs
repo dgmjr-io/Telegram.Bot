@@ -38,7 +38,7 @@ public class InlineMessageLiveLocationTests : IClassFixture<InlineMessageLiveLoc
         Update iqUpdate = await _fixture.UpdateReceiver.GetInlineQueryUpdateAsync();
 
         string callbackQueryData = $"edit-location{new Random().Next(1_000)}";
-        Location newYork = new Location {Latitude = 40.7128f, Longitude = -74.0060f};
+        Location newYork = new Location { Latitude = 40.7128f, Longitude = -74.0060f };
 
         await BotClient.AnswerInlineQueryAsync(
             inlineQueryId: iqUpdate.InlineQuery!.Id,
@@ -49,11 +49,13 @@ public class InlineMessageLiveLocationTests : IClassFixture<InlineMessageLiveLoc
                     id: "live-location",
                     latitude: newYork.Latitude,
                     longitude: newYork.Longitude,
-                    title: "Live Locations Test")
+                    title: "Live Locations Test"
+                )
                 {
                     LivePeriod = 60,
                     ReplyMarkup = InlineKeyboardButton.WithCallbackData(
-                        "Start live locations", callbackQueryData
+                        "Start live locations",
+                        callbackQueryData
                     )
                 }
             }
@@ -66,12 +68,15 @@ public class InlineMessageLiveLocationTests : IClassFixture<InlineMessageLiveLoc
     [Trait(Constants.MethodTraitName, Constants.TelegramBotApiMethods.EditMessageLiveLocation)]
     public async Task Should_Edit_Inline_Message_Live_Location()
     {
-        await _fixture.SendTestInstructionsAsync("Click on location message's button to edit the location");
+        await _fixture.SendTestInstructionsAsync(
+            "Click on location message's button to edit the location"
+        );
 
-        Update cqUpdate = await _fixture.UpdateReceiver
-            .GetCallbackQueryUpdateAsync(data: _classFixture.CallbackQueryData);
+        Update cqUpdate = await _fixture.UpdateReceiver.GetCallbackQueryUpdateAsync(
+            data: _classFixture.CallbackQueryData
+        );
 
-        Location beijing = new Location {Latitude = 39.9042f, Longitude = 116.4074f};
+        Location beijing = new Location { Latitude = 39.9042f, Longitude = 116.4074f };
 
         await BotClient.EditMessageLiveLocationAsync(
             inlineMessageId: cqUpdate.CallbackQuery!.InlineMessageId!,
