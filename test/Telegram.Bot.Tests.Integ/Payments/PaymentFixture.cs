@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Telegram.Bot.Tests.Integ.Framework;
 using Telegram.Bot.Tests.Integ.Framework.Fixtures;
 

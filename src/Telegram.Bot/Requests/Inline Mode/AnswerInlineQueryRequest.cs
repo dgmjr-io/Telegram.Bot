@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Telegram.Bot.Types.InlineQueryResults;
 
 // ReSharper disable once CheckNamespace

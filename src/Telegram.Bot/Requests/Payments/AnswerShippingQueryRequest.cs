@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Telegram.Bot.Types.Payments;
 
 // ReSharper disable once CheckNamespace
