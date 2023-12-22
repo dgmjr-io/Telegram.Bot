@@ -147,70 +147,72 @@ public class TestsFixture : IDisposable
     {
         static bool IsMatch(Update u) =>
             u
-                is {
-                    Message:
-                    {
-                        Type: MessageType.Contact,
-                        ForwardFrom: not null,
-                        NewChatMembers.Length: > 0,
+                is
+            {
+            Message:
+            {
+            Type: MessageType.Contact,
+            ForwardFrom: not null,
+            NewChatMembers.Length: > 0,
                     }
-                };
+};
 
-        var update = await UpdateReceiver.GetUpdateAsync(IsMatch, updateTypes: UpdateType.Message);
+var update = await UpdateReceiver.GetUpdateAsync(IsMatch, updateTypes: UpdateType.Message);
 
-        await UpdateReceiver.DiscardNewUpdatesAsync();
+await UpdateReceiver.DiscardNewUpdatesAsync();
 
-        var userId = update.Message switch
-        {
-            { Contact.UserId: { } id } => id,
-            { ForwardFrom.Id: var id } => id,
-            { NewChatMembers: { Length: 1 } members } => members[0].Id,
-            _ => throw new InvalidOperationException()
-        };
+var userId = update.Message switch
+{
+    { Contact.UserId: { } id } => id,
+    { ForwardFrom.Id: var id } => id,
+    { NewChatMembers: { Length: 1 } members } => members[0].Id,
+    _ => throw new InvalidOperationException()
+};
 
         return await BotClient.GetChatAsync(userId!);
-    }
+}
 
-    async Task InitAsync()
+async Task InitAsync()
+{
+    _configurationProvider = new();
+    var apiToken = Configuration.ApiToken;
+
+    BotClient = new RetryTelegramBotClient(
+        options: new(
+            retryCount: Configuration.RetryCount,
+            defaultTimeout: TimeSpan.FromSeconds(Configuration.DefaultRetryTimeout),
+            token: apiToken,
+            useTestEnvironment: false,
+            baseUrl: default
+        ),
+        diagnosticMessageSink: _diagnosticMessageSink
+    );
+
+    var allowedUserNames = await Ex.WithCancellation(async token =>
     {
-        _configurationProvider = new();
-        var apiToken = Configuration.ApiToken;
+        BotUser = await BotClient.GetMeAsync(token);
+        await BotClient.DeleteWebhookAsync(cancellationToken: token);
 
-        BotClient = new RetryTelegramBotClient(
-            options: new(
-                retryCount: Configuration.RetryCount,
-                defaultTimeout: TimeSpan.FromSeconds(Configuration.DefaultRetryTimeout),
-                token: apiToken,
-                useTestEnvironment: false,
-                baseUrl: default
-            ),
-            diagnosticMessageSink: _diagnosticMessageSink
-        );
+        SupergroupChat = await FindSupergroupTestChatAsync(token);
+        return await FindAllowedTesterUserNames(token);
+    });
 
-        var allowedUserNames = await Ex.WithCancellation(async token =>
-        {
-            BotUser = await BotClient.GetMeAsync(token);
-            await BotClient.DeleteWebhookAsync(cancellationToken: token);
+    UpdateReceiver = new(BotClient, allowedUserNames);
 
-            SupergroupChat = await FindSupergroupTestChatAsync(token);
-            return await FindAllowedTesterUserNames(token);
-        });
-
-        UpdateReceiver = new(BotClient, allowedUserNames);
-
-        await Ex.WithCancellation(
-            async token =>
-                await BotClient.SendTextMessageAsync(
-                    chatId: SupergroupChat.Id,
-                    text: $"""
+    await Ex.WithCancellation(
+        async token =>
+            await BotClient.SendTextMessageAsync(
+                chatId: SupergroupChat.Id,
+                text: $"""
                   ```
-                  Test execution is starting...
+
+              Test execution is starting...
                   ```
                   #testers
                   These users are allowed to interact with the bot:
 
-                  {UpdateReceiver.GetTesters()}
-                  """,
+                  { UpdateReceiver.GetTesters()}
+    """,
                     parseMode: ParseMode.Markdown,
                     disableNotification: true,
                     cancellationToken: token
@@ -231,59 +233,59 @@ public class TestsFixture : IDisposable
         bool switchInlineQuery = default,
         CancellationToken cancellationToken = default
     )
+{
+    var textFormat = isForCollection
+        ? Constants.StartCollectionMessageFormat
+        : Constants.StartTestCaseMessageFormat;
+
+    var text = string.Format(textFormat, name);
+
+    chatId ??= SupergroupChat.Id;
+    if (instructions != default)
     {
-        var textFormat = isForCollection
-            ? Constants.StartCollectionMessageFormat
-            : Constants.StartTestCaseMessageFormat;
-
-        var text = string.Format(textFormat, name);
-
-        chatId ??= SupergroupChat.Id;
-        if (instructions != default)
-        {
-            text += $"\n\n{string.Format(Constants.InstructionsMessageFormat, instructions)}";
-        }
-
-        IReplyMarkup replyMarkup = switchInlineQuery
-            ? (InlineKeyboardMarkup)
-                InlineKeyboardButton.WithSwitchInlineQueryCurrentChat("Start inline query")
-            : default;
-
-        var task = BotClient.SendTextMessageAsync(
-            chatId: chatId,
-            text: text,
-            parseMode: ParseMode.Markdown,
-            replyMarkup: replyMarkup,
-            cancellationToken: cancellationToken
-        );
-        return task;
+        text += $"\n\n{string.Format(Constants.InstructionsMessageFormat, instructions)}";
     }
 
-    async Task<Chat> FindSupergroupTestChatAsync(CancellationToken cancellationToken = default)
-    {
-        var supergroupChatId = Configuration.SuperGroupChatId;
-        return await BotClient.GetChatAsync(supergroupChatId, cancellationToken);
-    }
+    IReplyMarkup replyMarkup = switchInlineQuery
+        ? (InlineKeyboardMarkup)
+            InlineKeyboardButton.WithSwitchInlineQueryCurrentChat("Start inline query")
+        : default;
 
-    async Task<IEnumerable<string>> FindAllowedTesterUserNames(
-        CancellationToken cancellationToken = default
-    )
-    {
-        // Try to get user names from test configurations first
-        var allowedUserNames = Configuration.AllowedUserNames;
+    var task = BotClient.SendTextMessageAsync(
+        chatId: chatId,
+        text: text,
+        parseMode: ParseMode.Markdown,
+        replyMarkup: replyMarkup,
+        cancellationToken: cancellationToken
+    );
+    return task;
+}
 
-        if (allowedUserNames.Any())
-            return allowedUserNames;
+async Task<Chat> FindSupergroupTestChatAsync(CancellationToken cancellationToken = default)
+{
+    var supergroupChatId = Configuration.SuperGroupChatId;
+    return await BotClient.GetChatAsync(supergroupChatId, cancellationToken);
+}
 
-        // Assume all chat admins are allowed testers
-        var admins = await BotClient.GetChatAdministratorsAsync(SupergroupChat, cancellationToken);
-        allowedUserNames = admins
-            .Where(member => !member.User.IsBot)
-            .Select(member => member.User.Username)
-            .ToArray();
+async Task<IEnumerable<string>> FindAllowedTesterUserNames(
+    CancellationToken cancellationToken = default
+)
+{
+    // Try to get user names from test configurations first
+    var allowedUserNames = Configuration.AllowedUserNames;
 
+    if (allowedUserNames.Any())
         return allowedUserNames;
-    }
+
+    // Assume all chat admins are allowed testers
+    var admins = await BotClient.GetChatAdministratorsAsync(SupergroupChat, cancellationToken);
+    allowedUserNames = admins
+        .Where(member => !member.User.IsBot)
+        .Select(member => member.User.Username)
+        .ToArray();
+
+    return allowedUserNames;
+}
 
 #if DEBUG
     // Disable "The variable ‘x’ is assigned but its value is never used":
@@ -349,15 +351,15 @@ public class TestsFixture : IDisposable
     }
 #pragma warning restore 219
 #endif
-    static class Constants
-    {
-        public const string StartCollectionMessageFormat = "💬 Test Collection:\n*{0}*";
+static class Constants
+{
+    public const string StartCollectionMessageFormat = "💬 Test Collection:\n*{0}*";
 
-        public const string StartTestCaseMessageFormat = "🔹 Test Case:\n*{0}*";
+    public const string StartTestCaseMessageFormat = "🔹 Test Case:\n*{0}*";
 
-        public const string InstructionsMessageFormat = "👉 _Instructions_: 👈\n{0}";
+    public const string InstructionsMessageFormat = "👉 _Instructions_: 👈\n{0}";
 
-        public const string TestExecutionResultMessageFormat = """
+    public const string TestExecutionResultMessageFormat = """
             Test execution is finished.
             Total: {0} tests
             ✅ `{1} passed`

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Telegram.Bot.Tests.Integ.Framework.XunitExtensions;
 

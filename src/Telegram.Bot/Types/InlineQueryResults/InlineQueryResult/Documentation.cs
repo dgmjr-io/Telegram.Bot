@@ -1,4 +1,4 @@
-﻿#nullable disable
+#nullable disable
 #pragma warning disable 169
 #pragma warning disable CA1823
 // ReSharper disable InconsistentNaming
