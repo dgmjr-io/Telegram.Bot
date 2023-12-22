@@ -1,4 +1,4 @@
-﻿using System.Net.Http;
+using System.Net.Http;
 using Telegram.Bot.Requests.Abstractions;
 
 namespace Telegram.Bot.Args;
